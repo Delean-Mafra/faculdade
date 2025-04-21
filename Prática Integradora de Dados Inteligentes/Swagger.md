@@ -163,4 +163,4 @@ curl -X POST https://api.seguradoraautoaposentado.com/v1/cadastro \
 --- 
 
 ### **Notas:**  
-- Esta documentação é fictícia e pode ser adaptada para incluir mais endpoints (ex: `/renovacao`, `/cancelamento`).  
+- Esta documentação é fictícia.  
