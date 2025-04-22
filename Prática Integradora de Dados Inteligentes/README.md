@@ -1,5 +1,3 @@
-## Todas as informações descritas(Incluindo seus códigos e documentos) nesse projeto são fictícias
-
 ---
 marp: true
 theme: uncover # Você pode experimentar outros temas como 'gaia' ou 'default'
@@ -8,6 +6,9 @@ paginate: true
 header: "Relatório Sprint 1 - Sistema de Seguro de Veículos"
 footer: "Delean Plince Mafra - 21/04/2025"
 ---
+
+## Todas as informações descritas(Incluindo seus códigos e documentos) nesse projeto são fictícias
+
 
 <!-- _class: lead -->
 <!-- _header: "" -->
