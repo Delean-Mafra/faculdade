@@ -1,6 +1,9 @@
 ---
 
-# Versão do projeto utilizando Django
+# Todas as informações descritas(Incluindo seus códigos e documentos) nesse projeto são fictícias
+
+
+## Versão do projeto utilizando Django
 
 **Relatório de Planejamento e Execução da Primeira Sprint**
 
