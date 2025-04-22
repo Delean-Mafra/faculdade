@@ -1,5 +1,7 @@
 ---
 
+***Versão do projeto utilizando Django
+
 **Relatório de Planejamento e Execução da Primeira Sprint**
 
 **Projeto:** Sistema de Seguro de Veículos para Aposentados (API Backend com Django/DRF)
