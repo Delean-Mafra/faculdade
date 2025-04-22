@@ -138,7 +138,7 @@ describe('Simulador', () => {
 
 # 6. Materiais de Apoio
 
-*   Documentação da API (Swagger): `[[link_do_swagger_aqui]](https://github.com/Delean-Mafra/faculdade/blob/main/Pr%C3%A1tica%20Integradora%20de%20Dados%20Inteligentes/Swagger.md)`
+*   Documentação da API (Swagger): `[https://github.com/Delean-Mafra/faculdade/blob/main/Pr%C3%A1tica%20Integradora%20de%20Dados%20Inteligentes/Swagger.md]`
 
 ---
 
