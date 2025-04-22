@@ -151,4 +151,3 @@ describe('Simulador', () => {
 ## Pontos de Melhoria: 🛠️
 *   Automatizar mais testes de integração.
 *   Incluir UX Designer na próxima sprint para melhorar usabilidade.
-```
