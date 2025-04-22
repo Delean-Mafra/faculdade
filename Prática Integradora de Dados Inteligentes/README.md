@@ -154,14 +154,3 @@ describe('Simulador', () => {
 *   Incluir UX Designer na próxima sprint para melhorar usabilidade.
 
 ```
-
-**Observações:**
-1.  **Tema:** Usei o tema `uncover` que é limpo e bom para relatórios. Você pode mudar para `gaia` ou `default` ou outros temas que você tenha instalado.
-2.  **Anexos:** O Marp não incorpora arquivos Excel diretamente. A menção "Em anexo" foi mantida, mas você precisará distribuir esses arquivos separadamente ou criar slides específicos para resumir o conteúdo deles, se necessário.
-3.  **Código React:** Adicionei um `headers: { 'Content-Type': 'application/json' }` no `fetch` do React, pois é comum ser necessário para APIs Express que esperam JSON no corpo da requisição. Também adicionei um comentário sobre `dados` serem um exemplo.
-4.  **Links:** Nos "Materiais de Apoio", coloquei placeholders `[link_do_seu_repo_aqui]` e `[link_do_swagger_aqui]`. Substitua-os pelos links reais.
-5.  **Visualização:** Para ver isso como uma apresentação, você precisará de uma ferramenta que interprete Marp, como:
-    *   A extensão "Marp for VS Code" no Visual Studio Code.
-    *   O Marp CLI (ferramenta de linha de comando).
-
-Espero que isso ajude!
