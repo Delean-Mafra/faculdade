@@ -138,8 +138,7 @@ describe('Simulador', () => {
 
 # 6. Materiais de Apoio
 
-*   Repositório no GitHub: `[link_do_seu_repo_aqui]` (Ex: `https://github.com/seu_usuario/projeto-seguro`)
-*   Documentação da API (Swagger): `[link_do_swagger_aqui]`
+*   Documentação da API (Swagger): `[[link_do_swagger_aqui]](https://github.com/Delean-Mafra/faculdade/blob/main/Pr%C3%A1tica%20Integradora%20de%20Dados%20Inteligentes/Swagger.md)`
 
 ---
 
@@ -152,5 +151,4 @@ describe('Simulador', () => {
 ## Pontos de Melhoria: 🛠️
 *   Automatizar mais testes de integração.
 *   Incluir UX Designer na próxima sprint para melhorar usabilidade.
-
 ```
