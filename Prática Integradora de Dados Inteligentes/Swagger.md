@@ -1,3 +1,8 @@
+# Copyright © Delean Mafra. Todos os direitos reservados.
+
+### **Notas:**  
+- Esta documentação é fictícia.  
+
 # **Documentação da API - Seguradora Auto Aposentado**  
 **Versão:** 1.0.0  
 **Base URL:** `https://api.seguradoraautoaposentado.com/v1`  
@@ -162,5 +167,4 @@ curl -X POST https://api.seguradoraautoaposentado.com/v1/cadastro \
 
 --- 
 
-### **Notas:**  
-- Esta documentação é fictícia.  
+
