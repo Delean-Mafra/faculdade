@@ -140,13 +140,7 @@ Criei o backlog com as principais funcionalidades, classificadas por valor para 
     *   Refinar a persistência de dados e tratamento de erros.
     *   Implementar testes automatizados (unitários/integração) usando o framework de testes do Django/DRF.
 
-**6. Materiais de Apoio**
-
-*   Repositório no GitHub *(link fictício)*
-*   Documentação da API *(Referência à documentação fornecida)*
-*   Documentação Django REST Framework: [https://www.django-rest-framework.org/](https://www.django-rest-framework.org/)
-
-**7. Lições Aprendidas e o que deu certo**
+**6. Lições Aprendidas e o que deu certo**
 
 *   A documentação da API serviu como um bom guia para a implementação com DRF.
 *   O uso de Serializers do DRF facilitou a validação dos dados de entrada e a formatação das saídas.
