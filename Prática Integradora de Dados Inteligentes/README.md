@@ -1,149 +1,167 @@
 ---
+marp: true
+theme: uncover # Você pode experimentar outros temas como 'gaia' ou 'default'
+size: 16:9
+paginate: true
+header: "Relatório Sprint 1 - Sistema de Seguro de Veículos"
+footer: "Delean Plince Mafra - 21/04/2025"
+---
 
-**Relatório de Planejamento e Execução da Primeira Sprint**
+<!-- _class: lead -->
+<!-- _header: "" -->
+<!-- _footer: "" -->
+# Relatório de Planejamento e Execução da Primeira Sprint
 
-**Projeto:** Sistema de Seguro de Veículos para Aposentados (API Backend com Django/DRF)
-
+**Projeto:** Sistema de Seguro de Veículos para Aposentados
 **Responsável:** Delean Plince Mafra
-
 **Data:** 21/04/2025
 
-**1. Contexto do Projeto**
+---
 
-Fui contratado como Product Owner (PO) para liderar o desenvolvimento da API RESTful para um novo sistema de seguros de veículos voltado para aposentados. A seguradora precisa de endpoints para simulação, cadastro de clientes e gerenciamento de apólices. O projeto será desenvolvido usando Scrum, com sprints de 2 semanas, utilizando Python com os frameworks Django e Django REST Framework (DRF) para o backend.
+# 1. Contexto do Projeto
 
-**2. Product Backlog (Priorizado)**
+Fui contratado como Product Owner (PO) para liderar o desenvolvimento de um novo sistema de seguros de veículos voltado para aposentados. A seguradora identificou uma demanda crescente nesse público e precisa de funcionalidades como:
+
+*   Simulação de apólices (cálculo de preços personalizados).
+*   Criação de apólices (cadastro digital com documentos simplificados).
+*   Gerenciamento de apólices (renovação, cancelamento, histórico).
+
+O projeto será desenvolvido usando Scrum, com sprints de 2 semanas.
+
+---
+
+# 2. Product Backlog (Priorizado)
 
 Criei o backlog com as principais funcionalidades, classificadas por valor para o negócio e complexidade:
 
-*Em anexo "Product Backlog.xlsx"*
+➡️ **Em anexo:** "Product Backlog.xlsx"
 
-**3. Planejamento da Sprint 1**
+*(Priorização feita em reunião com stakeholders, considerando ROI e prazo.)*
 
-*   **Duração:** 2 semanas
-*   **Objetivo: Entregar o Simulador de Apólice e o Cadastro Básico de Cliente.
+---
 
+# 3. Planejamento da Sprint 1
 
-*   *Atividades:** Entregar os endpoints públicos iniciais da API (`POST /v1/simular` e `POST /v1/cadastro`) funcionais, utilizando Django e DRF, conforme especificação da documentação. Estabelecer a estrutura base do projeto, incluindo configuração do DRF e modelos de dados iniciais.
-*   **Itens do Product Backlog Selecionados:** Itens correspondentes aos endpoints `POST /v1/simular` e `POST /v1/cadastro`.
-*   **Tarefas da Sprint (Sprint Backlog):** As tarefas detalhadas (setup do projeto Django/DRF, definição de modelos, criação de serializers, views baseadas em DRF, configuração de URLs) estão listadas no arquivo anexo.
+**Objetivo:** Entregar o Simulador de Apólice e o Cadastro Básico de Cliente.
 
-*Em anexo "tarefa.xlsx"*
+**Tarefas da Sprint (Sprint Backlog):**
 
-**4. Execução da Sprint (Python/Django/DRF API)**
+➡️ **Em anexo:** "tarefa.xlsx"
 
-*   **Semana 1: Setup, Estrutura, Modelos, Serializers e Endpoint de Simulação**
-    *   **Dia 1-2: Ambiente e Estrutura**
-        *   Reunião de alinhamento da equipe sobre padrões Python/Django/DRF.
-        *   Setup do ambiente virtual
-        *   Instalação das dependências
-        *   Criação do projeto Django: `django-admin startproject seguradora_api`.
-        *   Criação do app Django para a API: `cd seguradora_api`, `python manage.py startapp api_v1`.
-    *   **Dia 3-5: Configuração, Modelos, Serializers e View `/simular`**
-        *   Ajuste do `seguradora_api/settings.py`: Adição de `'rest_framework'` e `'api_v1'` a `INSTALLED_APPS`, configuração do `DATABASES`.
-        *   Definição dos modelos iniciais em `api_v1/models.py` (ex: `Cliente`, `Veiculo` se necessário para cadastro).
-        ```python
-        # api_v1/models.py (Exemplo inicial para Cliente)
-        from django.db import models
-        class Cliente(models.Model):
-            nome = models.CharField(max_length=100)
-            cpf = models.CharField(max_length=14, unique=True)
-            data_nascimento = models.DateField()
-            # ... outros campos necessários ...
-        ```
-        *   Criação de `api_v1/serializers.py`: Definição de serializers para os requests e responses dos endpoints.
-        ```python
-        # api_v1/serializers.py (Exemplo para Simulação)
-        from rest_framework import serializers
-        class SimulacaoRequestSerializer(serializers.Serializer):
-            idade = serializers.IntegerField(min_value=18)
-            valorVeiculo = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=0)
-            historico = serializers.ChoiceField(choices=['limpo', 'com_sinistros'])
-        class SimulacaoResponseSerializer(serializers.Serializer):
-            valorSeguro = serializers.DecimalField(max_digits=10, decimal_places=2)
-            descontoAposentado = serializers.CharField(max_length=5)
-        ```
-        *   Implementação da View para `/simular` em `api_v1/views.py` usando DRF (`APIView`).
-        ```python
-        # api_v1/views.py (Exemplo para Simulação)
-        from rest_framework.views import APIView
-        from rest_framework.response import Response
-        from rest_framework import status
-        from .serializers import SimulacaoRequestSerializer, SimulacaoResponseSerializer
-        class SimularApoliceAPIView(APIView):
-            def post(self, request, *args, **kwargs):
-                serializer = SimulacaoRequestSerializer(data=request.data)
-                if serializer.is_valid():
-                    idade = serializer.validated_data['idade']
-                    valor_veiculo = serializer.validated_data['valorVeiculo']
-                    historico = serializer.validated_data['historico']
+---
 
-                    taxa_base = 0.05
-                    fator_historico = 1.1 if historico == 'com_sinistros' else 1.0
-                    valor_final = float(valor_veiculo) * taxa_base * fator_historico
-                    desconto_str = "0%"
+# 4. Execução da Sprint
 
-                    if idade >= 60:
-                        desconto = 0.20
-                        valor_final *= (1 - desconto)
-                        desconto_str = "20%"
+## Dia 1-3:
+*   Reunião de alinhamento com a equipe para definir padrões de código.
+*   Desenvolvimento da API de cálculo (exemplo em Node.js):
 
-                    response_data = {'valorSeguro': round(valor_final, 2), 'descontoAposentado': desconto_str}
-                    response_serializer = SimulacaoResponseSerializer(response_data)
-                    return Response(response_serializer.data, status=status.HTTP_200_OK)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        ```
-        *   Configuração das URLs em `api_v1/urls.py` e `seguradora_api/urls.py`.
+```javascript
+// API de Cálculo de Seguro (Node.js/Express)
+app.post('/simular', (req, res) => {
+  const { idade, valorVeiculo, historico } = req.body;
+  const taxaBase = 0.05; // 5% do valor do veículo
+  const descontoAposentado = 0.2; // 20% de desconto
+  let valorFinal = valorVeiculo * taxaBase;
 
-*   **Semana 2: Endpoint de Cadastro, Migrations e Verificação**
-    *   **Dia 6-8: Implementação do Endpoint `/cadastro` e Migrations**
-        *   Criação de serializers para o cadastro (`CadastroRequestSerializer`, `CadastroResponseSerializer`).
-        *   Implementação da View para `/cadastro` em `api_v1/views.py` (`APIView` ou `CreateAPIView`).
-        ```python
-        # api_v1/views.py (Exemplo conceitual para Cadastro)
-        # Assumindo a existência de ClienteSerializer e Veiculo (ou dados no Cliente)
-        class CadastroClienteAPIView(APIView): # Ou generics.CreateAPIView
-             def post(self, request, *args, **kwargs):
-                 serializer = CadastroRequestSerializer(data=request.data)
-                 if serializer.is_valid():
-                     # Lógica para verificar duplicação de CPF
-                     cpf = serializer.validated_data['cpf']
-                     if Cliente.objects.filter(cpf=cpf).exists():
-                         return Response({"erro": "CPF já cadastrado."}, status=status.HTTP_409_CONFLICT)
+  if (idade >= 60) valorFinal *= (1 - descontoAposentado);
+  
+  res.json({ valorSeguro: valorFinal.toFixed(2) });
+});
+```
 
-                     # Lógica para criar o cliente (e veículo, se aplicável)
-                     # cliente = Cliente.objects.create(...) # Usando dados validados
-                     # ... salvar veículo se necessário ...
-                     cliente_id_gerado = "cliente_fake_123" # Substituir pelo ID real
+---
 
-                     response_data = {"clienteId": cliente_id_gerado, "mensagem": "Cadastro realizado com sucesso."}
-                     return Response(response_data, status=status.HTTP_201_CREATED)
-                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        ```
-        *   Execução das migrações: `python manage.py makemigrations api_v1`, `python manage.py migrate`.
-    *   **Dia 9-10: Testes e Encerramento**
-        *   Testes manuais dos endpoints `/v1/simular` e `/v1/cadastro` usando `curl` ou Postman, validando requests e responses JSON conforme documentação da API.
-        *   Verificação dos códigos de status (200, 201, 400, 409).
-        *   Revisão final do código Python/Django/DRF e preparação para a Sprint Review.
+# 4. Execução da Sprint (Continuação)
 
-**5. Entrega da Sprint 1 (Demo / Sprint Review)**
+## Dia 4-6:
+*   Front-end do simulador (React):
 
-*   **Resultados alcançados:**
-    *   ✅ Estrutura base do projeto Django/DRF (`seguradora_api`) configurada.
-    *   ✅ App `api_v1` criado e integrado, com modelos e serializers iniciais.
-    *   ✅ Endpoint `POST /v1/simular` implementado em Django/DRF, funcional e aderente à documentação.
-    *   ✅ Endpoint `POST /v1/cadastro` implementado em Django/DRF, funcional (com persistência básica via ORM) e aderente à documentação.
-    *   ✅ Validações iniciais usando serializers do DRF implementadas.
-*   **Próximos passos (Planejamento para Sprint 2):**
-    *   Implementar autenticação JWT para proteger endpoints futuros (ex: `/apolices`).
-    *   Desenvolver o endpoint `GET /v1/apolices` usando DRF (ListAPIView/ViewSet).
-    *   Refinar a persistência de dados e tratamento de erros.
-    *   Implementar testes automatizados (unitários/integração) usando o framework de testes do Django/DRF.
+```jsx
+function Simulador() {
+  const [valor, setValor] = useState(0);
+  
+  const calcular = async () => {
+    // Exemplo de dados, substitua pela lógica real de coleta do formulário
+    const dados = { idade: 65, valorVeiculo: 50000, historico: 'bom' }; 
+    const response = await fetch('/simular', { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, // Importante para o backend Express entender o JSON
+        body: JSON.stringify(dados) 
+    });
+    const resultado = await response.json();
+    setValor(resultado.valorSeguro);
+  };
 
-**6. Lições Aprendidas e o que deu certo**
+  return (
+    <div>
+      {/* Adicione campos de input para idade, valorVeiculo, etc. aqui */}
+      <button onClick={calcular}>Simular</button>
+      <p>Valor do seguro: R$ {valor}</p>
+    </div>
+  );
+}
+```
 
-*   A documentação da API serviu como um bom guia para a implementação com DRF.
-*   O uso de Serializers do DRF facilitou a validação dos dados de entrada e a formatação das saídas.
-*   O escopo da Sprint 1 (dois endpoints públicos) foi adequado para iniciar o projeto com a nova stack.
-*   A implementação da autenticação (JWT) é prioritária para a próxima Sprint.
-*   A definição de uma estratégia robusta de testes automatizados é crucial para garantir a qualidade da API.
+---
+
+# 4. Execução da Sprint (Continuação)
+
+## Dia 7-10:
+*   Testes automatizados (exemplo com Cypress):
+
+```javascript
+describe('Simulador', () => {
+  it('Calcula desconto para aposentados', () => {
+    cy.request('POST', '/simular', { idade: 65, valorVeiculo: 50000 })
+      .then((response) => {
+        expect(response.body.valorSeguro).to.equal('2000.00');
+      });
+  });
+});
+```
+
+---
+
+# 5. Entrega da Sprint (Demo)
+
+## Resultados alcançados:
+*   ✅ Simulador funcional com desconto para aposentados.
+*   ✅ Formulário de cadastro básico (validação de CPF e campos obrigatórios).
+*   ✅ Testes automatizados cobrindo 80% do código.
+
+## Próximos passos (Sprint 2):
+*   Desenvolver o Dashboard de Apólices.
+*   Melhorar acessibilidade (leitor de tela para idosos).
+
+---
+
+# 6. Materiais de Apoio
+
+*   Repositório no GitHub: `[link_do_seu_repo_aqui]` (Ex: `https://github.com/seu_usuario/projeto-seguro`)
+*   Documentação da API (Swagger): `[link_do_swagger_aqui]`
+
+---
+
+# 7. Lições Aprendidas e o que deu certo
+
+## O que deu certo: 👍
+*   Equipe alinhada desde o primeiro dia.
+*   Feedback rápido dos stakeholders após a demo.
+
+## Pontos de Melhoria: 🛠️
+*   Automatizar mais testes de integração.
+*   Incluir UX Designer na próxima sprint para melhorar usabilidade.
+
+```
+
+**Observações:**
+1.  **Tema:** Usei o tema `uncover` que é limpo e bom para relatórios. Você pode mudar para `gaia` ou `default` ou outros temas que você tenha instalado.
+2.  **Anexos:** O Marp não incorpora arquivos Excel diretamente. A menção "Em anexo" foi mantida, mas você precisará distribuir esses arquivos separadamente ou criar slides específicos para resumir o conteúdo deles, se necessário.
+3.  **Código React:** Adicionei um `headers: { 'Content-Type': 'application/json' }` no `fetch` do React, pois é comum ser necessário para APIs Express que esperam JSON no corpo da requisição. Também adicionei um comentário sobre `dados` serem um exemplo.
+4.  **Links:** Nos "Materiais de Apoio", coloquei placeholders `[link_do_seu_repo_aqui]` e `[link_do_swagger_aqui]`. Substitua-os pelos links reais.
+5.  **Visualização:** Para ver isso como uma apresentação, você precisará de uma ferramenta que interprete Marp, como:
+    *   A extensão "Marp for VS Code" no Visual Studio Code.
+    *   O Marp CLI (ferramenta de linha de comando).
+
+Espero que isso ajude!
