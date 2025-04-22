@@ -1,6 +1,6 @@
 ---
 
-***Versão do projeto utilizando Django***
+*Versão do projeto utilizando Django*
 
 **Relatório de Planejamento e Execução da Primeira Sprint**
 
