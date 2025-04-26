@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Excluir {{ object.title }}{% endblock %}
+
+{% block content %}
+    <div class="card shadow border-danger">
+        <div class="card-header bg-danger text-white">
+            <h2 class="mb-0">Confirmar Exclusão</h2>
+        </div>
+        <div class="card-body">
+            <p class="fs-5">Tem certeza que deseja excluir o livro "<strong>{{ object.title }}</strong>"?</p>
+            <p class="text-muted">Esta ação não pode ser desfeita.</p>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                    <a href="{% url 'book-detail' object.pk %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Confirmar Exclusão
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
