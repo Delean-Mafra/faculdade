@@ -1,0 +1,40 @@
+/* Estilos personalizados para o projeto */
+body {
+    padding-bottom: 20px;
+    background-color: #f8f9fa;
+}
+
+.card {
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Cores de alerta personalizadas */
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    color: #0f5132;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+}
+
+/* Estilo para validação de formulários */
+.invalid-feedback {
+    display: block;
+    color: #dc3545;
+}
+
+/* Estilo para o rodapé */
+footer {
+    margin-top: 3rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e9ecef;
+}
