@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
-{% block title %}Lista de Produtos - Class View{% endblock %}
+{% block title %}Lista de Produtos{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Lista de Produtos (Class View)</h1>
+    <h1>Lista de Produtos</h1>
     
     <div class="produtos-container">
-        {% for produto in produtos %}
+        {% for produto in page_obj %}
             <div class="produto-item">
                 <h3>{{ produto.nome }}</h3>
                 <p>{{ produto.descricao }}</p>
