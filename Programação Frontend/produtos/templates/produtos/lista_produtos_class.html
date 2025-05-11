@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Lista de Produtos - Class View{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista de Produtos (Class View)</h1>
+    
+    <div class="produtos-container">
+        {% for produto in produtos %}
+            <div class="produto-item">
+                <h3>{{ produto.nome }}</h3>
+                <p>{{ produto.descricao }}</p>
+                <p class="preco">R$ {{ produto.preco }}</p>
+                <p class="estoque">Estoque: {{ produto.estoque }}</p>
+            </div>
+        {% empty %}
+            <p>Nenhum produto disponível.</p>
+        {% endfor %}
+    </div>
+    
+    <!-- Paginação -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; Primeira</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+            {% endif %}
+            
+            <span class="current-page">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock %}
