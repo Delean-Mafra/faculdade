@@ -6,7 +6,51 @@
 <div class="container">
     <h1>Lista de Produtos</h1>
     
-    <div class="produtos-container">
+    <div class="search-container">
+        <input type="text" id="produto-search" placeholder="Buscar produtos...">
+        <button type="button" aria-label="Buscar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Paginação no topo -->
+    <div class="pagination-top">
+        <div class="pagination-container">
+            <div class="pagination-controls">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Primeira</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+                
+                <span class="current-page">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+                {% endif %}
+            </div>
+            
+            <!-- Seletor de página direto -->
+            {% if page_obj.paginator.num_pages > 1 %}
+            <div style="margin-top: 10px;">
+                <select class="page-selector">
+                    <option value="">Ir para página...</option>
+                    {% for i in page_obj.paginator.page_range %}
+                        <option value="?page={{ i }}" {% if page_obj.number == i %}selected{% endif %}>
+                            Página {{ i }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="produtos-container" id="produtos-anchor">
         {% for produto in page_obj %}
             <div class="produto-item">
                 <h3>{{ produto.nome }}</h3>
@@ -15,27 +59,57 @@
                 <p class="estoque">Estoque: {{ produto.estoque }}</p>
             </div>
         {% empty %}
-            <p>Nenhum produto disponível.</p>
+            <div class="no-products" id="no-products">
+                <h3>Nenhum produto encontrado</h3>
+                <p>Tente uma nova busca ou navegue para outra página</p>
+            </div>
         {% endfor %}
     </div>
     
-    <!-- Paginação -->
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; Primeira</a>
-                <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-            {% endif %}
+    <!-- Paginação no final -->
+    <div class="pagination-bottom">
+        <div class="pagination-container">
+            <div class="pagination-controls">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; Primeira</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                {% endif %}
+                
+                <span class="current-page">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+                {% endif %}
+            </div>
             
-            <span class="current-page">
-                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
-            </span>
-            
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">Próxima</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+            <!-- Seletor de página direto -->
+            {% if page_obj.paginator.num_pages > 1 %}
+            <div style="margin-top: 10px;">
+                <select class="page-selector">
+                    <option value="">Ir para página...</option>
+                    {% for i in page_obj.paginator.page_range %}
+                        <option value="?page={{ i }}" {% if page_obj.number == i %}selected{% endif %}>
+                            Página {{ i }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
             {% endif %}
-        </span>
+        </div>
     </div>
 </div>
+
+<!-- Botão voltar ao topo -->
+<a href="#" class="back-to-top" aria-label="Voltar ao topo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+    </svg>
+</a>
+{% endblock %}
+
+{% block extra_js %}
+<script src="/static/js/main.js"></script>
 {% endblock %}
