@@ -27,7 +27,7 @@ Programação Frontend/
 ├── recriar_produtos.py
 ├── meu_projeto_django/           # Projeto Django
 ├── produtos/                     # Aplicação Django (exemplo: lista de produtos)
-├── static/                       # Arquivos estáticos (CSS, imagens, etc.)
+├── static/                       # Arquivos estáticos (CSS, JS, etc.)
 └── templates/                    # Templates HTML
 ```
 
