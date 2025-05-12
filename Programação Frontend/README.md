@@ -177,5 +177,7 @@ O arquivo `static/css/styles.css` foi criado para tornar a página mais agradáv
 
 - [Documentação oficial do Django - Paginação](https://docs.djangoproject.com/pt-br/4.0/topics/pagination/)
 - [CSS Tricks: Layouts modernos com Flexbox e Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
+- [Material da Faculdade Descomplica](https://github.com/FaculdadeDescomplica/Pratica-Integradora-para-Dados-Inteligentes)
+
 
 ---
