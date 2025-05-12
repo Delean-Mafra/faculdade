@@ -1,118 +1,181 @@
-# Programação Frontend — Paginação Web com Django
+# Programação Frontend — Paginação Web e Estilização com CSS
 
-Este repositório contém materiais e códigos desenvolvidos para a disciplina de Programação Frontend, com foco em **paginação web** utilizando o framework **Django**. O conteúdo foi elaborado com base em materiais didáticos sobre técnicas de paginação, gerenciamento e exibição eficiente de grandes conjuntos de dados em aplicações web, além da aplicação prática de estilização de páginas com CSS.
+Este repositório reúne exemplos práticos e material de estudo para a disciplina de Programação Frontend da Faculdade Descomplica, focando na implementação de **paginação web** com Django e na **estilização de páginas HTML com CSS**.
 
-## Objetivo
+## Sobre a Atividade Prática
 
-Demonstrar como implementar a paginação de dados em projetos Django, melhorando a experiência do usuário ao navegar por listas extensas, e aplicar técnicas de CSS para tornar a página visualmente mais agradável.
+> **Título da Prática:** Estilizando uma página com CSS  
+> **Objetivo:**  
+> - Utilizar conhecimentos de CSS para estilizar uma página HTML existente.
+> - Selecionar e utilizar seletores CSS adequados para estilizar elementos específicos.
+>
+> **Ferramentas utilizadas:**  
+> - Framework Django  
+> - IDE: VSCode
+> - Servidor de desenvolvimento Django  
+>
+> **Resumo da atividade:**  
+> O exercício propõe utilizar a página criada durante a aula de “Paginação Web”, adicione estilos CSS para torná-la mais atraente visualmente e explique dois seletores CSS escolhidos, descrevendo os estilos aplicados.
 
-## Conteúdo
-
-- Uso do Django ORM para consultas eficientes em grandes volumes de dados.
-- Implementação da paginação utilizando a classe `Paginator` do Django.
-- Exemplos de views baseadas em função e em classe para paginação.
-- Renderização de páginas com navegação entre resultados.
-- Template Tags para controle da navegação e exibição de informações de paginação.
-- Estilização de páginas com CSS, utilizando seletores e boas práticas.
+---
 
 ## Estrutura do Projeto
 
 ```
 Programação Frontend/
-│
+├── manage.py
 ├── db.sqlite3
 ├── frontend_notes.py
-├── manage.py
 ├── populate_products.py
 ├── recriar_produtos.py
-├── meu_projeto_django/           # Projeto Django
-├── produtos/                     # Aplicação Django (exemplo: lista de produtos)
-├── static/                       # Arquivos estáticos (CSS, JS, etc.)
-└── templates/                    # Templates HTML
+├── meu_projeto_django/           # Projeto Django (configurações)
+├── produtos/                     # App Django com views, models, etc.
+│   └── templates/
+│       └── produtos/
+│           └── lista_produtos.html  # Página principal de produtos
+├── static/
+│   └── css/
+│       └── styles.css             # Arquivo principal de estilos CSS
+└── templates/
+    └── base.html                  # Template base do projeto
 ```
 
-## Sobre a Paginação Web
+---
 
-A paginação é fundamental para dividir grandes conjuntos de dados em partes menores, facilitando a navegação, reduzindo a sobrecarga cognitiva do usuário e melhorando o desempenho da aplicação. O Django oferece a classe `Paginator` para dividir e gerenciar a exibição de dados em páginas, com fácil controle sobre navegação, número de itens por página e exibição de informações adicionais.
+## Paginação Web no Django
 
-### Exemplo de uso da classe `Paginator`:
+Paginação é essencial para a experiência do usuário em páginas com muitos registros (como listas de produtos). O Django facilita isso com a classe `Paginator`.
+
+### Exemplo de view paginada:
 
 ```python
 from django.core.paginator import Paginator
+from django.shortcuts import render
+from .models import Produto
 
-produtos = Produto.objects.all()
-paginator = Paginator(produtos, 10)  # 10 itens por página
-page_number = request.GET.get('page')
-page_obj = paginator.get_page(page_number)
-return render(request, 'lista_produtos.html', {'page_obj': page_obj})
+def listar_produtos(request):
+    produtos = Produto.objects.all()
+    paginator = Paginator(produtos, 8)  # Exibe 8 produtos por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'produtos/lista_produtos.html', {'page_obj': page_obj})
 ```
 
-### Renderização no template:
+### Exemplo de template HTML (`lista_produtos.html`):
 
 ```django
-{% for produto in page_obj %}
-    <h3>{{ produto.nome }}</h3>
-    <p>{{ produto.descricao }}</p>
-{% endfor %}
+<h1>Lista de Produtos</h1>
+<div class="produtos-container">
+  {% for produto in page_obj %}
+    <div class="produto-item">
+      <h3>{{ produto.nome }}</h3>
+      <p>{{ produto.descricao }}</p>
+      <span class="preco">R$ {{ produto.preco }}</span>
+      <span class="estoque">Estoque: {{ produto.estoque }}</span>
+    </div>
+  {% endfor %}
+</div>
 
 <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; Primeira</a>
-            <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
-        {% endif %}
-
-        <span class="current-page">{{ page_obj.number }}</span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">próxima</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
-        {% endif %}
-    </span>
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+      <a href="?page=1">&laquo; Primeira</a>
+      <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+    {% endif %}
+    <span class="current-page">{{ page_obj.number }}</span>
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">próxima</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a>
+    {% endif %}
+  </span>
 </div>
 ```
 
-## Sobre a Atividade Prática
+---
 
-A atividade prática consiste em **estilizar a página de listagem paginada**, utilizando CSS para:
+## Estilização com CSS — Exemplos Práticos
 
-- Definir fontes e cores agradáveis.
-- Ajustar margens, preenchimentos e bordas dos elementos.
-- Adicionar interatividade com seletores como `:hover`.
-- Destacar elementos importantes com bordas arredondadas.
+O arquivo `static/css/styles.css` foi criado para tornar a página mais agradável e moderna, atendendo aos requisitos da atividade prática.
 
-**Exemplo de seletores CSS utilizados:**
+### Trecho do CSS utilizado:
+
 ```css
-.pagination a:hover {
-  background-color: #3498db;
-  color: #fff;
-  border-radius: 5px;
+.produto-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
-.current-page {
-  font-weight: bold;
-  color: #2c3e50;
+.produto-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.pagination .step-links {
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 50px;
+    display: inline-block;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
 }
 ```
-- O seletor `.pagination a:hover` aplica um destaque visual quando o mouse passa sobre os links da paginação.
-- O seletor `.current-page` estiliza o número da página atual, tornando-o mais visível.
 
-## Como executar
+#### Exemplos de seletores CSS escolhidos:
 
-1. Instale as dependências do Django.
-2. Execute as migrações e popule o banco de dados conforme scripts fornecidos.
-3. Inicie o servidor de desenvolvimento:
+1. **`.produto-item:hover`**  
+   - **Descrição:** Aplica estilos quando o mouse passa sobre um produto.
+   - **Estilos aplicados:**  
+     - `transform: translateY(-5px);` — Eleva o cartão do produto, criando efeito de destaque.
+     - `box-shadow: 0 8px 15px rgba(0,0,0,0.1);` — Sombra maior para dar sensação de profundidade.
+   - **Impacto:** Melhora a interatividade e o feedback visual para o usuário.
+
+2. **`.pagination .step-links`**  
+   - **Descrição:** Seleciona o elemento de links de navegação dentro da área de paginação.
+   - **Estilos aplicados:**  
+     - `background-color: white;` — Fundo branco para os controles de paginação.
+     - `padding: 10px 15px;` — Espaçamento interno confortável.
+     - `border-radius: 50px;` — Bordas arredondadas em estilo "pill-shaped".
+     - `box-shadow: 0 3px 8px rgba(0,0,0,0.1);` — Sombra sutil para destaque.
+   - **Impacto:** Deixa a paginação moderna, acessível e agradável de usar.
+
+---
+
+## Outras melhorias implementadas
+
+- Fonte moderna: `'Nunito', 'Segoe UI', Arial, sans-serif`
+- Paleta de cores consistente e agradável
+- Transições suaves em botões e cartões
+- Layout responsivo com media queries
+- Efeito de hover em produtos e botões de navegação
+- Paginação destacada e fácil de usar
+
+---
+
+## Como rodar localmente
+
+1. Instale o Django e dependências:
+    ```bash
+    pip install django
     ```
+2. Aplique as migrações e popule o banco de dados:
+    ```bash
+    python manage.py migrate
+    python populate_products.py
+    ```
+3. Inicie o servidor:
+    ```bash
     python manage.py runserver
     ```
-4. Acesse a aplicação no navegador e navegue pelas páginas de produtos.
+4. Acesse `http://localhost:8000/produtos/` no navegador.
 
-## Referências
+---
 
-O conteúdo deste repositório foi baseado nos seguintes materiais didáticos:
+## Material de Apoio
 
-- [Paginação Web: Técnicas e Boas Práticas](#)
-- [Documentação Django — Paginator](https://docs.djangoproject.com/pt-br/4.0/topics/pagination/)
-- [Material de aula: Estilização com CSS](#)
+- [Documentação oficial do Django - Paginação](https://docs.djangoproject.com/pt-br/4.0/topics/pagination/)
+- [CSS Tricks: Layouts modernos com Flexbox e Grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
 
 ---
