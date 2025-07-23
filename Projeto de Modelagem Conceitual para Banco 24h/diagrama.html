@@ -100,18 +100,19 @@
             position: absolute;
             background: #e74c3c;
             color: white;
-            border-radius: 50px;
-            padding: 10px 20px;
-            font-size: 0.9rem;
+            border-radius: 25px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
             font-weight: bold;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .relationship:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
         }
 
         .connection-line {
@@ -124,11 +125,13 @@
             position: absolute;
             background: #f39c12;
             color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: bold;
             z-index: 3;
+            min-width: 20px;
+            text-align: center;
         }
 
         .legend {
@@ -302,57 +305,74 @@
                 </div>
 
                 <!-- Relacionamentos -->
-                <div class="relationship" style="top: 120px; left: 320px;" onclick="showInfo('possui')">
+                <div class="relationship" style="top: 115px; left: 310px;" onclick="showInfo('possui')">
                     POSSUI
                 </div>
 
-                <div class="relationship" style="top: 200px; left: 320px;" onclick="showInfo('pertence')">
+                <div class="relationship" style="top: 195px; left: 300px;" onclick="showInfo('pertence')">
                     PERTENCE A
                 </div>
 
-                <div class="relationship" style="top: 380px; left: 320px;" onclick="showInfo('localizada')">
+                <div class="relationship" style="top: 375px; left: 300px;" onclick="showInfo('localizada')">
                     LOCALIZADA EM
                 </div>
 
-                <div class="relationship" style="top: 420px; left: 600px;" onclick="showInfo('realiza')">
+                <div class="relationship" style="top: 250px; left: 650px;" onclick="showInfo('realiza')">
                     REALIZA
                 </div>
 
-                <div class="relationship" style="top: 480px; left: 600px;" onclick="showInfo('registra')">
+                <div class="relationship" style="top: 420px; left: 650px;" onclick="showInfo('registra')">
                     REGISTRA
                 </div>
 
                 <!-- Linhas de Conexão -->
-                <div class="connection-line" style="top: 135px; left: 280px; width: 40px; height: 3px;"></div>
-                <div class="connection-line" style="top: 135px; left: 410px; width: 40px; height: 3px;"></div>
+                <!-- Cliente -> POSSUI -> Conta -->
+                <div class="connection-line" style="top: 130px; left: 280px; width: 30px; height: 2px;"></div>
+                <div class="connection-line" style="top: 130px; left: 380px; width: 70px; height: 2px;"></div>
 
-                <div class="connection-line" style="top: 215px; left: 280px; width: 40px; height: 3px;"></div>
-                <div class="connection-line" style="top: 215px; left: 410px; width: 40px; height: 3px;"></div>
+                <!-- Conta -> PERTENCE A -> Agência -->
+                <div class="connection-line" style="top: 210px; left: 280px; width: 20px; height: 2px;"></div>
+                <div class="connection-line" style="top: 210px; left: 390px; width: 60px; height: 2px;"></div>
+                <div class="connection-line" style="top: 210px; left: 280px; width: 2px; height: 90px;"></div>
+                <div class="connection-line" style="top: 300px; left: 280px; width: 20px; height: 2px;"></div>
 
-                <div class="connection-line" style="top: 395px; left: 280px; width: 40px; height: 3px;"></div>
-                <div class="connection-line" style="top: 395px; left: 410px; width: 40px; height: 3px;"></div>
+                <!-- Agência -> LOCALIZADA EM -> ATM -->
+                <div class="connection-line" style="top: 390px; left: 280px; width: 20px; height: 2px;"></div>
+                <div class="connection-line" style="top: 390px; left: 400px; width: 50px; height: 2px;"></div>
 
-                <div class="connection-line" style="top: 435px; left: 580px; width: 40px; height: 3px;"></div>
-                <div class="connection-line" style="top: 435px; left: 720px; width: 80px; height: 3px;"></div>
+                <!-- Conta -> REALIZA -> Transação -->
+                <div class="connection-line" style="top: 265px; left: 630px; width: 20px; height: 2px;"></div>
+                <div class="connection-line" style="top: 265px; left: 720px; width: 80px; height: 2px;"></div>
+                <div class="connection-line" style="top: 180px; left: 630px; width: 2px; height: 85px;"></div>
+                <div class="connection-line" style="top: 180px; left: 550px; width: 80px; height: 2px;"></div>
+                <div class="connection-line" style="top: 265px; left: 800px; width: 2px; height: 285px;"></div>
 
-                <div class="connection-line" style="top: 495px; left: 580px; width: 40px; height: 3px;"></div>
-                <div class="connection-line" style="top: 495px; left: 720px; width: 80px; height: 3px;"></div>
+                <!-- ATM -> REGISTRA -> Transação -->
+                <div class="connection-line" style="top: 435px; left: 630px; width: 20px; height: 2px;"></div>
+                <div class="connection-line" style="top: 435px; left: 720px; width: 80px; height: 2px;"></div>
+                <div class="connection-line" style="top: 435px; left: 550px; width: 80px; height: 2px;"></div>
+                <div class="connection-line" style="top: 435px; left: 800px; width: 2px; height: 115px;"></div>
 
                 <!-- Cardinalidades -->
-                <div class="cardinality" style="top: 110px; left: 290px;">1</div>
-                <div class="cardinality" style="top: 110px; left: 420px;">N</div>
+                <!-- Cliente POSSUI Conta (1:N) -->
+                <div class="cardinality" style="top: 105px; left: 285px;">1</div>
+                <div class="cardinality" style="top: 105px; left: 425px;">N</div>
 
-                <div class="cardinality" style="top: 190px; left: 290px;">N</div>
-                <div class="cardinality" style="top: 190px; left: 420px;">1</div>
+                <!-- Conta PERTENCE A Agência (N:1) -->
+                <div class="cardinality" style="top: 185px; left: 285px;">N</div>
+                <div class="cardinality" style="top: 275px; left: 285px;">1</div>
 
-                <div class="cardinality" style="top: 370px; left: 290px;">1</div>
-                <div class="cardinality" style="top: 370px; left: 420px;">N</div>
+                <!-- Agência LOCALIZADA EM ATM (1:N) -->
+                <div class="cardinality" style="top: 365px; left: 285px;">1</div>
+                <div class="cardinality" style="top: 365px; left: 425px;">N</div>
 
-                <div class="cardinality" style="top: 410px; left: 590px;">N</div>
-                <div class="cardinality" style="top: 410px; left: 730px;">N</div>
+                <!-- Conta REALIZA Transação (N:N) -->
+                <div class="cardinality" style="top: 155px; left: 555px;">N</div>
+                <div class="cardinality" style="top: 525px; left: 805px;">N</div>
 
-                <div class="cardinality" style="top: 470px; left: 590px;">1</div>
-                <div class="cardinality" style="top: 470px; left: 730px;">N</div>
+                <!-- ATM REGISTRA Transação (1:N) -->
+                <div class="cardinality" style="top: 410px; left: 555px;">1</div>
+                <div class="cardinality" style="top: 525px; left: 805px;">N</div>
             </div>
 
             <div class="legend">
@@ -584,5 +604,5 @@
         `;
         document.head.appendChild(style);
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'963838b0e5b29a7f',t:'MTc1MzI0MjcwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9638416373b23646',t:'MTc1MzI0MzA2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
