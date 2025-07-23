@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação do Repositório Faculdade</title>
+    <meta name="description" content="Página de apresentação do repositório de estudos e projetos da faculdade de Delean Mafra.">
+    <style>
+        :root {
+            --primary: #304ffe;
+            --secondary: #fff;
+            --accent: #7986cb;
+            --bg: #f4f7fa;
+            --text: #212121;
+            --shadow: 0 2px 12px rgba(48, 79, 254, 0.09);
+        }
+        body {
+            background: var(--bg);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 2rem 2.5rem;
+            background: var(--secondary);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+        header {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        header img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            box-shadow: 0 2px 6px #d1d9ff77;
+            object-fit: cover;
+        }
+        header h1 {
+            font-size: 2.1rem;
+            margin: 0;
+            color: var(--primary);
+        }
+        .desc {
+            font-size: 1.1rem;
+            margin: 1.3rem 0 2rem 0;
+            color: #444;
+        }
+        .infos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem 3.5rem;
+            margin-bottom: 2rem;
+        }
+        .infos div {
+            min-width: 180px;
+        }
+        .infos dt {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .infos dd {
+            margin: 0 0 0.3rem 0;
+        }
+        section {
+            margin-bottom: 2.2rem;
+        }
+        section h2 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.7rem;
+        }
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: var(--secondary);
+            padding: 0.8em 1.5em;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            transition: background 0.2s;
+            box-shadow: 0 2px 6px #304ffe22;
+        }
+        .btn:hover {
+            background: #1a237e;
+        }
+        ul {
+            list-style: disc inside;
+            margin: 0.7rem 0 0 1rem;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 1.2rem 0.5rem; }
+            .infos { flex-direction: column; gap: 0.7rem; }
+            header { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://avatars.githubusercontent.com/u/90105626?v=4" alt="Avatar de Delean Mafra">
+            <div>
+                <h1>Repositório Faculdade</h1>
+                <div style="color: #666; font-size: 1rem;">por <a href="https://github.com/Delean-Mafra" style="color:var(--primary);text-decoration:none;">Delean Mafra</a></div>
+            </div>
+        </header>
+        <p class="desc">
+            Este repositório reúne projetos, exercícios e trabalhos desenvolvidos durante minha graduação, utilizando principalmente <strong>Python</strong>, além de HTML, CSS e JavaScript. O objetivo é demonstrar meu aprendizado prático, evolução acadêmica e compartilhar conhecimento com outros estudantes.
+        </p>
+
+        <dl class="infos">
+            <div>
+                <dt>Repositório:</dt>
+                <dd><a href="https://github.com/Delean-Mafra/faculdade" target="_blank">github.com/Delean-Mafra/faculdade</a></dd>
+            </div>
+            <div>
+                <dt>Linguagens:</dt>
+                <dd>Python (84%)<br>HTML (13%)<br>CSS (2%)<br>JavaScript (1%)</dd>
+            </div>
+            <div>
+                <dt>Principais Temas:</dt>
+                <dd>
+                    <ul>
+                        <li>Algoritmos e Programação</li>
+                        <li>Estruturas de Dados</li>
+                        <li>Desenvolvimento Web</li>
+                        <li>Projetos práticos e acadêmicos</li>
+                    </ul>
+                </dd>
+            </div>
+        </dl>
+
+        <section>
+            <h2>Como navegar</h2>
+            <ul>
+                <li>Acesse as pastas e arquivos para explorar códigos e projetos por disciplina ou tema.</li>
+                <li>Leia os <strong>READMEs</strong> quando disponíveis para entender o contexto de cada projeto.</li>
+                <li>Contribuições, sugestões e feedbacks são bem-vindos!</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Contato</h2>
+            <ul>
+                <li><a href="https://github.com/Delean-Mafra" target="_blank">Perfil no GitHub</a></li>
+                <!-- Inclua outros contatos, como LinkedIn ou e-mail, se desejar -->
+            </ul>
+        </section>
+
+        <a href="https://github.com/Delean-Mafra/faculdade" class="btn" target="_blank">Visitar o repositório no GitHub</a>
+    </div>
+</body>
+</html>
