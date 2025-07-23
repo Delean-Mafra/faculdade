@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelagem Conceitual - Banco 24h</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .diagram-container {
+            padding: 40px;
+            background: #f8f9fa;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .er-diagram {
+            position: relative;
+            width: 1200px;
+            height: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .entity {
+            position: absolute;
+            background: #3498db;
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .entity:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .entity h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 8px;
+        }
+
+        .entity .attributes {
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .entity .key-attribute {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .relationship {
+            position: absolute;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .relationship:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .connection-line {
+            position: absolute;
+            background: #34495e;
+            z-index: 1;
+        }
+
+        .cardinality {
+            position: absolute;
+            background: #f39c12;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 3;
+        }
+
+        .legend {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .legend h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin: 10px 20px 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 5px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .info-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 500px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .info-panel h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .info-panel p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .er-diagram {
+                width: 100%;
+                height: 600px;
+            }
+            
+            .entity {
+                min-width: 140px;
+                padding: 10px;
+                font-size: 0.8rem;
+            }
+            
+            .relationship {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏦 Modelagem Conceitual - Banco 24h</h1>
+            <p>Diagrama Entidade-Relacionamento Interativo</p>
+        </div>
+
+        <div class="diagram-container">
+            <div class="er-diagram" id="erDiagram">
+                <!-- Entidades -->
+                <div class="entity" style="top: 50px; left: 100px;" onclick="showInfo('cliente')">
+                    <h3>CLIENTE</h3>
+                    <div class="attributes">
+                        <div class="key-attribute">CPF (PK)</div>
+                        <div>Nome</div>
+                        <div>Endereço</div>
+                        <div>Telefone</div>
+                        <div>Data Nascimento</div>
+                        <div>Email</div>
+                    </div>
+                </div>
+
+                <div class="entity" style="top: 50px; left: 450px;" onclick="showInfo('conta')">
+                    <h3>CONTA</h3>
+                    <div class="attributes">
+                        <div class="key-attribute">Número Conta (PK)</div>
+                        <div>Saldo</div>
+                        <div>Tipo Conta</div>
+                        <div>Data Abertura</div>
+                        <div>Status</div>
+                        <div>CPF Cliente (FK)</div>
+                        <div>Código Agência (FK)</div>
+                    </div>
+                </div>
+
+                <div class="entity" style="top: 300px; left: 100px;" onclick="showInfo('agencia')">
+                    <h3>AGÊNCIA</h3>
+                    <div class="attributes">
+                        <div class="key-attribute">Código Agência (PK)</div>
+                        <div>Nome</div>
+                        <div>Endereço</div>
+                        <div>Telefone</div>
+                        <div>Gerente</div>
+                        <div>Horário Funcionamento</div>
+                    </div>
+                </div>
+
+                <div class="entity" style="top: 300px; left: 450px;" onclick="showInfo('atm')">
+                    <h3>ATM</h3>
+                    <div class="attributes">
+                        <div class="key-attribute">Código Terminal (PK)</div>
+                        <div>Localização</div>
+                        <div>Status</div>
+                        <div>Saldo Disponível</div>
+                        <div>Código Agência (FK)</div>
+                    </div>
+                </div>
+
+                <div class="entity" style="top: 550px; left: 800px;" onclick="showInfo('transacao')">
+                    <h3>TRANSAÇÃO</h3>
+                    <div class="attributes">
+                        <div class="key-attribute">ID Transação (PK)</div>
+                        <div>Tipo Transação</div>
+                        <div>Data</div>
+                        <div>Hora</div>
+                        <div>Valor</div>
+                        <div>Status</div>
+                        <div>Número Conta (FK)</div>
+                        <div>Código Terminal (FK)</div>
+                    </div>
+                </div>
+
+                <!-- Relacionamentos -->
+                <div class="relationship" style="top: 120px; left: 320px;" onclick="showInfo('possui')">
+                    POSSUI
+                </div>
+
+                <div class="relationship" style="top: 200px; left: 320px;" onclick="showInfo('pertence')">
+                    PERTENCE A
+                </div>
+
+                <div class="relationship" style="top: 380px; left: 320px;" onclick="showInfo('localizada')">
+                    LOCALIZADA EM
+                </div>
+
+                <div class="relationship" style="top: 420px; left: 600px;" onclick="showInfo('realiza')">
+                    REALIZA
+                </div>
+
+                <div class="relationship" style="top: 480px; left: 600px;" onclick="showInfo('registra')">
+                    REGISTRA
+                </div>
+
+                <!-- Linhas de Conexão -->
+                <div class="connection-line" style="top: 135px; left: 280px; width: 40px; height: 3px;"></div>
+                <div class="connection-line" style="top: 135px; left: 410px; width: 40px; height: 3px;"></div>
+
+                <div class="connection-line" style="top: 215px; left: 280px; width: 40px; height: 3px;"></div>
+                <div class="connection-line" style="top: 215px; left: 410px; width: 40px; height: 3px;"></div>
+
+                <div class="connection-line" style="top: 395px; left: 280px; width: 40px; height: 3px;"></div>
+                <div class="connection-line" style="top: 395px; left: 410px; width: 40px; height: 3px;"></div>
+
+                <div class="connection-line" style="top: 435px; left: 580px; width: 40px; height: 3px;"></div>
+                <div class="connection-line" style="top: 435px; left: 720px; width: 80px; height: 3px;"></div>
+
+                <div class="connection-line" style="top: 495px; left: 580px; width: 40px; height: 3px;"></div>
+                <div class="connection-line" style="top: 495px; left: 720px; width: 80px; height: 3px;"></div>
+
+                <!-- Cardinalidades -->
+                <div class="cardinality" style="top: 110px; left: 290px;">1</div>
+                <div class="cardinality" style="top: 110px; left: 420px;">N</div>
+
+                <div class="cardinality" style="top: 190px; left: 290px;">N</div>
+                <div class="cardinality" style="top: 190px; left: 420px;">1</div>
+
+                <div class="cardinality" style="top: 370px; left: 290px;">1</div>
+                <div class="cardinality" style="top: 370px; left: 420px;">N</div>
+
+                <div class="cardinality" style="top: 410px; left: 590px;">N</div>
+                <div class="cardinality" style="top: 410px; left: 730px;">N</div>
+
+                <div class="cardinality" style="top: 470px; left: 590px;">1</div>
+                <div class="cardinality" style="top: 470px; left: 730px;">N</div>
+            </div>
+
+            <div class="legend">
+                <h3>📋 Legenda</h3>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #3498db;"></span>
+                    Entidades
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #e74c3c;"></span>
+                    Relacionamentos
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #f39c12;"></span>
+                    Cardinalidades
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #34495e;"></span>
+                    Conexões
+                </div>
+                <p style="margin-top: 15px; color: #7f8c8d; font-style: italic;">
+                    💡 Clique nas entidades e relacionamentos para ver mais detalhes
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closeInfo()"></div>
+    <div class="info-panel" id="infoPanel">
+        <button class="close-btn" onclick="closeInfo()">×</button>
+        <div id="infoContent"></div>
+    </div>
+
+    <script>
+        const entityInfo = {
+            cliente: {
+                title: "👤 CLIENTE",
+                content: `
+                    <p><strong>Descrição:</strong> Representa as pessoas físicas que possuem conta no banco.</p>
+                    <p><strong>Atributos Principais:</strong></p>
+                    <ul>
+                        <li><strong>CPF (Chave Primária):</strong> Identificador único do cliente</li>
+                        <li><strong>Nome:</strong> Nome completo do cliente</li>
+                        <li><strong>Endereço:</strong> Endereço residencial</li>
+                        <li><strong>Telefone:</strong> Número de contato</li>
+                        <li><strong>Data Nascimento:</strong> Para validações de idade</li>
+                        <li><strong>Email:</strong> Para comunicações eletrônicas</li>
+                    </ul>
+                    <p><strong>Relacionamentos:</strong> Um cliente pode possuir várias contas (1:N)</p>
+                `
+            },
+            conta: {
+                title: "💳 CONTA",
+                content: `
+                    <p><strong>Descrição:</strong> Representa as contas bancárias dos clientes.</p>
+                    <p><strong>Atributos Principais:</strong></p>
+                    <ul>
+                        <li><strong>Número Conta (Chave Primária):</strong> Identificador único da conta</li>
+                        <li><strong>Saldo:</strong> Valor disponível na conta</li>
+                        <li><strong>Tipo Conta:</strong> Corrente, Poupança, etc.</li>
+                        <li><strong>Data Abertura:</strong> Quando a conta foi criada</li>
+                        <li><strong>Status:</strong> Ativa, Bloqueada, Encerrada</li>
+                    </ul>
+                    <p><strong>Relacionamentos:</strong> Pertence a um cliente (N:1) e está localizada em uma agência (N:1)</p>
+                `
+            },
+            agencia: {
+                title: "🏢 AGÊNCIA",
+                content: `
+                    <p><strong>Descrição:</strong> Representa as agências físicas do banco.</p>
+                    <p><strong>Atributos Principais:</strong></p>
+                    <ul>
+                        <li><strong>Código Agência (Chave Primária):</strong> Identificador único da agência</li>
+                        <li><strong>Nome:</strong> Nome/descrição da agência</li>
+                        <li><strong>Endereço:</strong> Localização física</li>
+                        <li><strong>Telefone:</strong> Contato da agência</li>
+                        <li><strong>Gerente:</strong> Responsável pela agência</li>
+                        <li><strong>Horário Funcionamento:</strong> Horários de atendimento</li>
+                    </ul>
+                    <p><strong>Relacionamentos:</strong> Possui várias contas (1:N) e vários ATMs (1:N)</p>
+                `
+            },
+            atm: {
+                title: "🏧 ATM (Caixa Eletrônico)",
+                content: `
+                    <p><strong>Descrição:</strong> Representa os terminais de autoatendimento disponíveis 24h.</p>
+                    <p><strong>Atributos Principais:</strong></p>
+                    <ul>
+                        <li><strong>Código Terminal (Chave Primária):</strong> Identificador único do ATM</li>
+                        <li><strong>Localização:</strong> Endereço onde está instalado</li>
+                        <li><strong>Status:</strong> Operacional, Manutenção, Fora de Serviço</li>
+                        <li><strong>Saldo Disponível:</strong> Dinheiro disponível para saque</li>
+                    </ul>
+                    <p><strong>Relacionamentos:</strong> Pertence a uma agência (N:1) e registra várias transações (1:N)</p>
+                `
+            },
+            transacao: {
+                title: "💰 TRANSAÇÃO",
+                content: `
+                    <p><strong>Descrição:</strong> Registra todas as operações realizadas pelos clientes.</p>
+                    <p><strong>Atributos Principais:</strong></p>
+                    <ul>
+                        <li><strong>ID Transação (Chave Primária):</strong> Identificador único da transação</li>
+                        <li><strong>Tipo Transação:</strong> Saque, Depósito, Transferência, Pagamento</li>
+                        <li><strong>Data/Hora:</strong> Timestamp da operação</li>
+                        <li><strong>Valor:</strong> Quantia envolvida na transação</li>
+                        <li><strong>Status:</strong> Concluída, Pendente, Cancelada</li>
+                    </ul>
+                    <p><strong>Relacionamentos:</strong> Realizada em uma conta (N:N) e registrada por um ATM (N:1)</p>
+                `
+            },
+            possui: {
+                title: "🔗 RELACIONAMENTO: POSSUI",
+                content: `
+                    <p><strong>Descrição:</strong> Relacionamento entre Cliente e Conta</p>
+                    <p><strong>Cardinalidade:</strong> 1:N (Um para Muitos)</p>
+                    <p><strong>Significado:</strong></p>
+                    <ul>
+                        <li>Um cliente pode possuir várias contas</li>
+                        <li>Uma conta pertence a apenas um cliente</li>
+                        <li>Permite que clientes tenham conta corrente, poupança, etc.</li>
+                    </ul>
+                `
+            },
+            pertence: {
+                title: "🔗 RELACIONAMENTO: PERTENCE A",
+                content: `
+                    <p><strong>Descrição:</strong> Relacionamento entre Conta e Agência</p>
+                    <p><strong>Cardinalidade:</strong> N:1 (Muitos para Um)</p>
+                    <p><strong>Significado:</strong></p>
+                    <ul>
+                        <li>Várias contas podem pertencer a uma agência</li>
+                        <li>Uma conta está vinculada a apenas uma agência</li>
+                        <li>Define onde a conta foi aberta e é gerenciada</li>
+                    </ul>
+                `
+            },
+            localizada: {
+                title: "🔗 RELACIONAMENTO: LOCALIZADA EM",
+                content: `
+                    <p><strong>Descrição:</strong> Relacionamento entre ATM e Agência</p>
+                    <p><strong>Cardinalidade:</strong> N:1 (Muitos para Um)</p>
+                    <p><strong>Significado:</strong></p>
+                    <ul>
+                        <li>Vários ATMs podem estar localizados em uma agência</li>
+                        <li>Um ATM pertence a apenas uma agência</li>
+                        <li>Define a responsabilidade administrativa do terminal</li>
+                    </ul>
+                `
+            },
+            realiza: {
+                title: "🔗 RELACIONAMENTO: REALIZA",
+                content: `
+                    <p><strong>Descrição:</strong> Relacionamento entre Conta e Transação</p>
+                    <p><strong>Cardinalidade:</strong> N:N (Muitos para Muitos)</p>
+                    <p><strong>Significado:</strong></p>
+                    <ul>
+                        <li>Uma conta pode realizar várias transações</li>
+                        <li>Uma transação pode envolver várias contas (transferências)</li>
+                        <li>Registra o histórico de movimentações</li>
+                    </ul>
+                `
+            },
+            registra: {
+                title: "🔗 RELACIONAMENTO: REGISTRA",
+                content: `
+                    <p><strong>Descrição:</strong> Relacionamento entre ATM e Transação</p>
+                    <p><strong>Cardinalidade:</strong> 1:N (Um para Muitos)</p>
+                    <p><strong>Significado:</strong></p>
+                    <ul>
+                        <li>Um ATM pode registrar várias transações</li>
+                        <li>Uma transação é registrada por apenas um ATM</li>
+                        <li>Permite rastreabilidade das operações por terminal</li>
+                    </ul>
+                `
+            }
+        };
+
+        function showInfo(entityId) {
+            const info = entityInfo[entityId];
+            if (info) {
+                document.getElementById('infoContent').innerHTML = `
+                    <h3>${info.title}</h3>
+                    ${info.content}
+                `;
+                document.getElementById('overlay').style.display = 'block';
+                document.getElementById('infoPanel').style.display = 'block';
+            }
+        }
+
+        function closeInfo() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('infoPanel').style.display = 'none';
+        }
+
+        // Adicionar efeitos visuais
+        document.addEventListener('DOMContentLoaded', function() {
+            const entities = document.querySelectorAll('.entity');
+            const relationships = document.querySelectorAll('.relationship');
+            
+            entities.forEach((entity, index) => {
+                entity.style.animationDelay = `${index * 0.1}s`;
+                entity.style.animation = 'fadeInUp 0.6s ease forwards';
+            });
+            
+            relationships.forEach((rel, index) => {
+                rel.style.animationDelay = `${(index + entities.length) * 0.1}s`;
+                rel.style.animation = 'fadeInUp 0.6s ease forwards';
+            });
+        });
+
+        // Adicionar animações CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .entity, .relationship {
+                opacity: 0;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'963838b0e5b29a7f',t:'MTc1MzI0MjcwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
