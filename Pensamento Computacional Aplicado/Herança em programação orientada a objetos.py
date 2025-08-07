@@ -64,3 +64,25 @@ class Turismo(ABC):
     def reservar_hotel(self):
         pass
 
+# Aula 3
+
+# Herança múltipla
+class Animal:
+    def comer(self):
+        print("Comendo...")
+
+class Mamifero:
+    def amamentar(self):
+        print("Amamentando...")
+
+class Humano(Mamifero, Animal):
+    def falar(self):
+        print("Falando...")
+
+# Código para testar herança múltipla
+pessoa = Humano()
+pessoa.comer()     # Saída: Comendo...
+pessoa.amamentar() # Saída: Amamentando...
+pessoa.falar()     # Saída: Falando...
+
+
