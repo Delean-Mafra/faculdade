@@ -29,21 +29,25 @@ e.Todas as afirmativas estão corretas.
 
 """
 
+# Função para simplificar a conversão True/False para Verdadeiro/Falso
+def v_ou_f(condicao):
+    return 'Verdadeiro' if condicao else 'Falso'
+
 print("Questão 1:\n")
 # I. A variável a é do tipo int e a variável b é do tipo float.
-i = (f"I - {'Verdadeiro' if isinstance(a, int) and isinstance(b, float) else 'Falso'}")
+i = f"I - {v_ou_f(isinstance(a, int) and isinstance(b, float))}"
 
 # II. A variável c armazena um valor do tipo str, enquanto a variável d armazena um valor do tipo bool.
-ii = (f"II - {'Verdadeiro' if isinstance(c, str) and isinstance(d, bool) else 'Falso'}")
+ii = f"II - {v_ou_f(isinstance(c, str) and isinstance(d, bool))}"
 
 # III. A operação a + int(b) resulta em um valor do tipo int.
-iii = (f"III - {'Verdadeiro' if isinstance(a + int(b), int) else 'Falso'}")
+iii = f"III - {v_ou_f(isinstance(a + int(b), int))}"
 
 # IV. A expressão type(c) == str retorna True.
-iv = (f"IV - {'Verdadeiro' if type(c) == str else 'Falso'}")
+iv = f"IV - {v_ou_f(type(c) == str)}"
 
 # V. A variável e armazena o valor "15.0."?
-v = (f"V - {'Verdadeiro' if e == '15.0.' else 'Falso'}")
+v = f"V - {v_ou_f(e == '15.0.')}"
 
 
 questao1 = (i, ii, iii, iv, v)
