@@ -1,4 +1,7 @@
 # Definindo os nós (agentes)
+
+
+# Exemplo 1
 from xml.dom.minidom import Node
 
 
@@ -19,7 +22,28 @@ class DataAnalyzer(Node):
         analysis = data["processed_data"] + " analisados"
         return {"analysis": analysis}
 
+# Exemplo 2
+def agente_input():
+    """
+    Este agente solicita informações ao usuário.
+    """
+    nome = input("Por favor, digite seu nome: ")
+    idade = int(input("Por favor, digite sua idade: "))
+    return nome, idade
 
+def agente_processamento(nome, idade):
+    """
+    Este agente processa as informações recebidas.
+    """
+    mensagem = f"Olá, {nome}! Você tem {idade} anos."
+    return mensagem
+
+# Exemplo de uso
+nome_usuario, idade_usuario = agente_input()
+mensagem_final = agente_processamento(nome_usuario, idade_usuario)
+print(mensagem_final)
+
+# Exemplo 3
 
 from crewai import Task
 from crewai import Agent, Crew, Process
@@ -71,3 +95,32 @@ o desempenho de nossas campanhas de marketing."""
 agent.add_node(DataCollector())
 agent.add_node(DataProcessor())
 agent.add_node(DataAnalyzer())
+
+
+
+# Exemplo 4
+
+class AgenteControlador:
+    def __init__(self):
+        self.agente_interacao = AgenteInteracaoComUsuario()
+        self.agente_processamento = AgenteProcessamento()
+
+    def iniciar_interacao(self):
+        informacao = self.agente_interacao.solicitar_informacao("Digite seu nome: ")
+        resultado = self.agente_processamento.processar_informacao(informacao)
+        print(resultado)
+
+class AgenteInteracaoComUsuario:
+    def solicitar_informacao(self, mensagem):
+        return input(mensagem)
+
+class AgenteProcessamento:
+    def processar_informacao(self, informacao):
+        # Processamento simples: capitalizar o nome
+        return informacao.capitalize()
+
+if __name__ == "__main__":
+    controlador = AgenteControlador()
+    controlador.iniciar_interacao()
+
+
