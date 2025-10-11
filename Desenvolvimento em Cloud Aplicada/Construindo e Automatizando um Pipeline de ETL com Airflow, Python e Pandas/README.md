@@ -114,5 +114,5 @@ No fim das contas, essa atividade nos deu uma visão bem completa de como funcio
 ---
 
 *Desenvolvido por: Delean Mafra*  
-*Data: 11 de outubro de 2025*  
+*Data: 10 de outubro de 2025*  
 *Versão: 1.0*
