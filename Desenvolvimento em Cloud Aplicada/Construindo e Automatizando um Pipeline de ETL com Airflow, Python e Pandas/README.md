@@ -97,22 +97,20 @@ Para evitar a duplicação de dados em cargas completas (full), podem ser utiliz
 
 ### 2.5 Confiabilidade e Limpeza do Pipeline
 
-Para garantir que o pipeline seja robusto e resiliente a falhas, foram implementadas estratégias de retry. Em ambientes distribuídos, é possível que uma tarefa falhe por motivos transitórios, como a interrupção de um worker. A configuração de retries no DAG permite que o Airflow tente executar novamente uma tarefa falha, aumentando a chance de sucesso do pipeline sem intervenção manual. Para evitar execuções múltiplas e indesejadas, especialmente em cargas incrementais, o DAG foi configurado com um schedule apropriado e o parâmetro catchup=False.
+Para garantir que meu pipeline fosse robusto e resiliente a falhas, implementei estratégias de retry. Em ambientes distribuídos, sei que uma tarefa pode falhar por motivos transitórios, como a interrupção de um worker. Por isso, configurei retries no DAG, permitindo que o Airflow tentasse executar novamente uma tarefa com falha, aumentando assim a chance de sucesso do pipeline sem que eu precisasse intervir manualmente. Além disso, para evitar execuções múltiplas e indesejadas, especialmente em cargas incrementais, defini um agendamento apropriado e utilizei o parâmetro catchup=False.
 
-Finalmente, a tarefa de limpeza (cleanup) foi implementada para garantir a higiene do ambiente de execução. Esta tarefa é responsável por remover todos os diretórios e arquivos temporários criados durante o processo. Uma configuração crucial para esta tarefa é o uso da trigger_rule="all_done". Essa regra garante que a tarefa de limpeza seja executada ao final do fluxo, independentemente de as tarefas anteriores terem sido bem-sucedidas ou terem falhado, assegurando que o worker não acumule arquivos residuais.
+Finalmente, implementei a tarefa de limpeza (cleanup) para garantir a higiene do ambiente de execução. Essa tarefa ficou responsável por remover todos os diretórios e arquivos temporários criados durante o processo. Uma configuração essencial que adotei foi o uso da regra trigger_rule="all_done". Com isso, garanti que a limpeza fosse executada ao final do fluxo, independentemente de as tarefas anteriores terem sido bem-sucedidas ou não, evitando que o worker acumulasse arquivos residuais.
 
 ---
 
 ## 3 CONCLUSÃO
 
-Ao colocar a mão na massa nesta tarefa prática, foi possível usar e firmar o que aprendemos na teoria sobre como organizar processos de ETL com o Apache Airflow. Criar o fluxo de trabalho, desde pegar os dados até colocá-los no lugar certo, mostrou como o Airflow é maleável e forte quando usado junto com ferramentas do mundo Python, como a biblioteca Pandas.
+Ao colocar a mão na massa nesta tarefa prática, consegui aplicar e consolidar o que aprendi na teoria sobre como organizar processos de ETL com o Apache Airflow. Criar o fluxo de trabalho, desde buscar os dados até colocá-los no destino correto, me mostrou como o Airflow é flexível e poderoso quando utilizado em conjunto com ferramentas do ecossistema Python, como a biblioteca Pandas.
 
-O projeto atingiu tudo o que queríamos, gerando um DAG que não só roda as fases de ETL sozinho, mas também segue as melhores práticas do mercado, como fazer tarefas pequenas e independentes, controlar conexões de fora usando hooks, colocar em prática formas de tentar de novo e garantir que o ambiente de trabalho fique limpo. A capacidade do Airflow de se ligar a vários serviços de fora mostra que ele é uma ferramenta importante e muito usada para deixar mais rápidos e automáticos os processos de ETL nas empresas.
-
-No fim das contas, essa atividade nos deu uma visão bem completa de como funciona um fluxo de dados, nos dando a capacidade de criar soluções de engenharia de dados mais fortes, eficazes e prontas para situações reais em ambientes de nuvem.
+O projeto alcançou todos os objetivos que eu havia definido, resultando em um DAG que não apenas executa sozinho as fases de ETL, mas também segue as melhores práticas do mercado. Estruturei tarefas pequenas e independentes, controlei conexões externas por meio de hooks, implementei estratégias de retry e garanti que o ambiente de trabalho permanecesse limpo. A experiência reforçou para mim que a capacidade do Airflow de se integrar a diversos serviços externos o torna uma ferramenta essencial e amplamente utilizada para acelerar e automatizar processos de ETL nas empresas.
 
 ---
 
 *Desenvolvido por: Delean Mafra*  
 *Data: 10 de outubro de 2025*  
-*Versão: 1.0*
+*Versão: 1.1*
