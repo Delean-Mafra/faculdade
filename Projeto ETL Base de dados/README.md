@@ -1,4 +1,4 @@
-# 🚀 Projeto ETL: Execução Prática
+# Projeto ETL Base de dados
 
 ## Opção 1: Execução com Docker Compose (Recomendado)
 
