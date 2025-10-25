@@ -17,8 +17,6 @@ A organização do repositório é feita em pastas, separando os conteúdos por 
 As tecnologias e linguagens de programação utilizadas variam conforme as disciplinas e projetos. Exemplos comuns:
 
 - Python
-- Java
-- C/C++
 - JavaScript e Node.js
 - HTML, CSS
 - Banco de Dados SQL
