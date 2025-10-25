@@ -1,7 +1,7 @@
+import numpy as np
+
 #______________é o que faz o o cógido, arr = np.arange(1, 11)
 # R: Array com números de 1 a 10 é o que faz o o cógido, arr = np.arange(1, 11)
-
-import numpy as np
 
 
 arr = np.arange(1, 11)
