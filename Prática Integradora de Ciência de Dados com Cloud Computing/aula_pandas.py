@@ -90,3 +90,29 @@ print(coluna_idade)
 
 colunas = dados.iloc[0:4]
 print(colunas)
+
+
+df_dados = pd.read_csv('dados_pets')
+
+filtro_ponto = df_dados[df_dados.especie == 'Cachorro']
+
+print(filtro_ponto)
+
+filtro_col = df_dados[df_dados['idade'] > 5]
+print(filtro_col)
+
+filtro_rot = df_dados[df_dados['especie'] == 'cachorro']
+
+
+
+index = 2
+
+filtro_index = df_dados.iloc[[index]]
+
+cond_bool = df_dados['idade'] > 6
+
+filtro_bool = df_dados[cond_bool]
+
+print(filtro_bool)
+
+
