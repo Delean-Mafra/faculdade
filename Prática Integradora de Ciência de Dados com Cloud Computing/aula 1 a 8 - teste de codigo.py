@@ -221,10 +221,9 @@ plt.plot(x, y, color='red')
 plt.title("Exemplo de gráfico com cor personalizada")
 plt.show()
 
-
 x = np.linspace(0, 10, 100)
-
-
+y1 = np.sin(x)
+y2 = np.cos(x)
 
 fig, axs = plt.subplots(2, 1)
 
@@ -311,8 +310,8 @@ y_pred = model.predict(X)
 print("MSE:", mean_squared_error(y, y_pred))
 print("R²:", r2_score(y, y_pred))
 
-# Divisão dos dados em treino e teste
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+# Divisão dos dados em treino e teste (usando os mesmos dados X e y)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 # Criação e treinamento do modelo
 modelo = LinearRegression()
@@ -324,7 +323,7 @@ y_prev = modelo.predict(x_test)
 # Cálculo do erro quadrático médio (MSE)
 mse = mean_squared_error(y_test, y_prev)
 
-print(mse)
+print("MSE do modelo de treino/teste:", mse)
 
 A = np.array([[1, 2, 3],
               [4, 5, 6]])
