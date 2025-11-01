@@ -1,4 +1,4 @@
-# Política de Segurança (SECURITY.md)
+# Política de Segurança
 
 Última atualização: 2025-10-25
 
