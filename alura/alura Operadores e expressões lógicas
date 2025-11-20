@@ -1,0 +1,84 @@
+# Desenvolva um algoritmo que utilize operadores lógicos para determinar se um cliente tem direito a meia-entrada em um cinema.
+
+
+"""
+Você está desenvolvendo o sistema de bilheteria para um cinema. Os clientes podem ter direito a meia-entrada em duas situações:
+
+Se tiverem menos de 18 anos
+ou
+
+Se forem estudantes
+Sua tarefa é criar um algoritmo em linguagem natural ou gráfica (usando fluxogramas, por exemplo) que avalie as informações do cliente e exiba uma mensagem indicando se ele tem ou não direito ao desconto.
+
+Se quiser saber mais detalhes sobre uma possível solução, clique na Opinião da Pessoa Instrutora.
+"""
+
+
+def receber_idade():
+    # Função para receber a idade do usuário com tratamento de erro
+    try:
+        idade = int(input("Digite sua idade: "))
+        return idade
+    except ValueError:
+        print("Por favor, insira um número válido para a idade.")
+        return receber_idade()
+# Recebe a idade do usuário
+idade = receber_idade()
+def verifica_estudante():
+    # Função para verificar se o usuário é estudante com tratamento de erro
+    try:
+        estudante = input("Você é estudante? (s/n): ").strip().lower()
+        if estudante == 's':
+            return True
+        else:
+            return False
+    except ValueError:
+        print("Por favor, um valor valido.")
+        return verifica_estudante()
+# Verifica se o usuário é estudante
+estudante = verifica_estudante()
+if idade < 18 or estudante:
+    print('Tem direito a desconto')
+else:
+    print('Não tem direito a desconto')
+
+
+# idade = int(input("Digite sua idade: "))
+
+# idade = 20
+# tem_carteira = True
+# estudante = False
+# usuario_logado = False
+
+
+# if idade >= 18 and tem_carteira:
+#     print("Pode dirigir")
+# else: 
+#     print("Não pode dirigir")
+
+
+# if idade >= 60 or estudante:
+#     print("Tem desconto")
+# else:
+#     print("Não tem desconto")
+
+
+
+# if not usuario_logado:
+#     print("Faça login para continuar")
+# else:
+#     print("Bem-vindo de volta!")
+
+
+
+# print(idade == 18) 
+
+# numero = 10
+
+# print(numero != 12)
+
+
+# print(idade > 20)
+
+
+# print(numero <= 40)
