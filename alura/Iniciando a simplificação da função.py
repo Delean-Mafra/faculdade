@@ -123,3 +123,55 @@ print(resposta.text)
 # Esses e-mails são comunicações de uma plataforma/serviço aos usuários, cobrindo desde boas-vindas, gestão de conta e transações até promoções, suporte e avisos.
 
 
+
+
+
+emails = [
+    "Seu relatório mensal está pronto", "corpo: Olá! O relatório de desempenho de novembro já está disponível no painel. Acesse para conferir os resultados.",
+    "Convite para o evento de inovação", "corpo: Você está convidado para o Encontro de Inovação 2025. Reserve sua vaga e participe das palestras exclusivas.",
+    "Problema técnico resolvido", "corpo: Informamos que o erro no sistema de login foi corrigido. Agradecemos sua paciência durante o processo.",
+    "Nova funcionalidade disponível", "corpo: Acabamos de lançar o recurso de agendamento automático. Experimente agora e otimize seu tempo.",
+    "Parabéns pelo seu aniversário!", "corpo: Toda a equipe deseja um feliz aniversário! Esperamos que seu dia seja repleto de alegria.",
+    "Confirmação de inscrição", "corpo: Sua inscrição no curso 'Python para Iniciantes' foi confirmada. As aulas começam na próxima segunda-feira.",
+    "Atualização de segurança", "corpo: Recomendamos que você atualize sua senha. Essa medida visa proteger ainda mais sua conta.",
+    "Seu pedido foi enviado", "corpo: O pedido #4567 foi despachado e está a caminho. A previsão de entrega é de 3 dias úteis.",
+    "Erro de pagamento detectado", "corpo: Detectamos uma falha na tentativa de pagamento. Verifique seus dados e tente novamente.",
+    "Newsletter de novembro", "corpo: Confira as novidades, dicas e conteúdos exclusivos que preparamos para você neste mês.",
+    "Solicitação de feedback", "corpo: Sua opinião é muito importante para nós. Responda esta pesquisa e nos ajude a melhorar.",
+    "Oferta especial para você", "corpo: Ganhe 30% de desconto em qualquer plano anual. Promoção válida até o dia 30 de novembro.",
+    "Mudança nos termos de uso", "corpo: Atualizamos nossos termos de serviço. Leia atentamente as mudanças antes de continuar utilizando a plataforma.",
+    "Seu acesso foi liberado", "corpo: Você agora tem acesso ao conteúdo premium. Explore os materiais e aproveite ao máximo.",
+    "Problema com envio de arquivos", "corpo: Notamos que alguns arquivos não foram enviados corretamente. Reenvie-os para garantir o processamento.",
+    "Convite para grupo de testes", "corpo: Gostaríamos de contar com você para testar nossa nova interface. Sua participação será muito valiosa.",
+    "Atualização de perfil necessária", "corpo: Seu perfil está incompleto. Acesse sua conta e atualize as informações para evitar restrições.",
+    "Confirmação de cancelamento", "corpo: Seu cancelamento foi processado com sucesso. Esperamos vê-lo novamente em breve.",
+    "Nova parceria anunciada", "corpo: Firmamos parceria com a empresa TechNova. Em breve, novos recursos estarão disponíveis para você.",
+    "Seu histórico de atividades", "corpo: Veja o resumo das suas interações na plataforma nos últimos 90 dias. Acesse o painel para mais detalhes."
+]
+
+def resumidor_de_emails(emails):
+  for numero,email in enumerate(emails):
+    resposta = client.models.generate_content(
+        model = "gemini-2.5-flash",
+        contents=f"Vou te mandar o corpo de um e-mail. Quero que você o resuma em apenas uma linha, passando o intuito daquele e-mail. Segue o e-mail: {email}"
+        )
+    print(f"E-mail {numero + 1}: {resposta.text}")
+    print("-"*100)
+
+resumidor_de_emails(emails)
+
+
+
+# E-mail 1: Notificação de que seu relatório mensal está pronto.
+# ----------------------------------------------------------------------------------------------------
+# E-mail 2: **O relatório de desempenho de novembro está disponível no painel para consulta dos resultados.**
+# ----------------------------------------------------------------------------------------------------
+# E-mail 3: O e-mail é um convite para o evento de inovação.
+# ----------------------------------------------------------------------------------------------------
+# E-mail 4: Convite para o Encontro de Inovação 2025 com incentivo à reserva de vaga para palestras exclusivas.
+# ----------------------------------------------------------------------------------------------------
+# E-mail 5: O e-mail informa que um problema técnico foi resolvido.
+# ----------------------------------------------------------------------------------------------------
+# KeyboardInterrupt
+
+
