@@ -1,0 +1,393 @@
+{
+  "cronograma": [
+    {
+      "id": 1,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 1",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "06/01/2026"
+    },
+    {
+      "id": 2,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 2",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "07/01/2026"
+    },
+    {
+      "id": 3,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 3",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "08/01/2026"
+    },
+    {
+      "id": 4,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 4",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "09/01/2026"
+    },
+    {
+      "id": 5,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 5",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "10/01/2026"
+    },
+    {
+      "id": 6,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 6",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "12/01/2026"
+    },
+    {
+      "id": 7,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 7",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "13/01/2026"
+    },
+    {
+      "id": 8,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 8",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "14/01/2026"
+    },
+    {
+      "id": 9,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 9",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "13/02/2026"
+    },
+    {
+      "id": 10,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 10",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "14/02/2026"
+    },
+    {
+      "id": 11,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 11",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "16/02/2026"
+    },
+    {
+      "id": 12,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 12",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "17/02/2026"
+    },
+    {
+      "id": 13,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 13",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "18/02/2026"
+    },
+    {
+      "id": 14,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 14",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "19/02/2026"
+    },
+    {
+      "id": 15,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 15",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "19/02/2026"
+    },
+    {
+      "id": 16,
+      "materia": "Desenvolvimento de Algoritmos",
+      "atividade": "Atividade 16",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "19/02/2026"
+    },
+    {
+      "id": 17,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 1",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "15/01/2026"
+    },
+    {
+      "id": 18,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 2",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "16/01/2026"
+    },
+    {
+      "id": 19,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 3",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "17/01/2026"
+    },
+    {
+      "id": 20,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 4",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "19/01/2026"
+    },
+    {
+      "id": 21,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 5",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "20/01/2026"
+    },
+    {
+      "id": 22,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 6",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "23/01/2026"
+    },
+    {
+      "id": 23,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 7",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "02/02/2026"
+    },
+    {
+      "id": 24,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 8",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "03/02/2026"
+    },
+    {
+      "id": 25,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 9",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "20/02/2026"
+    },
+    {
+      "id": 26,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 10",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 27,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 11",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 28,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 12",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 29,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 13",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 30,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 14",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 31,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 15",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 32,
+      "materia": "Processamento e Modelagem de Dados Inteligentes",
+      "atividade": "Atividade 16",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": false,
+      "data_conclusao": null
+    },
+    {
+      "id": 33,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 1",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "24/01/2026"
+    },
+    {
+      "id": 34,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 2",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "25/01/2026"
+    },
+    {
+      "id": 35,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 3",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "26/01/2026"
+    },
+    {
+      "id": 36,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 4",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "29/01/2026"
+    },
+    {
+      "id": 37,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 5",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "29/01/2026"
+    },
+    {
+      "id": 38,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 6",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "30/01/2026"
+    },
+    {
+      "id": 39,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 7",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "31/01/2026"
+    },
+    {
+      "id": 40,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 8",
+      "data_limite_entrega": "19/02/2026",
+      "concluido": true,
+      "data_conclusao": "31/01/2026"
+    },
+    {
+      "id": 41,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 9",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "04/02/2026"
+    },
+    {
+      "id": 42,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 10",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "05/02/2026"
+    },
+    {
+      "id": 43,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 11",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "06/02/2026"
+    },
+    {
+      "id": 44,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 12",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "07/02/2026"
+    },
+    {
+      "id": 45,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 13",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "09/02/2026"
+    },
+    {
+      "id": 46,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 14",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "11/02/2026"
+    },
+    {
+      "id": 47,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 15",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "11/02/2026"
+    },
+    {
+      "id": 48,
+      "materia": "Soluções de Problemas de CyberSecurity com Ciência de Dados",
+      "atividade": "Atividade 16",
+      "data_limite_entrega": "16/03/2026",
+      "concluido": true,
+      "data_conclusao": "12/02/2026"
+    }
+  ],
+  "notas_materias": {
+    "Desenvolvimento de Algoritmos": 9.5,
+    "Processamento e Modelagem de Dados Inteligentes": null,
+    "Soluções de Problemas de CyberSecurity com Ciência de Dados": 10.0
+  }
+}
