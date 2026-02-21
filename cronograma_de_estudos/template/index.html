@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronograma de Estudos - Acompanhamento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <style>
+        /* ===== DARK THEME ===== */
+        body {
+            background-color: #0f0f1a;
+            color: #c9d1d9;
+        }
+        .card {
+            background-color: #161b2e;
+            border-color: #30363d;
+            color: #c9d1d9;
+        }
+        .card-header {
+            background-color: #1c2235;
+            border-color: #30363d;
+            color: #c9d1d9;
+        }
+        .table {
+            color: #c9d1d9;
+            --bs-table-striped-bg: rgba(255,255,255,0.03);
+            --bs-table-hover-bg: rgba(255,255,255,0.06);
+        }
+        .table-hover tbody tr:hover td {
+            color: #e6edf3;
+        }
+        .modal-content {
+            background-color: #161b2e;
+            color: #c9d1d9;
+        }
+        .flatpickr-calendar {
+            background: #1e2435;
+            color: #c9d1d9;
+        }
+        /* ===== LAYOUT ===== */
+        .progress-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .materia-card {
+            transition: transform 0.2s;
+        }
+        .materia-card:hover {
+            transform: translateY(-2px);
+        }
+        .atividade-concluida {
+            background-color: #0d2a1a !important;
+        }
+        .atividade-pendente {
+            background-color: #2a0d0d !important;
+        }
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #161b2e;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        .progress {
+            background-color: #2d3244;
+        }
+        .data-conclusao-display:hover {
+            text-decoration: underline;
+            color: #58a6ff;
+        }
+        .data-conclusao-editor {
+            display: inline-block;
+            padding: 2px 5px;
+            border: 1px solid #58a6ff;
+            border-radius: 3px;
+            background: #1e2435;
+        }
+        .data-conclusao-editor input {
+            border: none;
+            padding: 2px;
+            width: 100px;
+            text-align: center;
+            font-family: monospace;
+            background: #1e2435;
+            color: #c9d1d9;
+        }
+        .data-conclusao-editor input:focus {
+            outline: none;
+            background-color: #1a2d4a;
+        }
+        .data-conclusao-editor button {
+            padding: 2px 8px;
+            margin-left: 5px;
+            font-size: 0.85em;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .btn-salvar-data {
+            background-color: #238636;
+            color: white;
+        }
+        .btn-salvar-data:hover {
+            background-color: #2ea043;
+        }
+        .btn-cancelar-data {
+            background-color: #b91c1c;
+            color: white;
+        }
+        .btn-cancelar-data:hover {
+            background-color: #dc2626;
+        }
+        .alert-danger {
+            background-color: #3a1010;
+            border-color: #7f1d1d;
+            color: #fca5a5;
+        }
+        .alert-success {
+            background-color: #0d2a1a;
+            border-color: #14532d;
+            color: #86efac;
+        }
+        .alert-warning {
+            background-color: #2a1f0a;
+            border-color: #713f12;
+            color: #fde68a;
+        }
+        /* ===== FOOTER ===== */
+        footer {
+            background-color: #161b2e;
+            border-top-color: #30363d !important;
+            color: #8b949e;
+        }
+        footer strong {
+            color: #c9d1d9;
+        }
+        footer a {
+            transition: color 0.2s;
+        }
+        footer a:hover {
+            color: #79c0ff !important;
+        }
+        /* ===== NOTA ===== */
+        .nota-container {
+            padding-top: 8px;
+        }
+        .nota-display {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+        .nota-display:hover {
+            color: #58a6ff;
+        }
+        .status-aprovacao {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Header com informações de progresso -->
+        <div class="sticky-header p-3 mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <h1 class="h3 mb-0"><i class="fas fa-graduation-cap me-2"></i>Cronograma de Estudos</h1>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="alert {% if progresso_limite_1.status == 'concluido' %}alert-success{% else %}alert-danger{% endif %} mb-0 py-2" role="alert" id="alert-limite-1">
+                                <i class="fas {% if progresso_limite_1.status == 'concluido' %}fa-check-circle{% else %}fa-exclamation-triangle{% endif %} me-2"></i>
+                                <strong>Atividades 1-8:</strong> 19/02 
+                                <br><small id="dias-limite-1">{{ dias_restantes_1 }} dias</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="alert {% if progresso_limite_2.status == 'concluido' %}alert-success{% else %}alert-warning{% endif %} mb-0 py-2" role="alert" id="alert-limite-2">
+                                <i class="fas {% if progresso_limite_2.status == 'concluido' %}fa-check-circle{% else %}fa-clock{% endif %} me-2"></i>
+                                <strong>Atividades 9-16:</strong> 16/03
+                                <br><small id="dias-limite-2">{{ dias_restantes_2 }} dias</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 text-end">
+                    <span class="badge bg-primary fs-6">Previsão: <span id="previsao-conclusao">{{ previsao }}</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cards de Progresso -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-lg-2">
+                <div class="card progress-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-pie fa-2x mb-2"></i>
+                        <h5>Progresso Geral</h5>
+                        <h2 id="progresso-geral">{{ "%.1f"|format(progresso.geral.progresso) }}%</h2>
+                        <div class="progress mt-2" style="height: 10px;">
+                            <div class="progress-bar bg-success" style="width: {{ progresso.geral.progresso }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="card bg-success text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-2x mb-2"></i>
+                        <h5>Concluídas</h5>
+                        <h2 id="atividades-concluidas">{{ progresso.geral.concluidas }}</h2>
+                        <small>de {{ progresso.geral.total }} atividades</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="card bg-warning text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-2x mb-2"></i>
+                        <h5>Pendentes</h5>
+                        <h2 id="atividades-pendentes">{{ progresso.geral.pendentes }}</h2>
+                        <small>atividades restantes</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="card {% if progresso_atual.status == 'concluido' %}bg-success{% else %}bg-danger{% endif %} text-white h-100" id="card-prazo-limite">
+                    <div class="card-body text-center">
+                        <i class="fas {% if progresso_atual.status == 'concluido' %}fa-check-circle{% else %}fa-calendar-times{% endif %} fa-2x mb-2" id="icon-prazo-limite"></i>
+                        <h5 id="titulo-prazo-limite">{% if progresso_atual.status == 'concluido' %}Entregue no Prazo{% else %}Prazo Limite{% endif %}</h5>
+                        <h2>{{ data_limite.split('/')[0] }}/{{ data_limite.split('/')[1] }}</h2>
+                        <small>{{ data_limite }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="card {% if progresso_atual.status == 'concluido' %}bg-success{% elif dias_restantes < 7 %}bg-danger{% elif dias_restantes < 14 %}bg-warning{% else %}bg-primary{% endif %} text-white h-100" id="card-dias-restantes">
+                    <div class="card-body text-center">
+                        <i class="fas {% if progresso_atual.status == 'concluido' %}fa-trophy{% else %}fa-hourglass-half{% endif %} fa-2x mb-2" id="icon-dias-restantes"></i>
+                        <h5 id="titulo-dias-restantes">{% if progresso_atual.status == 'concluido' %}Concluído!{% else %}Dias Restantes{% endif %}</h5>
+                        <h2 id="dias-restantes-card">{{ dias_restantes }}</h2>
+                        <small id="sub-dias-restantes">{% if progresso_atual.status == 'concluido' %}todas entregues{% else %}até o prazo{% endif %}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-2">
+                <div class="card bg-info text-white h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calendar-alt fa-2x mb-2"></i>
+                        <h5>Data Atual</h5>
+                        <h2 id="data-atual"></h2>
+                        <small>hoje</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progresso por Matéria -->
+        <div class="row mb-4">
+            {% for materia, dados in progresso.materias.items() %}
+            <div class="col-md-4 mb-3">
+                <div class="card materia-card h-100">
+                    <div class="card-header">
+                        <h6 class="mb-0">{{ materia }}</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>{{ dados.concluidas }}/{{ dados.total }}</span>
+                            <span class="fw-bold">{{ "%.1f"|format(dados.progresso) }}%</span>
+                        </div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar" style="width: {{ dados.progresso }}%"></div>
+                        </div>
+                        
+                        {% if dados.progresso == 100 %}
+                        <hr class="my-2">
+                        <div class="nota-container">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <strong>Nota:</strong>
+                                {% if dados.nota is not none %}
+                                    <span class="nota-display" data-materia="{{ materia }}" style="cursor: pointer;">
+                                        {{ "%.1f"|format(dados.nota) }}
+                                        <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                                    </span>
+                                {% else %}
+                                    <span class="nota-display text-muted" data-materia="{{ materia }}" style="cursor: pointer;">
+                                        Clique para inserir
+                                        <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="status-aprovacao">
+                                {% if dados.status_aprovacao == 'aprovado' %}
+                                    <span class="badge bg-success w-100"><i class="fas fa-check-circle me-1"></i>Aprovado</span>
+                                {% elif dados.status_aprovacao == 'reprovado' %}
+                                    <span class="badge bg-danger w-100"><i class="fas fa-times-circle me-1"></i>Reprovado</span>
+                                {% elif dados.status_aprovacao == 'sem_nota' %}
+                                    <span class="badge bg-warning text-dark w-100"><i class="fas fa-exclamation-triangle me-1"></i>Nota não inserida</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Tabela de Atividades -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i>Cronograma Detalhado</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th width="4%">
+                                    <input type="checkbox" id="select-all" class="form-check-input">
+                                </th>
+                                <th width="25%">Matéria</th>
+                                <th width="15%">Atividade</th>
+                                <th width="12%">Prazo Limite</th>
+                                <th width="14%">Previsão</th>
+                                <th width="11%">Status</th>
+                                <th width="13%">Conclusão</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for atividade in cronograma %}
+                            <tr class="{% if atividade.concluido %}atividade-concluida{% else %}atividade-pendente{% endif %}">
+                                <td>
+                                    <input type="checkbox" 
+                                           class="form-check-input atividade-checkbox" 
+                                           data-id="{{ atividade.id }}"
+                                           {% if atividade.concluido %}checked{% endif %}>
+                                </td>
+                                <td>{{ atividade.materia }}</td>
+                                <td>{{ atividade.atividade }}</td>
+                                <td class="text-center prazo-limite-cell">
+                                    <span class="badge {{ atividade.cor_prazo }}" data-prazo="{{ atividade.data_limite_entrega }}">
+                                        {% if atividade.cor_prazo == 'bg-danger' %}
+                                            <i class="fas fa-exclamation-triangle me-1"></i>
+                                        {% elif atividade.cor_prazo == 'bg-secondary' %}
+                                            <i class="fas fa-check-circle me-1"></i>
+                                        {% elif atividade.cor_prazo == 'bg-warning text-dark' %}
+                                            <i class="fas fa-clock me-1"></i>
+                                        {% else %}
+                                            <i class="fas fa-calendar-check me-1"></i>
+                                        {% endif %}
+                                        {{ atividade.data_limite_entrega }}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge bg-info">
+                                        <i class="fas fa-calendar me-1"></i>{{ atividade.previsao_conclusao }}
+                                    </span>
+                                </td> 
+                                <td>
+                                    {% if atividade.concluido %}
+                                        <span class="badge bg-success"><i class="fas fa-check me-1"></i>Concluída</span>
+                                    {% else %}
+                                        <span class="badge bg-warning"><i class="fas fa-clock me-1"></i>Pendente</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if atividade.data_conclusao %}
+                                        <span class="data-conclusao-display" 
+                                              data-id="{{ atividade.id }}" 
+                                              style="cursor: pointer; position: relative;">
+                                            {{ atividade.data_conclusao }}
+                                            <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                                        </span>
+                                        <input type="hidden" class="data-conclusao-input" data-id="{{ atividade.id }}" value="{{ atividade.data_conclusao }}">
+                                    {% else %}
+                                        <span class="data-conclusao-display" 
+                                              data-id="{{ atividade.id }}" 
+                                              style="cursor: pointer; color: #999;">
+                                            -
+                                        </span>
+                                        <input type="hidden" class="data-conclusao-input" data-id="{{ atividade.id }}" value="">
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-5 py-4 border-top">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <p class="mb-1">
+                            <i class="fas fa-copyright me-1"></i> 2026 <strong>Delean Mafra</strong> - Todos os direitos reservados
+                        </p>
+                        <p class="mb-0 small text-muted">
+                            Sistema de Acompanhamento de Atividades Acadêmicas
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <p class="mb-1 small">
+                            <i class="fab fa-creative-commons me-1"></i>
+                            <i class="fab fa-creative-commons-by me-1"></i>
+                            <i class="fab fa-creative-commons-nc me-1"></i>
+                            Licenciado sob
+                        </p>
+                        <p class="mb-0">
+                            <a href="https://delean-mafra.github.io/Ahtools/CC_BY_NC_4.0" target="_blank" class="text-decoration-none" style="color: #58a6ff;">
+                                CC BY-NC 4.0 International
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Atualizar data atual
+        document.getElementById('data-atual').textContent = new Date().toLocaleDateString('pt-BR');
+
+        // Função para atualizar contagem de dias restantes
+        function atualizarDiasRestantes(dias1, dias2) {
+            const elem1 = document.getElementById('dias-limite-1');
+            const elem2 = document.getElementById('dias-limite-2');
+            
+            // Se receber parâmetros, usar eles (vem do servidor)
+            if (dias1 !== undefined && elem1) {
+                elem1.textContent = dias1 + ' dias';
+            } else if (elem1) {
+                // Caso contrário, calcular localmente (apenas para inicialização)
+                const hoje = new Date();
+                const limite1 = new Date(2026, 1, 19);
+                const d1 = Math.max(0, Math.ceil((limite1 - hoje) / (1000 * 60 * 60 * 24)));
+                elem1.textContent = d1 + ' dias';
+            }
+            
+            if (dias2 !== undefined && elem2) {
+                elem2.textContent = dias2 + ' dias';
+            } else if (elem2) {
+                const hoje = new Date();
+                const limite2 = new Date(2026, 2, 16);
+                const d2 = Math.max(0, Math.ceil((limite2 - hoje) / (1000 * 60 * 60 * 24)));
+                elem2.textContent = d2 + ' dias';
+            }
+        }
+
+        // Atualizar dias restantes na inicialização
+        atualizarDiasRestantes();
+
+        // Função para atualizar progresso na interface
+        function atualizarProgresso(dados) {
+            document.getElementById('progresso-geral').textContent = dados.progresso.geral.progresso.toFixed(1) + '%';
+            document.getElementById('atividades-concluidas').textContent = dados.progresso.geral.concluidas;
+            document.getElementById('atividades-pendentes').textContent = dados.progresso.geral.pendentes;
+            document.getElementById('previsao-conclusao').textContent = dados.previsao;
+            
+            // Atualizar barra de progresso geral
+            const progressBar = document.querySelector('.progress-bar.bg-success');
+            if (progressBar) {
+                progressBar.style.width = dados.progresso.geral.progresso + '%';
+            }
+
+            // Atualizar cards Prazo Limite e Dias Restantes usando progresso_atual
+            if (dados.progresso_atual) {
+                const cardPrazo = document.getElementById('card-prazo-limite');
+                const iconPrazo = document.getElementById('icon-prazo-limite');
+                const tituloPrazo = document.getElementById('titulo-prazo-limite');
+                const cardDias = document.getElementById('card-dias-restantes');
+                const iconDias = document.getElementById('icon-dias-restantes');
+                const tituloDias = document.getElementById('titulo-dias-restantes');
+                const subDias = document.getElementById('sub-dias-restantes');
+                const diasRestantesCard = document.getElementById('dias-restantes-card');
+
+                // Atualizar a data limite exibida nos cards
+                if (dados.data_limite) {
+                    const partes = dados.data_limite.split('/');
+                    const h2Prazo = cardPrazo.querySelector('h2');
+                    const smallPrazo = cardPrazo.querySelector('small');
+                    if (h2Prazo) h2Prazo.textContent = partes[0] + '/' + partes[1];
+                    if (smallPrazo) smallPrazo.textContent = dados.data_limite;
+                }
+                
+                // Atualizar dias restantes
+                if (dados.dias_restantes !== undefined && diasRestantesCard) {
+                    diasRestantesCard.textContent = dados.dias_restantes;
+                }
+
+                if (dados.progresso_atual.status === 'concluido') {
+                    // Prazo Limite card -> verde
+                    cardPrazo.className = cardPrazo.className.replace(/bg-\S+/, 'bg-success');
+                    iconPrazo.className = 'fas fa-check-circle fa-2x mb-2';
+                    tituloPrazo.textContent = 'Entregue no Prazo';
+                    // Dias Restantes card -> verde
+                    cardDias.className = cardDias.className.replace(/bg-\S+/, 'bg-success');
+                    iconDias.className = 'fas fa-trophy fa-2x mb-2';
+                    tituloDias.textContent = 'Concluído!';
+                    if (subDias) subDias.textContent = 'todas entregues';
+                } else {
+                    const diasR = dados.dias_restantes;
+                    const corDias = diasR < 7 ? 'bg-danger' : (diasR < 14 ? 'bg-warning' : 'bg-primary');
+                    // Prazo Limite card -> vermelho
+                    cardPrazo.className = cardPrazo.className.replace(/bg-\S+/, 'bg-danger');
+                    iconPrazo.className = 'fas fa-calendar-times fa-2x mb-2';
+                    tituloPrazo.textContent = 'Prazo Limite';
+                    // Dias Restantes card -> cor por urgência
+                    cardDias.className = cardDias.className.replace(/bg-\S+/, corDias);
+                    iconDias.className = 'fas fa-hourglass-half fa-2x mb-2';
+                    tituloDias.textContent = 'Dias Restantes';
+                    if (subDias) subDias.textContent = 'até o prazo';
+                }
+            }
+
+            // Atualizar cores dos alerts de limite de data
+            if (dados.progresso_limite_1) {
+                const alertLimite1 = document.getElementById('alert-limite-1');
+                const iconeLimite1 = alertLimite1.querySelector('i');
+                
+                if (dados.progresso_limite_1.status === 'concluido') {
+                    alertLimite1.classList.remove('alert-danger');
+                    alertLimite1.classList.add('alert-success');
+                    iconeLimite1.classList.remove('fa-exclamation-triangle');
+                    iconeLimite1.classList.add('fa-check-circle');
+                } else {
+                    alertLimite1.classList.remove('alert-success');
+                    alertLimite1.classList.add('alert-danger');
+                    iconeLimite1.classList.remove('fa-check-circle');
+                    iconeLimite1.classList.add('fa-exclamation-triangle');
+                }
+            }
+            
+            if (dados.progresso_limite_2) {
+                const alertLimite2 = document.getElementById('alert-limite-2');
+                const iconeLimite2 = alertLimite2.querySelector('i');
+                
+                if (dados.progresso_limite_2.status === 'concluido') {
+                    alertLimite2.classList.remove('alert-warning');
+                    alertLimite2.classList.add('alert-success');
+                    iconeLimite2.classList.remove('fa-clock');
+                    iconeLimite2.classList.add('fa-check-circle');
+                } else {
+                    alertLimite2.classList.remove('alert-success');
+                    alertLimite2.classList.add('alert-warning');
+                    iconeLimite2.classList.remove('fa-check-circle');
+                    iconeLimite2.classList.add('fa-clock');
+                }
+            }
+            
+            // Atualizar cards de matéria
+            if (dados.progresso && dados.progresso.materias) {
+                atualizarCardsMateria(dados.progresso.materias);
+            }
+            
+            // Atualizar contadores de dias restantes
+            if (dados.dias_restantes_1 !== undefined && dados.dias_restantes_2 !== undefined) {
+                atualizarDiasRestantes(dados.dias_restantes_1, dados.dias_restantes_2);
+            }
+        }
+
+        // Gerenciar checkboxes das atividades
+        document.querySelectorAll('.atividade-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const atividadeId = parseInt(this.dataset.id);
+                const concluido = this.checked;
+                const row = this.closest('tr');
+                
+                // Se está desmarcando, pedir confirmação
+                if (!concluido) {
+                    if (!confirm('Tem certeza que deseja marcar esta atividade como não concluída?\n\nA data de conclusão será apagada.')) {
+                        this.checked = true; // Reverter
+                        return;
+                    }
+                }
+                
+                // Atualizar visual da linha
+                if (concluido) {
+                    row.classList.remove('atividade-pendente');
+                    row.classList.add('atividade-concluida');
+                    // Atualizar apenas o badge de Status (coluna 5)
+                    const statusCell = row.cells[5];
+                    statusCell.innerHTML = '<span class="badge bg-success"><i class="fas fa-check me-1"></i>Concluída</span>';
+                } else {
+                    row.classList.remove('atividade-concluida');
+                    row.classList.add('atividade-pendente');
+                    // Atualizar apenas o badge de Status (coluna 5)
+                    const statusCell = row.cells[5];
+                    statusCell.innerHTML = '<span class="badge bg-warning"><i class="fas fa-clock me-1"></i>Pendente</span>';
+                }
+                
+                // Enviar atualização para o servidor
+                fetch('/api/marcar_atividade', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: atividadeId,
+                        concluido: concluido
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        atualizarProgresso(data);
+                        
+                        // Atualizar data de conclusão (coluna 6)
+                        const dataConclusaoCell = row.cells[6];
+                        if (concluido) {
+                            const dataAtual = new Date().toLocaleDateString('pt-BR');
+                            dataConclusaoCell.innerHTML = `<span class="data-conclusao-display" data-id="${atividadeId}" style="cursor: pointer; position: relative;">
+                                ${dataAtual}
+                                <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                            </span>
+                            <input type="hidden" class="data-conclusao-input" data-id="${atividadeId}" value="${dataAtual}">`;
+                            // Re-bindear eventos da data
+                            bindDataConclusaoEvents();
+                        } else {
+                            dataConclusaoCell.innerHTML = `<span class="data-conclusao-display" data-id="${atividadeId}" style="cursor: pointer; color: #999;">
+                                -
+                            </span>
+                            <input type="hidden" class="data-conclusao-input" data-id="${atividadeId}" value="">`;
+                            bindDataConclusaoEvents();
+                        }
+                        
+                        // Atualizar badge de prazo limite (coluna 3)
+                        const prazoLimiteCell = row.cells[3];
+                        const badgePrazo = prazoLimiteCell.querySelector('.badge');
+                        const dataPrazo = badgePrazo.getAttribute('data-prazo');
+                        
+                        if (concluido) {
+                            badgePrazo.className = 'badge bg-secondary';
+                            badgePrazo.innerHTML = '<i class="fas fa-check-circle me-1"></i>' + dataPrazo;
+                        } else {
+                            // Calcular dias restantes
+                            const hoje = new Date();
+                            const [dia, mes, ano] = dataPrazo.split('/');
+                            const prazo = new Date(ano, mes - 1, dia);
+                            const diasRestantes = Math.ceil((prazo - hoje) / (1000 * 60 * 60 * 24));
+                            
+                            // Definir cor baseada na urgência
+                            if (diasRestantes < 0) {
+                                badgePrazo.className = 'badge bg-danger';
+                                badgePrazo.innerHTML = '<i class="fas fa-exclamation-triangle me-1"></i>' + dataPrazo;
+                            } else if (diasRestantes <= 7) {
+                                badgePrazo.className = 'badge bg-warning text-dark';
+                                badgePrazo.innerHTML = '<i class="fas fa-clock me-1"></i>' + dataPrazo;
+                            } else {
+                                badgePrazo.className = 'badge bg-info';
+                                badgePrazo.innerHTML = '<i class="fas fa-calendar-check me-1"></i>' + dataPrazo;
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    // Reverter checkbox em caso de erro
+                    this.checked = !concluido;
+                });
+            });
+        });
+
+        // Função para bind dos eventos de edição de data
+        function bindDataConclusaoEvents() {
+            document.querySelectorAll('.data-conclusao-display').forEach(display => {
+                display.removeEventListener('click', editarDataConclusao);
+                display.addEventListener('click', editarDataConclusao);
+            });
+        }
+
+        // Função para editar data de conclusão
+        function editarDataConclusao(e) {
+            e.stopPropagation();
+            const display = this;
+            const atividadeId = parseInt(display.dataset.id);
+            const row = display.closest('tr');
+            const cell = display.parentElement;
+            const dataAtual = display.textContent.trim();
+            
+            if (dataAtual === '-') {
+                alert('Para editar a data, primeiro marque a atividade como concluída.');
+                return;
+            }
+            
+            // Criar editor inline
+            const editor = document.createElement('div');
+            editor.className = 'data-conclusao-editor';
+            editor.innerHTML = `
+                <input type="text" id="date-picker-${atividadeId}" class="form-control form-control-sm" style="width: 130px; display: inline-block; padding: 2px 5px;" placeholder="DD/MM/YYYY" value="${dataAtual}">
+                <button class="btn-salvar-data">Salvar</button>
+                <button class="btn-cancelar-data">Cancelar</button>
+            `;
+            
+            // Substituir display pelo editor
+            cell.innerHTML = '';
+            cell.appendChild(editor);
+            
+            const input = editor.querySelector('input');
+            
+            // Converter data DD/MM/YYYY para Date para o Flatpickr
+            const [dia, mes, ano] = dataAtual.split('/');
+            const dataObj = new Date(ano, mes - 1, dia);
+            
+            // Inicializar Flatpickr
+            flatpickr(input, {
+                mode: 'single',
+                dateFormat: 'd/m/Y',
+                locale: 'pt_br',
+                defaultDate: dataObj,
+                monthSelectorType: 'static',
+                onClose: function(selectedDates, dateStr, instance) {
+                    // Limpar para permitir reedição se necessário
+                }
+            });
+            
+            input.focus();
+            
+            // Abrir calendário automaticamente
+            setTimeout(() => {
+                input.click();
+            }, 100);
+            
+            // Botão Salvar
+            editor.querySelector('.btn-salvar-data').addEventListener('click', () => {
+                const novaData = input.value.trim();
+                
+                // Validar formato
+                if (!novaData.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                    alert('Formato inválido. Use DD/MM/YYYY');
+                    input.focus();
+                    return;
+                }
+                
+                // Validar data válida
+                const [dia, mes, ano] = novaData.split('/');
+                const data = new Date(ano, mes - 1, dia);
+                if (data.getDate() != dia) {
+                    alert('Data inválida.');
+                    input.focus();
+                    return;
+                }
+                
+                // Enviar para servidor
+                fetch('/api/atualizar_data_conclusao', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: atividadeId,
+                        data_conclusao: novaData
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Atualizar display
+                        cell.innerHTML = `<span class="data-conclusao-display" data-id="${atividadeId}" style="cursor: pointer; position: relative;">
+                            ${novaData}
+                            <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                        </span>
+                        <input type="hidden" class="data-conclusao-input" data-id="${atividadeId}" value="${novaData}">`;
+                        
+                        // Re-bindear eventos
+                        bindDataConclusaoEvents();
+                        
+                        // Atualizar progresso
+                        atualizarProgresso(data);
+                        
+                        // Garantir que checkbox está marcado
+                        const checkbox = row.querySelector('.atividade-checkbox');
+                        if (!checkbox.checked) {
+                            checkbox.checked = true;
+                            row.classList.remove('atividade-pendente');
+                            row.classList.add('atividade-concluida');
+                            const statusCell = row.cells[5];
+                            statusCell.innerHTML = '<span class="badge bg-success"><i class="fas fa-check me-1"></i>Concluída</span>';
+                        }
+                    } else {
+                        alert('Erro: ' + data.message);
+                        // Restaurar
+                        cell.innerHTML = `<span class="data-conclusao-display" data-id="${atividadeId}" style="cursor: pointer; position: relative;">
+                            ${dataAtual}
+                            <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                        </span>
+                        <input type="hidden" class="data-conclusao-input" data-id="${atividadeId}" value="${dataAtual}">`;
+                        bindDataConclusaoEvents();
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao salvar data');
+                    // Restaurar
+                    cell.innerHTML = `<span class="data-conclusao-display" data-id="${atividadeId}" style="cursor: pointer; position: relative;">
+                        ${dataAtual}
+                        <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                    </span>
+                    <input type="hidden" class="data-conclusao-input" data-id="${atividadeId}" value="${dataAtual}">`;
+                    bindDataConclusaoEvents();
+                });
+            });
+            
+            // Botão Cancelar
+            editor.querySelector('.btn-cancelar-data').addEventListener('click', () => {
+                cell.innerHTML = `<span class="data-conclusao-display" data-id="${atividadeId}" style="cursor: pointer; position: relative;">
+                    ${dataAtual}
+                    <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>
+                </span>
+                <input type="hidden" class="data-conclusao-input" data-id="${atividadeId}" value="${dataAtual}">`;
+                bindDataConclusaoEvents();
+            });
+            
+            // Salvar com Enter
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    editor.querySelector('.btn-salvar-data').click();
+                }
+            });
+            
+            // Cancelar com Escape
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    editor.querySelector('.btn-cancelar-data').click();
+                }
+            });
+        }
+
+        // Bind inicial dos eventos de edição de data
+        bindDataConclusaoEvents();
+
+        // Função para atualizar cards de matéria com notas
+        function atualizarCardsMateria(materias) {
+            for (const [materia, dados] of Object.entries(materias)) {
+                // Encontrar o card da matéria
+                const cards = document.querySelectorAll('.materia-card');
+                cards.forEach(card => {
+                    const headerText = card.querySelector('.card-header h6').textContent;
+                    if (headerText === materia) {
+                        // Atualizar progresso
+                        const progressoText = card.querySelector('.fw-bold');
+                        if (progressoText) {
+                            progressoText.textContent = dados.progresso.toFixed(1) + '%';
+                        }
+                        
+                        const progressBar = card.querySelector('.progress-bar');
+                        if (progressBar) {
+                            progressBar.style.width = dados.progresso + '%';
+                        }
+                        
+                        // Atualizar nota e status se 100%
+                        if (dados.progresso === 100) {
+                            const notaDisplay = card.querySelector('.nota-display');
+                            if (notaDisplay && dados.nota !== null && dados.nota !== undefined) {
+                                notaDisplay.innerHTML = dados.nota.toFixed(1) + ' <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>';
+                            }
+                            
+                            const statusAprovacao = card.querySelector('.status-aprovacao');
+                            if (statusAprovacao) {
+                                if (dados.status_aprovacao === 'aprovado') {
+                                    statusAprovacao.innerHTML = '<span class="badge bg-success w-100"><i class="fas fa-check-circle me-1"></i>Aprovado</span>';
+                                } else if (dados.status_aprovacao === 'reprovado') {
+                                    statusAprovacao.innerHTML = '<span class="badge bg-danger w-100"><i class="fas fa-times-circle me-1"></i>Reprovado</span>';
+                                } else if (dados.status_aprovacao === 'sem_nota') {
+                                    statusAprovacao.innerHTML = '<span class="badge bg-warning text-dark w-100"><i class="fas fa-exclamation-triangle me-1"></i>Nota não inserida</span>';
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Função para editar nota de matéria
+        function editarNota(e) {
+            const display = e.currentTarget;
+            const materia = display.dataset.materia;
+            const notaAtual = display.textContent.includes('Clique') ? '' : display.textContent.trim().split(' ')[0];
+            
+            // Criar input inline
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.min = '0';
+            input.max = '10';
+            input.step = '0.1';
+            input.value = notaAtual;
+            input.className = 'form-control form-control-sm';
+            input.style.width = '80px';
+            input.style.display = 'inline-block';
+            input.placeholder = '0-10';
+            
+            const btnSalvar = document.createElement('button');
+            btnSalvar.textContent = '✓';
+            btnSalvar.className = 'btn btn-sm btn-success ms-1';
+            btnSalvar.style.padding = '2px 8px';
+            
+            const btnCancelar = document.createElement('button');
+            btnCancelar.textContent = '✕';
+            btnCancelar.className = 'btn btn-sm btn-danger ms-1';
+            btnCancelar.style.padding = '2px 8px';
+            
+            const container = document.createElement('span');
+            container.appendChild(input);
+            container.appendChild(btnSalvar);
+            container.appendChild(btnCancelar);
+            
+            const parent = display.parentElement;
+            parent.replaceChild(container, display);
+            input.focus();
+            input.select();
+            
+            // Função para salvar
+            const salvar = () => {
+                const nota = input.value.trim() === '' ? null : parseFloat(input.value);
+                
+                if (nota !== null && (nota < 0 || nota > 10)) {
+                    alert('A nota deve estar entre 0 e 10');
+                    return;
+                }
+                
+                fetch('/api/atualizar_nota', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        materia: materia,
+                        nota: nota
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Atualizar display
+                        const newDisplay = document.createElement('span');
+                        newDisplay.className = nota === null ? 'nota-display text-muted' : 'nota-display';
+                        newDisplay.dataset.materia = materia;
+                        newDisplay.style.cursor = 'pointer';
+                        newDisplay.innerHTML = nota === null 
+                            ? 'Clique para inserir <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>'
+                            : nota.toFixed(1) + ' <i class="fas fa-edit" style="font-size: 0.8em; margin-left: 5px; opacity: 0.6;"></i>';
+                        
+                        parent.replaceChild(newDisplay, container);
+                        newDisplay.addEventListener('click', editarNota);
+                        
+                        // Atualizar cards
+                        atualizarCardsMateria(data.progresso.materias);
+                    } else {
+                        alert('Erro: ' + data.message);
+                        parent.replaceChild(display, container);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao salvar nota');
+                    parent.replaceChild(display, container);
+                });
+            };
+            
+            // Função para cancelar
+            const cancelar = () => {
+                parent.replaceChild(display, container);
+            };
+            
+            btnSalvar.addEventListener('click', salvar);
+            btnCancelar.addEventListener('click', cancelar);
+            
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') salvar();
+            });
+            
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') cancelar();
+            });
+        }
+
+        // Bind eventos de edição de nota
+        document.querySelectorAll('.nota-display').forEach(display => {
+            display.addEventListener('click', editarNota);
+        });
+
+        // Selecionar/deselecionar todas as atividades
+        document.getElementById('select-all').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('.atividade-checkbox');
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked !== this.checked) {
+                    checkbox.checked = this.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+
+        // Atualizar progresso a cada 30 segundos
+        setInterval(() => {
+            fetch('/api/progresso')
+                .then(response => response.json())
+                .then(data => {
+                    atualizarProgresso(data);
+                })
+                .catch(error => console.error('Erro ao atualizar progresso:', error));
+        }, 30000);
+    </script>
+</body>
+</html>
