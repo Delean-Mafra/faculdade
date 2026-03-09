@@ -1,12 +1,9 @@
 import re
+import sys
 
-if __name__ == "__main__":
-    n = int(input())
-    pattern = re.compile(r'^[789]\d{9}$')  # começa com 7,8 ou 9 e tem 10 dígitos
+n = int(sys.stdin.readline())
+pattern = re.compile(r'^[789]\d{9}$')
 
-    for _ in range(n):
-        number = input().strip()
-        if pattern.match(number):
-            print("YES")
-        else:
-            print("NO")
+for _ in range(n):
+    s = sys.stdin.readline().strip()
+    print("YES" if pattern.match(s) else "NO")
