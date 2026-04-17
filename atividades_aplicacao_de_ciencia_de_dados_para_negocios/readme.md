@@ -1,4 +1,4 @@
-# Este repositorio contem as atividades praticas da aula 1 a 6 da disciplina "Aplicação de Ciência de Dados para Negócios"
+# Este repositorio contem todas as atividades praticas da aula Aplicação de Ciência de Dados para Negócios
 
 
 
@@ -262,3 +262,198 @@ Conclusão
 
 
 A análise descritiva de dados, seja com Excel ou Python, é uma ferramenta poderosa para transformar dados em informações visuais e compreensíveis. Ao seguir essa prática, você terá uma melhor compreensão dos padrões e tendências nos dados, facilitando a tomada de decisões informadas em qualquer contexto de negócios.
+
+
+
+
+Atividade Prática 4 – Visualização de Dados
+
+
+
+Objetivo
+
+
+O objetivo desta atividade é aplicar conceitos de visualização de dados em um cenário de negócios. Você vai utilizar gráficos estatísticos para explorar e analisar um conjunto de dados fictício, identificando padrões e insights úteis para a tomada de decisões empresariais.
+
+
+
+Contexto
+
+
+Você é analista de dados em uma empresa de varejo e precisa criar relatórios para a equipe de gestão. Seu trabalho é utilizar a visualização de dados para revelar tendências e padrões nas vendas mensais da empresa, comparando o desempenho de diferentes categorias de produtos e analisando a participação de mercado.
+
+
+
+Dados
+
+
+Utilize o seguinte conjunto de dados fictício que contém informações sobre vendas mensais em diferentes categorias de produtos:
+
+
+
+import pandas as pd
+
+
+
+# Dados de exemplo
+
+
+dados = {
+
+
+    ‘Meses’: [‘Jan’, ‘Fev’, ‘Mar’, ‘Abr’, ‘Mai’, ‘Jun’, ‘Jul’, ‘Ago’, ‘Set’, ‘Out’, ‘Nov’, ‘Dez’],
+
+
+    ‘Eletrônicos’: [1200, 1300, 1250, 1400, 1500, 1600, 1700, 1650, 1800, 1900, 2000, 2100],
+
+
+    ‘Roupas’: [900, 950, 920, 1000, 1100, 1150, 1200, 1250, 1300, 1350, 1400, 1450],
+
+
+    ‘Alimentos’: [600, 620, 610, 630, 650, 670, 680, 690, 700, 710, 720, 730],
+
+
+}
+
+
+
+df = pd.DataFrame(dados)
+
+
+
+Tarefas
+
+
+Criação de Gráficos:
+Gráfico de Linha: crie um gráfico de linha que mostre a tendência de vendas mensais para cada categoria de produto.
+Gráfico de Barras: crie um gráfico de barras que compare as vendas por categoria em um mês específico (escolha um mês para destacar).
+Gráfico de Pizza: crie um gráfico de pizza para mostrar a participação de mercado de cada categoria no total de vendas anuais.
+Interpretação dos Gráficos:
+Tendências de Vendas: analise o gráfico de linha para identificar tendências e sazonalidades nas vendas de cada categoria ao longo do ano.
+Comparação de Categorias: utilize o gráfico de barras para comparar a performance das categorias em um mês específico e discutir possíveis razões para as diferenças.
+Participação de Mercado: examine o gráfico de pizza para entender a distribuição de vendas entre as categorias e identificar qual categoria tem maior participação de mercado.
+
+
+Ferramentas e Bibliotecas
+
+
+Utilize as seguintes bibliotecas para criar os gráficos:
+
+
+Matplotlib para gráficos básicos e de barras.
+Seaborn para gráficos de linha e outros gráficos estatísticos.
+Pandas para manipulação e organização dos dados.
+
+
+Exemplos de Código
+
+
+
+Gráfico de Linha
+
+
+
+import matplotlib.pyplot as plt
+
+
+import seaborn as sns
+
+
+
+plt.figure(figsize=(10, 6))
+
+
+for categoria in [‘Eletrônicos’, ‘Roupas’, ‘Alimentos’]:
+
+
+    sns.lineplot(x=‘Meses’, y=categoria, data=df, marker=‘o’, label=categoria)
+
+
+plt.title(‘Tendência de Vendas Mensais por Categoria’)
+
+
+plt.xlabel(‘Meses’)
+
+
+plt.ylabel(‘Vendas’)
+
+
+plt.legend(title=‘Categorias’)
+
+
+plt.show()
+
+
+
+Gráfico de Barras
+
+
+
+plt.figure(figsize=(10, 6))
+
+
+df_jan = df[[‘Eletrônicos’, ‘Roupas’, ‘Alimentos’]].iloc[0]
+
+
+df_jan.plot(kind=‘bar’, color=[‘skyblue’, ‘lightgreen’, ‘lightcoral’])
+
+
+plt.title(‘Vendas por Categoria em Janeiro’)
+
+
+plt.xlabel(‘Categorias’)
+
+
+plt.ylabel(‘Vendas’)
+
+
+plt.show()
+
+
+Gráfico de Pizza
+
+
+python
+
+
+Copiar código
+
+
+plt.figure(figsize=(8, 6))
+
+
+plt.pie(df[[‘Eletrônicos’, ‘Roupas’, ‘Alimentos’]].sum(),
+
+
+        labels=[‘Eletrônicos’, ‘Roupas’, ‘Alimentos’],
+
+
+        autopct=‘%1.1f%%’,
+
+
+        colors=[‘gold’, ‘yellowgreen’, ‘lightcoral’])
+
+
+plt.title(‘Participação de Mercado por Categoria’)
+
+
+plt.show()
+
+
+
+
+
+
+Resultado Esperado
+
+
+
+Gráficos: inclua os gráficos criados como imagens no seu relatório.
+
+Certifique-se de que os gráficos estejam bem rotulados e legíveis.
+
+
+Verifique a precisão dos dados e a clareza na apresentação das informações.
+
+
+Análise: escreva uma breve análise para cada gráfico, destacando os principais insights e o que eles revelam sobre o desempenho das categorias de produtos.
