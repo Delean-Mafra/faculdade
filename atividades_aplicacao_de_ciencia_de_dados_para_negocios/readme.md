@@ -1,3 +1,7 @@
+# Este repositorio contem todas as atividades praticas da aula Aplicação de Ciência de Dados para Negócios
+
+
+
 Prática Integradora em Ciência de Dados para Negócios
 
 
