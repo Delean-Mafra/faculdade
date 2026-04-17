@@ -219,3 +219,46 @@ Gráfico de pizza mostrando a participação percentual de cada produto na recei
 Discussão dos Resultados:
 Análise clara dos dados e sugestões de estratégias de negócio com base nos insights obtidos.
 Essa atividade prática oferece uma introdução ao uso de Pandas e técnicas de visualização de dados em Python, permitindo aos alunos aplicar conceitos de ciência de dados no contexto empresarial.
+
+
+
+Parte 3: Aplicação Prática Real
+
+
+Contexto
+
+
+A Starbucks deseja utilizar a análise descritiva de dados para entender melhor as vendas de suas bebidas ao longo do ano. Você foi contratado para analisar os dados e fornecer insights que possam auxiliar nas decisões estratégicas da empresa.
+
+
+
+Passo 1: Importação dos Dados
+
+
+Utilize Python para importar um dataset real das vendas da Starbucks disponível em plataformas como o Kaggle.
+
+
+url = “https://raw.githubusercontent.com/datasets/starbucks-drinks-dataset/master/starbucks_drinkMenu_expanded.csv”
+
+
+data = pd.read_csv(url)
+
+
+
+Passo 2: Análise Descritiva
+
+
+Gere estatísticas descritivas e visualize as vendas por categoria de bebida e ao longo do tempo, utilizando gráficos de barras e linhas.
+
+
+Passo 3: Análise dos Resultados
+
+
+Identifique as categorias de bebidas mais vendidas e discuta como as vendas variam durante o ano.
+Forneça recomendações para a Starbucks com base nas tendências observadas.
+
+
+Conclusão
+
+
+A análise descritiva de dados, seja com Excel ou Python, é uma ferramenta poderosa para transformar dados em informações visuais e compreensíveis. Ao seguir essa prática, você terá uma melhor compreensão dos padrões e tendências nos dados, facilitando a tomada de decisões informadas em qualquer contexto de negócios.
