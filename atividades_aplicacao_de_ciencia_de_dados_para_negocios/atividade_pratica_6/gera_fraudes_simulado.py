@@ -1,5 +1,3 @@
-# Gera um arquivo CSV com 1000 linhas no mesmo padrão do fraudes.csv fornecido
-
 import csv
 import random
 import numpy as np
