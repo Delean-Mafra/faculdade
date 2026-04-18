@@ -1,4 +1,5 @@
-# Este repositorio contem todas as atividades praticas da aula Aplicação de Ciência de Dados para Negócios
+# Este repositório contém todas as atividades práticas da disciplina Aplicação de Ciência de Dados para Negócios
+
 
 
 
