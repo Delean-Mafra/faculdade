@@ -12,16 +12,30 @@
 
 A Obra acima é licenciada sob a **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.
 
-**Link para a licença oficial:** https://creativecommons.org/licenses/by-nc/4.0/
+---
+
+# ⚖️ DIREITOS AUTORAIS E PROPRIEDADE INTELECTUAL
+
+**PROTEÇÃO LEGAL E LICENCIAMENTO**
+
+---
+
+![Creative Commons License](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc.svg)
+
+**Licença:** [CC BY-NC 4.0](https://delean-mafra.github.io/Ahtools/CC_BY_NC_4.0)
+
+</div>
+
+---
+
 
 **Resumo das permissões sob CC BY-NC 4.0 (resumo não substitui a licença oficial):**
 - **Permite:** copiar, distribuir, exibir e executar a obra; criar obras derivadas (remix, adaptação, tradução) desde que não sejam para fins comerciais.
 - **Condições obrigatórias:** atribuição adequada ao autor original; indicar se foram feitas modificações; não usar a obra para fins comerciais.
 - **Proibições:** uso comercial sem autorização prévia do autor.
 
-Consulte o texto completo da licença em: https://creativecommons.org/licenses/by-nc/4.0/legalcode
 
----
+
 
 ## 2. Atribuição exigida (como creditar corretamente)
 
