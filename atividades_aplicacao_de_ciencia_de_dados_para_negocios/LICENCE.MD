@@ -61,5 +61,3 @@ Para dúvidas sobre uso, pedidos de permissão especial ou notificações de uso
 Ao utilizar qualquer parte desta Obra, você concorda em cumprir as condições acima. Violações às condições de atribuição e proibições de cópia idêntica sem crédito poderão ser tratadas como infração de direitos autorais e plágio, sujeitas às medidas cabíveis pelo autor, incluindo notificações formais e solicitações de remoção.
 
 ---
-
-**Arquivo sugerido:** salve este conteúdo como `LICENSE.md` na raiz do repositório para que fique visível e vinculada à Obra.
