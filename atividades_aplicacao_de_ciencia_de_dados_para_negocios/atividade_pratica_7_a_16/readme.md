@@ -534,3 +534,87 @@ Métricas de Avaliação: precisão indica a proporção de verdadeiros positivo
 
 
 Este gabarito deve ajudar a verificar se as respostas e interpretações dos resultados estão corretas. Ajustes podem ser necessários dependendo da aleatoriedade nos dados simulados.
+
+
+
+
+Atividade Prática 8 – Avaliação e Otimização de Modelos de Classificação
+
+
+
+Objetivos
+
+
+
+Analisar a eficácia de um modelo de classificação utilizando métricas básicas e avançadas.
+Aplicar técnicas de pré-processamento de dados e validação cruzada para melhorar a performance do modelo.
+Interpretar resultados de métricas como acurácia, precisão, recall e F1-score para ajustar e otimizar modelos.
+
+
+Materiais, Métodos e Ferramentas
+
+
+Materiais: base de dados de vinhos (ou qualquer outro dataset relevante)
+Métodos: pré-processamento de dados, treinamento de modelos, avaliação de métricas
+
+
+Ferramentas
+
+
+Python, pandas, scikit-learn, XGBoost, matplotlib, seaborn
+
+
+Atividade Prática
+
+
+Primeiramente, leia atentamente o texto a seguir:
+
+
+Você recebeu uma base de dados contendo informações sobre vinhos e deseja avaliar a performance de um modelo de classificação. Seu objetivo é construir um modelo usando o XGBoost Classifier, analisar a eficácia do modelo com métricas como acurácia, precisão, recall e F1-score, e identificar possíveis anomalias e ruídos nos dados.
+
+
+
+Agora, vamos praticar!
+
+
+
+PASSO A PASSO DETALHADO DA ATIVIDADE:
+
+
+Importação e Pré-processamento dos Dados:
+Importe as bibliotecas necessárias (pandas, numpy, matplotlib, seaborn, sklearn, xgboost).
+Carregue o dataset de vinhos (ou o dataset fornecido) usando pd.read_csv().
+Realize a limpeza dos dados, removendo valores nulos e variáveis desnecessárias.
+Divisão dos Dados:
+Separe os dados em variáveis preditoras (X) e variável alvo (y).
+Divida o dataset em conjuntos de treinamento e teste usando train_test_split().
+Padronização dos Dados:
+Aplique a padronização dos dados utilizando StandardScaler.
+Treinamento do Modelo:
+Crie e treine um modelo de classificação utilizando o XGBClassifier.
+Faça previsões no conjunto de teste.
+Avaliação do Modelo:
+Calcule as métricas de desempenho: acurácia, precisão, recall e F1-score usando as funções apropriadas do sklearn.
+Gere e visualize a matriz de confusão.
+Crie um gráfico de barras para ilustrar as métricas de desempenho do modelo (precisão, recall e F1-score).
+Validação Cruzada:
+Realize a validação cruzada utilizando cross_val_score() com o RandomForestClassifier.
+Compare os resultados de acurácia obtidos com e sem validação cruzada.
+Análise de Anomalias e Ruídos:
+Utilize gráficos de dispersão para identificar possíveis anomalias nos dados.
+Aplique técnicas de limpeza para tratar anomalias e ruídos.
+Documentação dos Resultados:
+Compile os resultados em um relatório, incluindo as métricas de desempenho, visualizações e qualquer ajuste realizado nos dados ou no modelo.
+Discuta os resultados obtidos e sugira melhorias para o modelo, se necessário.
+
+
+
+
+
+Resultado Esperado
+
+
+
+Importação e Pré-processamento dos Dados: o aluno deve ter importado corretamente as bibliotecas, carregado e limpo o dataset, e separado variáveis preditoras e alvo.
+Treinamento e Avaliação do Modelo: o aluno deve ter criado e treinado o modelo XGBoost, realizado as previsões e calculado as métricas corretamente. A matriz de confusão e gráficos devem estar presentes e bem elaborados.
+ Validação Cruzada e Análise de Dados: o aluno deve ter realizado a validação cruzada, identificado anomalias e ruídos, e aplicado técnicas de limpeza. O relatório deve incluir uma discussão dos resultados e sugestões de melhorias.
