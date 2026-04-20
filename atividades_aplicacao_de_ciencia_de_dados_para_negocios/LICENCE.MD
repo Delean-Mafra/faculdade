@@ -1,5 +1,3 @@
-# LICENSE.md
-
 ## Licença e Declaração de Autoria
 
 **Obra:** Repositório `atividades_aplicacao_de_ciencia_de_dados_para_negocios`  
