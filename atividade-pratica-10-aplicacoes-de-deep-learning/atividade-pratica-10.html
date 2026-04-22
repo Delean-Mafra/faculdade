@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Teachable Machine - Classificação Gato vs Cachorro</title>
+    <style>
+        :root {
+            --bg-1: #050913;
+            --bg-2: #0a1428;
+            --bg-3: #101b35;
+            --card: rgba(11, 20, 41, 0.75);
+            --card-strong: rgba(8, 16, 34, 0.92);
+            --text: #e8f0ff;
+            --text-soft: #9fb6de;
+            --accent: #29b6f6;
+            --accent-2: #00e5ff;
+            --accent-3: #00ffa3;
+            --border: rgba(83, 153, 255, 0.25);
+            --shadow: 0 16px 45px rgba(0, 0, 0, 0.45);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Space Grotesk", sans-serif;
+            color: var(--text);
+            background: radial-gradient(circle at 15% 10%, #13284e 0%, transparent 35%),
+                radial-gradient(circle at 85% 20%, #1a2f62 0%, transparent 42%),
+                linear-gradient(150deg, var(--bg-1) 0%, var(--bg-2) 52%, var(--bg-3) 100%);
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 440px;
+            height: 440px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(8px);
+            opacity: 0.35;
+        }
+
+        body::before {
+            background: radial-gradient(circle at 20% 20%, #1e87ff 0%, rgba(30, 135, 255, 0) 65%);
+            top: -180px;
+            left: -110px;
+            animation: floatA 12s ease-in-out infinite;
+        }
+
+        body::after {
+            background: radial-gradient(circle at 50% 50%, #00d0ff 0%, rgba(0, 208, 255, 0) 70%);
+            right: -140px;
+            bottom: -180px;
+            animation: floatB 14s ease-in-out infinite;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, 92vw);
+            margin: 28px auto 20px;
+            display: grid;
+            gap: 22px;
+        }
+
+        .hero,
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+        }
+
+        .hero {
+            text-align: left;
+            animation: reveal 500ms ease;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #001727;
+            background: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
+            border-radius: 999px;
+            padding: 6px 12px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-family: "Orbitron", sans-serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.55rem);
+            line-height: 1.15;
+            margin: 0 0 10px;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            margin: 0;
+            max-width: 68ch;
+            color: var(--text-soft);
+            font-size: 1rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            border: 1px solid var(--border);
+            background: rgba(7, 15, 32, 0.75);
+            color: var(--text-soft);
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 180ms ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text);
+            border-color: rgba(0, 229, 255, 0.55);
+        }
+
+        .tab-btn.active {
+            color: #001120;
+            background: linear-gradient(130deg, var(--accent) 0%, var(--accent-2) 60%, var(--accent-3) 100%);
+            border-color: transparent;
+            box-shadow: 0 8px 20px rgba(0, 229, 255, 0.22);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: reveal 260ms ease;
+        }
+
+        .layout {
+            display: grid;
+            gap: 22px;
+            grid-template-columns: 1.2fr 1fr;
+            align-items: start;
+        }
+
+        #start-btn {
+            appearance: none;
+            border: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 70%, var(--accent-3) 100%);
+            color: #02111f;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            font-size: 1rem;
+            padding: 13px 22px;
+            cursor: pointer;
+            margin-bottom: 14px;
+            transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+            box-shadow: 0 10px 25px rgba(0, 181, 255, 0.35);
+        }
+
+        #start-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(0, 181, 255, 0.38);
+        }
+
+        #start-btn:disabled {
+            opacity: 0.68;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #status {
+            margin: 0 0 14px;
+            color: var(--text-soft);
+            font-weight: 500;
+        }
+
+        #webcam-container {
+            width: min(100%, 420px);
+            margin: 0;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 10px;
+            background: rgba(8, 17, 35, 0.92);
+        }
+
+        #webcam-container canvas {
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+            border-radius: 12px;
+        }
+
+        #label-container {
+            display: grid;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .prediction {
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px;
+            background: rgba(8, 17, 35, 0.9);
+        }
+
+        .prediction-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .prediction-track {
+            height: 10px;
+            width: 100%;
+            border-radius: 999px;
+            background: rgba(35, 59, 101, 0.85);
+            overflow: hidden;
+        }
+
+        .prediction-bar {
+            height: 100%;
+            border-radius: inherit;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 70%, var(--accent-3) 100%);
+            transition: width 220ms ease;
+        }
+
+        .report {
+            background: var(--card-strong);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+        }
+
+        .report h2,
+        .report h3 {
+            font-family: "Orbitron", sans-serif;
+            letter-spacing: 0.03em;
+        }
+
+        .report h2 {
+            margin-top: 0;
+        }
+
+        .report h3 {
+            margin: 26px 0 10px;
+            font-size: 1.03rem;
+            color: #bce5ff;
+            text-transform: uppercase;
+        }
+
+        .report p,
+        .report li {
+            color: #d5e4ff;
+            line-height: 1.7;
+            font-size: 0.98rem;
+        }
+
+        .report ul {
+            margin: 8px 0 0;
+            padding-left: 18px;
+        }
+
+        .report-note {
+            border: 1px solid rgba(0, 229, 255, 0.4);
+            background: rgba(7, 22, 43, 0.92);
+            padding: 12px;
+            border-radius: 12px;
+            color: #a8d5ff;
+            margin-bottom: 16px;
+        }
+
+        .credits {
+            text-align: center;
+            color: #9db6de;
+            font-size: 0.9rem;
+            margin: 4px 0 12px;
+        }
+
+        .note {
+            margin: 0;
+            color: var(--text-soft);
+            font-size: 0.93rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 860px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero,
+            .panel {
+                padding: 18px;
+                border-radius: 18px;
+            }
+
+            .report {
+                padding: 18px;
+                border-radius: 18px;
+            }
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatA {
+            0%,
+            100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 18px); }
+        }
+
+        @keyframes floatB {
+            0%,
+            100% { transform: translate(0, 0); }
+            50% { transform: translate(-18px, -16px); }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <span class="eyebrow">Deep Learning ao vivo</span>
+            <h1>Classificador de imagem com webcam</h1>
+            <p class="subtitle">
+                Inicie a câmera para testar o modelo treinado no Teachable Machine.
+                A probabilidade de cada classe aparece em tempo real com atualização contínua.
+            </p>
+            <div class="tabs" role="tablist" aria-label="Navegação de conteúdo">
+                <button type="button" class="tab-btn active" data-target="classificador" role="tab" aria-selected="true">Classificador</button>
+                <button type="button" class="tab-btn" data-target="relatorio" role="tab" aria-selected="false">Relatório Completo</button>
+            </div>
+        </section>
+
+        <section id="classificador" class="tab-panel active" role="tabpanel">
+            <section class="layout">
+                <article class="panel">
+                    <button id="start-btn" type="button" onclick="init()">Iniciar Webcam</button>
+                    <p id="status">Pronto para iniciar.</p>
+                    <div id="webcam-container"></div>
+                </article>
+
+                <article class="panel">
+                    <h2>Predições</h2>
+                    <div id="label-container"></div>
+                    <p class="note">As barras representam a confiança do modelo para cada classe detectada.</p>
+                </article>
+            </section>
+        </section>
+
+        <section id="relatorio" class="tab-panel" role="tabpanel">
+            <article class="report">
+                <h2>Relatório Completo: Aplicações de Deep Learning</h2>
+                <p class="report-note">
+                    Este relatório foi desenvolvido para atender os conteúdos extras sugeridos nos materiais da aula
+                    <strong>Aplicações em Deep Learning</strong>.
+                </p>
+
+                <h3>Aplicações de Deep Learning</h3>
+                <p>
+                    Reconhecimento de Imagens: Redes neurais convolucionais (CNNs) são treinadas para discriminar e classificar
+                    objetos em imagens. Essas redes podem, por exemplo, identificar pessoas, carros ou animais em fotos e vídeos.
+                    A segmentação de imagens, por outro lado, divide cada imagem em regiões ou objetos distintos (por exemplo,
+                    partes de um carro, como motor e portas), produzindo máscaras de pixels que delimitam objetos.
+                </p>
+                <p>
+                    Processamento de Linguagem Natural (PLN): Modelos de deep learning analisam textos e falas para entender
+                    significado e contexto. Aplicações típicas incluem classificação de texto, análise de sentimentos, geração
+                    de resumos e tradução automática. Por exemplo, assistentes virtuais e chatbots usam PLN para interpretar
+                    comandos, detectar intenções e até corrigir erros gramaticais. Tradutores automáticos baseados em redes
+                    neurais profundas conseguem converter textos entre idiomas preservando significado e contexto.
+                </p>
+                <p>
+                    Análise de Sentimentos: Deep learning permite identificar emoções e opiniões em textos, classificando-os
+                    como positivos ou negativos. Técnicas de PLN extraem qualidades subjetivas do texto (como sentimento ou sarcasmo)
+                    usando redes neurais que reconhecem padrões sutis. Isso é útil em redes sociais e atendimento ao cliente para
+                    entender a reação das pessoas a produtos e serviços.
+                </p>
+                <p>
+                    Detecção de Fraudes: Em finanças, modelos de deep learning analisam grandes volumes de transações em tempo real
+                    para identificar padrões anômalos e suspeitos. Ao invés de se basear apenas em regras predefinidas, essas redes
+                    aprendem comportamentos normais e sinalizam atividades fora do comum, ajudando a prevenir fraudes em cartões de
+                    crédito e movimentações bancárias.
+                </p>
+                <p>
+                    Análise de Preços: Redes neurais profundas podem prever preços de ativos financeiros a partir de dados históricos
+                    e indicadores econômicos. Por exemplo, alguns estudos usam DL para modelar séries temporais e estimar tendências
+                    do mercado de ações com base em grandes conjuntos de dados financeiros.
+                </p>
+                <p>
+                    Sistemas de Recomendação: Deep learning é usado para sugerir produtos ou conteúdo personalizados. Modelos analisam
+                    o histórico de comportamento dos usuários (cliques, compras, avaliações) para recomendar filmes, músicas ou produtos
+                    que combinam com o perfil de cada pessoa. Técnicas como redes neurais profundas podem extrair padrões complexos de
+                    preferência e oferecer recomendações mais precisas do que métodos tradicionais.
+                </p>
+
+                <h3>Modelos Generativos</h3>
+                <p>
+                    Modelos generativos são modelos de aprendizado de máquina projetados para gerar novos dados semelhantes aos dados de
+                    treinamento. Eles aprendem as distribuições subjacentes dos dados originais e, a partir disso, criam novos exemplos
+                    que seguem o mesmo padrão. Em vez de apenas classificar ou prever, um modelo generativo "sonha" com novos conteúdos,
+                    como imagens, textos ou sinais, baseando-se no que aprendeu. Aplicações típicas incluem criação de imagens sintéticas,
+                    geração de texto automático e aumento de dados em conjuntos de treinamento.
+                </p>
+                <ul>
+                    <li>Redes Generativas (GANs): Consistem em duas redes neurais treinadas em conjunto, um gerador e um discriminador. O gerador cria novos dados, enquanto o discriminador tenta distinguir entre dados reais e gerados. Esse jogo competitivo faz o gerador produzir resultados cada vez mais realistas.</li>
+                    <li>Autoencoders (incluindo VAE): Redes que aprendem uma representação comprimida dos dados de entrada e depois decodificam para reconstruir ou gerar novos exemplos. Variantes como VAEs adicionam probabilidades ao processo.</li>
+                    <li>Outros exemplos: Incluem redes recorrentes para geração de texto e modelos de difusão para criação de imagens por processos estocásticos.</li>
+                </ul>
+
+                <h3>Modelos Sequenciais</h3>
+                <p>
+                    Modelos sequenciais lidam com dados em sequência ordenada (tempo ou texto) e aprendem padrões temporais para prever
+                    resultados futuros. Eles levam em conta a dependência entre eventos passados e futuros.
+                </p>
+                <ul>
+                    <li>Redes Neurais Recorrentes (RNNs): Projetadas para dados sequenciais, com conexões que alimentam a saída de volta como entrada, permitindo retenção de contexto temporal.</li>
+                    <li>Máquinas de Estado Oculto (HMM): Modelos probabilísticos que representam estados ocultos ao longo do tempo, muito usados historicamente em reconhecimento de voz e escrita.</li>
+                    <li>Outros algoritmos de sequência: Cadeias de Markov, LSTM e GRU, entre outros métodos para previsão e classificação de séries temporais.</li>
+                </ul>
+
+                <h3>Detecção e Segmentação de Imagens</h3>
+                <p>
+                    Em visão computacional, detecção de objetos e segmentação são tarefas complementares.
+                </p>
+                <ul>
+                    <li>Detecção de Objetos: Localiza instâncias de objetos pré-definidos dentro de uma imagem, geralmente com caixas delimitadoras.</li>
+                    <li>Segmentação de Imagens: Rotula cada pixel da imagem conforme sua classe ou instância, com redes como U-Net e Mask R-CNN para delimitação precisa.</li>
+                </ul>
+
+                <h3>Processamento de Linguagem Natural (PLN)</h3>
+                <p>
+                    O PLN permite que computadores entendam e gerem linguagem humana usando deep learning e aprendizado de máquina.
+                    Redes neurais profundas, como Transformers, analisam textos e vozes, capturando contexto e significado.
+                </p>
+                <ul>
+                    <li>Classificação de Texto e Análise de Sentimentos.</li>
+                    <li>Detecção de Intenções e Resposta a Comandos.</li>
+                    <li>Geração de Resumos e Tradução Automática.</li>
+                    <li>Correção Gramatical e Autocompletar.</li>
+                </ul>
+                <p>
+                    Em resumo, técnicas modernas de PLN baseadas em deep learning permitem que máquinas interpretem e manipulem textos
+                    e fala com eficácia próxima à humana.
+                </p>
+
+                <h3>Atividade Prática: Teachable Machine</h3>
+                <p>
+                    O Teachable Machine é uma ferramenta online gratuita desenvolvida pelo Google que permite treinar modelos de aprendizado
+                    de máquina de forma intuitiva, sem necessidade de programação. Na prática proposta, usamos o site
+                    https://teachablemachine.withgoogle.com para criar um classificador de imagens. Basta fornecer exemplos de duas categorias
+                    (como fotos de gatos e de cachorros) e iniciar o treinamento.
+                </p>
+                <p>
+                    O sistema treina uma rede neural simples para diferenciar as classes. Após concluído, ele identifica automaticamente se
+                    uma nova foto contém um gato ou cachorro. Esse exercício ilustra como modelos de visão computacional podem ser montados
+                    rapidamente com interfaces gráficas e transfer learning, trazendo à prática os conceitos estudados.
+                </p>
+
+                <h3>Referências</h3>
+                <p>
+                    Conteúdos adaptados e atualizados a partir de fontes acadêmicas e artigos técnicos recentes.
+                </p>
+            </article>
+        </section>
+
+        <footer class="credits">
+            Direitos autorais de criação da página: Delean Mafra. Esta página foi desenvolvida para realização de um trabalho acadêmico.
+        </footer>
+    </main>
+
+    <!-- Bibliotecas necessárias -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+
+    <script type="text/javascript">
+        const URL = "https://teachablemachine.withgoogle.com/models/4IJvvKm4n/";
+
+        let model, webcam, labelContainer, maxPredictions;
+        let isRunning = false;
+
+        function setupTabs() {
+            const tabButtons = document.querySelectorAll(".tab-btn");
+            const panels = document.querySelectorAll(".tab-panel");
+
+            tabButtons.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const target = btn.dataset.target;
+
+                    tabButtons.forEach((b) => {
+                        b.classList.remove("active");
+                        b.setAttribute("aria-selected", "false");
+                    });
+
+                    panels.forEach((panel) => panel.classList.remove("active"));
+
+                    btn.classList.add("active");
+                    btn.setAttribute("aria-selected", "true");
+
+                    const targetPanel = document.getElementById(target);
+                    if (targetPanel) {
+                        targetPanel.classList.add("active");
+                    }
+                });
+            });
+        }
+
+        setupTabs();
+
+        async function init() {
+            if (isRunning) return;
+
+            const startBtn = document.getElementById("start-btn");
+            const status = document.getElementById("status");
+            startBtn.disabled = true;
+            status.textContent = "Carregando modelo e acessando webcam...";
+
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            try {
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+
+                const flip = true;
+                webcam = new tmImage.Webcam(320, 320, flip);
+                await webcam.setup();
+                await webcam.play();
+                window.requestAnimationFrame(loop);
+
+                document.getElementById("webcam-container").appendChild(webcam.canvas);
+                labelContainer = document.getElementById("label-container");
+                labelContainer.innerHTML = "";
+
+                for (let i = 0; i < maxPredictions; i++) {
+                    const card = document.createElement("div");
+                    card.className = "prediction";
+                    card.innerHTML = `
+                        <div class="prediction-head">
+                            <span class="prediction-name">Classe ${i + 1}</span>
+                            <strong class="prediction-value">0%</strong>
+                        </div>
+                        <div class="prediction-track">
+                            <div class="prediction-bar"></div>
+                        </div>
+                    `;
+                    labelContainer.appendChild(card);
+                }
+
+                isRunning = true;
+                status.textContent = "Webcam ativa. Mostre um objeto para classificar.";
+                startBtn.textContent = "Webcam em execução";
+            } catch (error) {
+                console.error(error);
+                status.textContent = "Erro ao iniciar. Verifique permissões da câmera e tente novamente.";
+                startBtn.disabled = false;
+            }
+        }
+
+        async function loop() {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        async function predict() {
+            const prediction = await model.predict(webcam.canvas);
+            for (let i = 0; i < maxPredictions; i++) {
+                const probability = prediction[i].probability * 100;
+                const item = labelContainer.children[i];
+                item.querySelector(".prediction-name").textContent = prediction[i].className;
+                item.querySelector(".prediction-value").textContent = `${probability.toFixed(2)}%`;
+                item.querySelector(".prediction-bar").style.width = `${Math.max(0, Math.min(100, probability))}%`;
+            }
+        }
+    </script>
+</body>
+</html>
