@@ -20,7 +20,7 @@ A Obra acima é licenciada sob a **Creative Commons Attribution-NonCommercial 4.
 
 ---
 
-`https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc.svg`
+<img width="594" height="207" alt="image" src="https://github.com/user-attachments/assets/fbb058db-b0b3-48f5-880d-59af506c01a9" />
 
 **Licença:** [CC BY-NC 4.0](https://delean-mafra.github.io/Ahtools/CC_BY_NC_4.0)
 
