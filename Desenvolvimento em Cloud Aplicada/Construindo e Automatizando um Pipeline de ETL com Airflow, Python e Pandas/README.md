@@ -1,3 +1,30 @@
+## Licença e Declaração de Autoria
+
+**Obra:** Repositório `Construindo e Automatizando um Pipeline de ETL com Airflow, Python e Pandas`  
+**URL do repositório:** `https://github.com/Delean-Mafra/faculdade/tree/main/Desenvolvimento%20em%20Cloud%20Aplicada/Construindo%20e%20Automatizando%20um%20Pipeline%20de%20ETL%20com%20Airflow%2C%20Python%20e%20Pandas` [(github.com in Bing)](https://www.bing.com/search?q="https%3A%2F%2Fgithub.com%2FDelean-Mafra%2Ffaculdade%2Ftree%2Fmain%2FDesenvolvimento%2520em%2520Cloud%2520Aplicada%2FConstruindo%2520e%2520Automatizando%2520um%2520Pipeline%2520de%2520ETL%2520com%2520Airflow%252C%2520Python%2520e%2520Pandas")  
+**Autor:** **Delean Mafra**  
+**Data de criação e existência comprovada:** **10/10/2025** (horário local)  
+**Commit SHA de referência:** `e878cfb45fdd2950c2a9d50881555113fd6fde3c`
+
+---
+
+## 1. Licença principal
+
+A Obra acima é licenciada sob a **Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)**.
+
+---
+
+# ⚖️ DIREITOS AUTORAIS E PROPRIEDADE INTELECTUAL
+
+**PROTEÇÃO LEGAL E LICENCIAMENTO**
+
+---
+`https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc.svg`
+**Licença:** [CC BY-NC 4.0](https://delean-mafra.github.io/Ahtools/CC_BY_NC_4.0)
+---
+
+
+
 # Pipeline ETL com Apache Airflow: Automatização de Fluxos de Dados
 
 ## RESUMO
