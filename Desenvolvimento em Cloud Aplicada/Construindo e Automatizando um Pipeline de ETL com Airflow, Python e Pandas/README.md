@@ -1,7 +1,7 @@
 ## Licença e Declaração de Autoria
 
 **Obra:** Repositório `Construindo e Automatizando um Pipeline de ETL com Airflow, Python e Pandas`  
-**URL do repositório:** `https://github.com/Delean-Mafra/faculdade/tree/main/Desenvolvimento%20em%20Cloud%20Aplicada/Construindo%20e%20Automatizando%20um%20Pipeline%20de%20ETL%20com%20Airflow%2C%20Python%20e%20Pandas`  [(github.com)](https://github.com/Delean-Mafra/faculdade/tree/main/Desenvolvimento%20em%20Cloud%20Aplicada/Construindo%20e%20Automatizando%20um%20Pipeline%20de%20ETL%20com%20Airflow%2C%20Python%20e%20Pandas")  
+**URL do repositório:** `https://github.com/Delean-Mafra/faculdade/tree/main/Desenvolvimento%20em%20Cloud%20Aplicada/Construindo%20e%20Automatizando%20um%20Pipeline%20de%20ETL%20com%20Airflow%2C%20Python%20e%20Pandas`  [(github.com)](https://github.com/Delean-Mafra/faculdade/tree/main/Desenvolvimento%20em%20Cloud%20Aplicada/Construindo%20e%20Automatizando%20um%20Pipeline%20de%20ETL%20com%20Airflow%2C%20Python%20e%20Pandas)  
 **Autor:** **Delean Mafra**  
 **Data de criação e existência comprovada:** **10/10/2025** (horário local)  
 **Commit SHA de referência:** `e878cfb45fdd2950c2a9d50881555113fd6fde3c`
