@@ -613,8 +613,201 @@ Discuta os resultados obtidos e sugira melhorias para o modelo, se necessário.
 
 Resultado Esperado
 
-
-
 Importação e Pré-processamento dos Dados: o aluno deve ter importado corretamente as bibliotecas, carregado e limpo o dataset, e separado variáveis preditoras e alvo.
 Treinamento e Avaliação do Modelo: o aluno deve ter criado e treinado o modelo XGBoost, realizado as previsões e calculado as métricas corretamente. A matriz de confusão e gráficos devem estar presentes e bem elaborados.
  Validação Cruzada e Análise de Dados: o aluno deve ter realizado a validação cruzada, identificado anomalias e ruídos, e aplicado técnicas de limpeza. O relatório deve incluir uma discussão dos resultados e sugestões de melhorias.
+
+
+
+
+ Atividade Prática 9 – Implementando uma Rede Neural para Previsão de Vendas de Produtos
+
+
+
+Objetivos
+
+
+Aplicar conceitos básicos de redes neurais artificiais em um conjunto de dados fictício de vendas.
+Construir e treinar um modelo de rede neural utilizando TensorFlow e Keras.
+Avaliar o desempenho do modelo e comparar as previsões com os dados reais.
+
+
+Materiais, Métodos e Ferramentas
+
+
+Materiais:
+Conjunto de dados fictício com informações de vendas mensais.
+Ambiente de desenvolvimento (Google Colab, PyCharm, ou Jupyter Notebook).
+Métodos:
+Manipulação e pré-processamento de dados utilizando Pandas. 
+Normalização dos dados com SKLearn.
+Construção e treinamento de um modelo de rede neural com TensorFlow e Keras.
+Avaliação e visualização dos resultados com Matplotlib.
+Ferramentas:
+Bibliotecas: Pandas, NumPy, TensorFlow, Matplotlib, SKLearn.
+
+
+Atividade Prática
+
+
+
+Primeiramente, leia atentamente o texto a seguir:
+
+
+Você foi encarregado de implementar um sistema de previsão de vendas para uma empresa fictícia. A empresa deseja prever suas vendas mensais com base em dados históricos. O objetivo é construir e treinar uma rede neural que possa prever as vendas futuras com base em dados passados.
+
+
+
+Agora, vamos praticar!
+
+
+
+PASSO A PASSO DETALHADO DA ATIVIDADE:
+
+
+Configuração do Ambiente:
+Configure seu ambiente de desenvolvimento. Você pode usar Google Colab, PyCharm ou Jupyter Notebook.
+Importação de Bibliotecas:
+Importe as bibliotecas necessárias: Pandas, NumPy, TensorFlow, SKLearn e Matplotlib.
+
+
+import pandas as pd
+
+
+import numpy as np
+
+
+import tensorflow as tf
+
+
+import matplotlib.pyplot as plt
+
+
+from sklearn.model_selection import train_test_split
+
+
+from sklearn.preprocessing import StandardScaler
+
+
+
+Criação da Base de Dados:
+Gere uma base de dados fictícia com meses e vendas. Utilize Pandas e NumPy para criar este conjunto de dados.
+
+
+meses = pd.date_range(start=‘2023-01-01’, periods=24, freq=‘M’)
+
+
+vendas = np.random.randint(80000, 120000, size=24) * 2
+
+
+df = pd.DataFrame({‘Mês’: meses, ‘Vendas’: vendas})
+
+
+
+Separação dos Dados:
+Separe os dados em características (X) e alvo (Y). Divida os dados em conjuntos de treino e teste.
+
+
+X = df[[‘Mês’]].values
+
+
+y = df[‘Vendas’].values
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+
+Normalização dos Dados:
+Normalizar os dados utilizando o StandardScaler do SKLearn.
+
+
+scaler = StandardScaler()
+
+
+X_train_scaled = scaler.fit_transform(X_train)
+
+
+X_test_scaled = scaler.transform(X_test)
+
+
+
+Construção do Modelo:
+Defina e compile o modelo de rede neural utilizando TensorFlow e Keras.
+
+
+model = tf.keras.Sequential([
+
+
+    tf.keras.layers.Dense(64, activation=‘relu’, input_shape=(X_train_scaled.shape[1],)),
+
+
+    tf.keras.layers.Dense(32, activation=‘relu’),
+
+
+    tf.keras.layers.Dense(1)
+
+
+])
+
+
+model.compile(optimizer=‘adam’, loss=‘mean_squared_error’)
+
+
+
+Treinamento do Modelo:
+Treine o modelo com os dados de treino.
+
+
+model.fit(X_train_scaled, y_train, epochs=100)
+
+
+
+Avaliação do Modelo:
+Avalie o modelo utilizando os dados de teste e imprima a perda (loss).
+
+
+loss = model.evaluate(X_test_scaled, y_test)
+
+
+print(f’Loss: {loss}')
+
+
+
+Visualização dos Resultados:
+Plote os dados reais e as previsões do modelo para comparar os resultados.
+
+
+predictions = model.predict(X_test_scaled)
+
+
+plt.plot(y_test, label=‘Dados Reais’)
+
+
+plt.plot(predictions, label=‘Previsões’)
+
+
+plt.xlabel(‘Meses’)
+
+
+plt.ylabel(‘Vendas’)
+
+
+plt.legend()
+
+
+plt.show()
+
+
+
+
+
+
+Resultado Esperado
+
+
+Importação e Configuração: verificar se todas as bibliotecas necessárias foram importadas e se o ambiente está configurado corretamente.
+Criação da Base de Dados: confirmar que a base de dados foi criada corretamente com os meses e vendas.
+Separação e Normalização: checar se os dados foram separados corretamente e normalizados antes da construção do modelo.
+Construção e Treinamento do Modelo: avaliar se o modelo foi definido, compilado e treinado corretamente.
+Avaliação e Visualização: validar se o modelo foi avaliado e se os resultados foram visualizados corretamente.
