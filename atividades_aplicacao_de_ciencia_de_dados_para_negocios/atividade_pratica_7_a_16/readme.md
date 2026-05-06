@@ -811,3 +811,222 @@ Criação da Base de Dados: confirmar que a base de dados foi criada corretament
 Separação e Normalização: checar se os dados foram separados corretamente e normalizados antes da construção do modelo.
 Construção e Treinamento do Modelo: avaliar se o modelo foi definido, compilado e treinado corretamente.
 Avaliação e Visualização: validar se o modelo foi avaliado e se os resultados foram visualizados corretamente.
+
+
+
+Atividade Prática 13 – Segmentação de Clientes: Aplicando K-Means, DBSCAN e Hierarchical Clustering
+
+
+
+Objetivos
+
+
+Compreender e aplicar técnicas de segmentação de clientes utilizando algoritmos de clusterização.
+Utilizar Python e bibliotecas como SKLearn e Pandas para realizar análise prática de dados de clientes.
+Interpretar os resultados dos algoritmos de clusterização e suas implicações para estratégias de marketing e negócios.
+
+
+Materiais, Métodos e Ferramentas
+
+
+Ambiente de desenvolvimento Python (Google Colab, Jupyter Notebook ou IDE de sua preferência).
+Bibliotecas Python: Pandas, NumPy, Matplotlib, SKLearn, SciPy.
+Base de dados fictícia contendo informações de clientes (idade, renda anual e pontuação de gastos).
+
+
+Atividade Prática
+
+
+Primeiramente, leia atentamente o texto a seguir:
+
+
+Nesta atividade, você explorará técnicas de clusterização para segmentar uma base de dados de clientes. Você irá aplicar três algoritmos diferentes: K-Means, DBSCAN e Hierarchical Clustering, e analisar os resultados obtidos para entender as características dos diferentes grupos de clientes identificados. A base de dados fictícia utilizada contém três variáveis: idade, renda anual e pontuação de gastos.
+
+
+
+Agora, vamos praticar!
+
+
+
+PASSO A PASSO DETALHADO DA ATIVIDADE:
+
+
+Preparação do Ambiente:
+Abra seu ambiente de desenvolvimento Python (Google Colab, Jupyter Notebook ou IDE de sua escolha).
+Instale e importe as bibliotecas necessárias: Pandas, NumPy, Matplotlib, SKLearn e SciPy.
+
+
+Carregar e Preparar os Dados:
+Crie uma base de dados fictícia com as seguintes colunas: Idade, Renda Anual (k$), e Pontuação de Gastos (1-100).
+Insira os seguintes dados fictícios:
+
+
+import pandas as pd
+
+
+import numpy as np
+
+
+
+data = {
+
+
+    ‘Idade’: [25, 34, 45, 31, 40, 23, 35, 50, 43, 52],
+
+
+    ‘Renda Anual (k$)’: [15, 25, 35, 45, 50, 55, 60, 70, 80, 90],
+
+
+    ‘Pontuação de Gastos (1-100)’: [39, 81, 6, 77, 40, 76, 94, 3, 72, 14]
+
+
+}
+
+
+df = pd.DataFrame(data)
+
+
+
+Normalização dos Dados:
+Normalizar os dados utilizando StandardScaler para garantir a consistência no processamento dos algoritmos de clusterização.
+
+
+from sklearn.preprocessing import StandardScaler
+
+
+
+scaler = StandardScaler()
+
+
+scaled_data = scaler.fit_transform(df)
+
+
+
+Aplicação do Algoritmo K-Means:
+Aplique o algoritmo K-Means com 3 clusters e visualize os resultados.
+
+
+from sklearn.cluster import KMeans
+
+
+import matplotlib.pyplot as plt
+
+
+
+kmeans = KMeans(n_clusters=3, random_state=0)
+
+
+clusters = kmeans.fit_predict(scaled_data)
+
+
+df[‘Cluster’] = clusters
+
+
+
+plt.figure(figsize=(10, 6))
+
+
+plt.scatter(df[‘Idade’], df[‘Pontuação de Gastos (1-100)’], c=df[‘Cluster’], cmap=‘viridis’)
+
+
+plt.title(‘Segmentação de Clientes com K-Means’)
+
+
+plt.xlabel(‘Idade’)
+
+
+plt.ylabel(‘Pontuação de Gastos (1-100)’)
+
+
+plt.colorbar(label=‘Cluster’)
+
+
+plt.show()
+
+
+
+Aplicação do Algoritmo DBSCAN:
+Aplique o algoritmo DBSCAN e visualize os clusters identificados.
+
+
+from sklearn.cluster import DBSCAN
+
+
+
+dbscan = DBSCAN(eps=0.5, min_samples=2)
+
+
+clusters_dbscan = dbscan.fit_predict(scaled_data)
+
+
+df[‘Cluster_DBSCAN’] = clusters_dbscan
+
+
+
+plt.figure(figsize=(10, 6))
+
+
+plt.scatter(df[‘Idade’], df[‘Pontuação de Gastos (1-100)’], c=df[‘Cluster_DBSCAN’], cmap=‘plasma’)
+
+
+plt.title(‘Segmentação de Clientes com DBSCAN’)
+
+
+plt.xlabel(‘Idade’)
+
+
+plt.ylabel(‘Pontuação de Gastos (1-100)’)
+
+
+plt.colorbar(label=‘Cluster’)
+
+
+plt.show()
+
+
+
+Aplicação do Algoritmo Hierarchical Clustering:
+Aplique o Hierarchical Clustering e visualize o dendrograma.
+
+
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+
+
+linked = linkage(scaled_data, method=‘ward’)
+
+
+
+plt.figure(figsize=(10, 6))
+
+
+dendrogram(linked, orientation=‘top’, distance_sort=‘descending’, show_leaf_counts=True)
+
+
+plt.title(‘Dendrograma para Segmentação de Clientes’)
+
+
+plt.xlabel(‘Índice dos Clientes’)
+
+
+plt.ylabel(‘Distância’)
+
+
+plt.show()
+
+
+
+Análise dos Resultados:
+Compare os resultados obtidos pelos três algoritmos.
+Discuta as diferenças entre os clusters identificados pelos algoritmos K-Means, DBSCAN e Hierarchical Clustering.
+Identifique padrões e características dos clusters criados.
+
+
+
+Resultado  Esperado
+
+
+K-Means: identificação de três clusters com base nas características dos dados. O gráfico deve mostrar a segmentação dos clientes em três grupos distintos.
+DBSCAN: identificação de clusters com base em densidade. O gráfico deve mostrar os clusters formados pelo DBSCAN, que podem variar dependendo dos parâmetros utilizados.
+Hierarchical Clustering: dendrograma mostrando a hierarquia de clusters. Deve permitir a visualização da fusão de clusters e ajudar na decisão sobre o número de clusters a serem utilizados.
+Esta atividade visa proporcionar uma compreensão prática das técnicas de clusterização e sua aplicação em segmentação de clientes, preparando os alunos para implementar essas técnicas em situações reais de negócios.
