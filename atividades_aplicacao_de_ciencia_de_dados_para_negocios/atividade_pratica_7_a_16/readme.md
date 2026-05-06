@@ -813,6 +813,181 @@ Construção e Treinamento do Modelo: avaliar se o modelo foi definido, compilad
 Avaliação e Visualização: validar se o modelo foi avaliado e se os resultados foram visualizados corretamente.
 
 
+Atividade Prática 11 – Análise de Sentimentos em Comentários de Clientes para Otimização de Produtos e Serviços
+
+
+
+Objetivos
+
+
+Compreender a aplicação da análise de sentimentos na interpretação de feedback de clientes.
+Desenvolver habilidades práticas usando ferramentas como TextBlob e VADER para realizar análise de sentimentos em textos.
+Interpretar as métricas de sentimentos e utilizar os resultados para gerar insights sobre a percepção dos clientes.
+
+
+Materiais, Métodos e Ferramentas
+
+
+Computador com Python instalado.
+Bibliotecas Python: TextBlob, VADER SentimentIntensityAnalyzer (disponíveis via pip install textblob vaderSentiment).
+Conjunto de textos fictícios para análise (fornecidos como exemplos).
+
+
+Atividade Prática
+
+
+
+Primeiramente, leia atentamente o texto a seguir:
+
+
+Você recebeu um conjunto de comentários de clientes sobre um novo produto lançado por uma empresa. O objetivo é analisar esses comentários para entender como os clientes estão reagindo ao produto e identificar áreas de melhoria.
+
+
+Para realizar a análise, você utilizará duas ferramentas de análise de sentimentos: TextBlob e VADER. Sua tarefa é seguir os passos abaixo para analisar os comentários e interpretar os resultados.
+
+
+
+Passo a Passo Detalhado da Atividade:
+
+
+Preparação do Ambiente:
+Instale as bibliotecas necessárias se ainda não estiverem instaladas.
+
+
+pip install textblob vaderSentiment
+
+
+
+
+No seu ambiente Python, importe as bibliotecas necessárias e configure as ferramentas de análise de sentimentos.
+Análise com TextBlob:
+Utilize o seguinte código para analisar a polaridade e subjetividade dos comentários com TextBlob.
+
+
+from textblob import TextBlob
+
+
+
+# Comentários para análise
+
+
+comentarios = [
+
+
+    “Eu adoro o novo produto! Ele superou minhas expectativas.”,
+
+
+    “O produto é bom, mas o preço é muito alto.”,
+
+
+    “O atendimento ao cliente foi péssimo.”,
+
+
+    “A entrega foi rápida, mas o produto não estava bem embalado.”
+
+
+]
+
+
+
+# Analisando sentimentos com TextBlob
+
+
+for comentario in comentarios:
+
+
+    blob = TextBlob(comentario)
+
+
+    sentimento = blob.sentiment
+
+
+    print(f"Comentário: {comentario}“)
+
+
+    print(f"Sentimento: Polaridade={sentimento.polarity}, Subjetividade={sentimento.subjectivity}”)
+
+
+
+Análise com VADER:
+Utilize o seguinte código para analisar a polaridade dos comentários com VADER.
+
+
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+
+
+# Criando a instância do analisador de sentimentos
+
+
+analyzer = SentimentIntensityAnalyzer()
+
+
+
+# Comentários para análise
+
+
+comentarios = [
+
+
+    “Eu adoro o novo produto! Ele superou minhas expectativas.”,
+
+
+    “O produto é bom, mas o preço é muito alto.”,
+
+
+    “O atendimento ao cliente foi péssimo.”,
+
+
+    “A entrega foi rápida, mas o produto não estava bem embalado.”
+
+
+]
+
+
+
+# Analisando cada comentário
+
+
+for comentario in comentarios:
+
+
+    pontuacao = analyzer.polarity_scores(comentario)
+
+
+    print(f"Comentário: {comentario}“)
+
+
+    print(f"Pontuação: {pontuacao}”)
+
+
+
+Interpretação dos Resultados:
+Compare os resultados obtidos das análises com TextBlob e VADER.
+Identifique quais comentários são classificados como positivos, negativos ou neutros.
+Com base nas métricas de polaridade e subjetividade (TextBlob) e na pontuação compound (VADER), discuta o feedback geral sobre o produto e proponha ações para melhorar áreas específicas mencionadas pelos clientes.
+Relatório:
+Elabore um relatório detalhado com suas observações e conclusões. Inclua gráficos ou tabelas, se necessário, para ilustrar a análise dos sentimentos.
+Proponha sugestões para a empresa com base na análise dos sentimentos e no feedback dos clientes.
+
+
+
+
+
+Resultado Esperado
+
+
+a. A análise dos resultados deve mostrar a polaridade e subjetividade dos comentários com TextBlob e a pontuação compound, pos, neu, e neg com VADER.
+
+
+b. As interpretações devem refletir a categorização dos sentimentos dos comentários, com sugestões práticas baseadas nas análises.
+
+
+c. O relatório deve incluir uma discussão clara sobre as métricas de sentimentos, gráficos ou tabelas conforme necessário, e recomendações para a empresa.
+
+
+Essa atividade prática ajudará os alunos a aplicar a análise de sentimentos em um cenário realista, facilitando a compreensão de como as ferramentas podem ser usadas para obter insights valiosos a partir de feedback de clientes.
+
 
 
 Atividade Prática 12 – Construindo um Sistema de Recomendação Personalizada
