@@ -372,7 +372,7 @@ Regressão Logística: Analise a performance do modelo e como as métricas de av
 
 
 
-Esta  permitirá que você aplique e entenda as técnicas de regressão em contextos empresariais, ajudando a desenvolver habilidades importantes para análise de dados.
+Esta atividade prática permitirá que você aplique e entenda as técnicas de regressão em contextos empresariais, ajudando a desenvolver habilidades importantes para análise de dados.
 
 
 
@@ -538,7 +538,7 @@ Este gabarito deve ajudar a verificar se as respostas e interpretações dos res
 
 
 
- 8 – Avaliação e Otimização de Modelos de Classificação
+Atividade Prática 8 – Avaliação e Otimização de Modelos de Classificação
 
 
 
@@ -564,7 +564,7 @@ Ferramentas
 Python, pandas, scikit-learn, XGBoost, matplotlib, seaborn
 
 
-
+Atividade Prática
 
 
 Primeiramente, leia atentamente o texto a seguir:
@@ -620,7 +620,7 @@ Treinamento e Avaliação do Modelo: o aluno deve ter criado e treinado o modelo
 
 
 
-  9 – Implementando uma Rede Neural para Previsão de Vendas de Produtos
+ Atividade Prática 9 – Implementando uma Rede Neural para Previsão de Vendas de Produtos
 
 
 
@@ -647,7 +647,7 @@ Ferramentas:
 Bibliotecas: Pandas, NumPy, TensorFlow, Matplotlib, SKLearn.
 
 
-
+Atividade Prática
 
 
 
@@ -811,6 +811,8 @@ Criação da Base de Dados: confirmar que a base de dados foi criada corretament
 Separação e Normalização: checar se os dados foram separados corretamente e normalizados antes da construção do modelo.
 Construção e Treinamento do Modelo: avaliar se o modelo foi definido, compilado e treinado corretamente.
 Avaliação e Visualização: validar se o modelo foi avaliado e se os resultados foram visualizados corretamente.
+
+
 
 
 Atividade Prática 12 – Construindo um Sistema de Recomendação Personalizada
@@ -1228,3 +1230,4 @@ K-Means: identificação de três clusters com base nas características dos dad
 DBSCAN: identificação de clusters com base em densidade. O gráfico deve mostrar os clusters formados pelo DBSCAN, que podem variar dependendo dos parâmetros utilizados.
 Hierarchical Clustering: dendrograma mostrando a hierarquia de clusters. Deve permitir a visualização da fusão de clusters e ajudar na decisão sobre o número de clusters a serem utilizados.
 Esta atividade visa proporcionar uma compreensão prática das técnicas de clusterização e sua aplicação em segmentação de clientes, preparando os alunos para implementar essas técnicas em situações reais de negócios.
+
