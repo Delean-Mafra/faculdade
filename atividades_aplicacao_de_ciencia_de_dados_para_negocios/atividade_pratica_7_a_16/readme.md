@@ -372,7 +372,7 @@ Regressão Logística: Analise a performance do modelo e como as métricas de av
 
 
 
-Esta atividade prática permitirá que você aplique e entenda as técnicas de regressão em contextos empresariais, ajudando a desenvolver habilidades importantes para análise de dados.
+Esta  permitirá que você aplique e entenda as técnicas de regressão em contextos empresariais, ajudando a desenvolver habilidades importantes para análise de dados.
 
 
 
@@ -538,7 +538,7 @@ Este gabarito deve ajudar a verificar se as respostas e interpretações dos res
 
 
 
-Atividade Prática 8 – Avaliação e Otimização de Modelos de Classificação
+ 8 – Avaliação e Otimização de Modelos de Classificação
 
 
 
@@ -564,7 +564,7 @@ Ferramentas
 Python, pandas, scikit-learn, XGBoost, matplotlib, seaborn
 
 
-Atividade Prática
+
 
 
 Primeiramente, leia atentamente o texto a seguir:
@@ -620,7 +620,7 @@ Treinamento e Avaliação do Modelo: o aluno deve ter criado e treinado o modelo
 
 
 
- Atividade Prática 9 – Implementando uma Rede Neural para Previsão de Vendas de Produtos
+  9 – Implementando uma Rede Neural para Previsão de Vendas de Produtos
 
 
 
@@ -647,7 +647,7 @@ Ferramentas:
 Bibliotecas: Pandas, NumPy, TensorFlow, Matplotlib, SKLearn.
 
 
-Atividade Prática
+
 
 
 
@@ -812,6 +812,204 @@ Separação e Normalização: checar se os dados foram separados corretamente e 
 Construção e Treinamento do Modelo: avaliar se o modelo foi definido, compilado e treinado corretamente.
 Avaliação e Visualização: validar se o modelo foi avaliado e se os resultados foram visualizados corretamente.
 
+
+Atividade Prática 12 – Construindo um Sistema de Recomendação Personalizada
+
+
+
+Objetivos
+
+
+Desenvolver e implementar um sistema de recomendação personalizada utilizando a biblioteca Surprise em Python.
+Avaliar o desempenho do sistema de recomendação com base em métricas de acurácia.
+Aplicar técnicas de pré-processamento de dados e normalização para otimizar o modelo de recomendação.
+
+
+Materiais, Métodos e Ferramentas
+
+
+Computador com acesso à internet.
+Google Colab ou ambiente Python com suporte à biblioteca Surprise.
+Biblioteca Surprise para sistemas de recomendação (disponível via pip).
+Biblioteca pandas para manipulação de dados.
+Dados fictícios sobre classificações de produtos (fornecidos na atividade).
+
+
+Atividade Prática
+
+
+Primeiramente, leia atentamente o texto a seguir:
+
+
+A recomendação personalizada é uma técnica essencial para melhorar a experiência do usuário e impulsionar as vendas em diversos setores de negócios. Nesta atividade, você terá a oportunidade de implementar um sistema de recomendação utilizando a biblioteca Surprise em Python. Você irá seguir um passo a passo para construir um modelo, avaliar seu desempenho e gerar recomendações personalizadas para um usuário específico.
+
+
+
+Agora, vamos praticar!
+
+
+
+PASSO A PASSO DETALHADO DA ATIVIDADE:
+
+
+
+Preparação do Ambiente:
+Acesse o Google Colab ou configure seu ambiente Python local.
+Instale as bibliotecas necessárias com os comandos:
+
+
+!pip install pandas surprise
+
+
+
+Importação das Bibliotecas:
+Importe as bibliotecas necessárias para a atividade:
+
+
+import pandas as pd
+
+
+from surprise import Dataset, Reader, SVD
+
+
+from surprise.model_selection import train_test_split
+
+
+from surprise import accuracy
+
+
+
+Criação e Estruturação dos Dados:
+Crie um DataFrame com dados fictícios sobre classificações de produtos:
+
+
+data = {
+
+
+    ‘user_id’: [1, 1, 1, 2, 2, 3, 3, 4],
+
+
+    ‘item_id’: [1, 2, 3, 1, 2, 2, 3, 1],
+
+
+    ‘rating’: [5, 3, 2, 5, 4, 3, 5, 4]
+
+
+}
+
+
+df = pd.DataFrame(data)
+
+
+
+Preparação dos Dados para o Modelo:
+Defina o formato dos dados usando o Reader e carregue os dados:
+
+
+reader = Reader(rating_scale=(1, 5))
+
+
+data = Dataset.load_from_df(df[[‘user_id’, ‘item_id’, ‘rating’]], reader)
+
+
+
+Divisão dos Dados:
+Divida os dados em conjuntos de treino e teste:
+
+
+trainset, testset = train_test_split(data, test_size=0.25)
+
+
+
+Construção e Treinamento do Modelo:
+Crie e treine o modelo de recomendação utilizando o SVD:
+
+
+algo = SVD()
+
+
+algo.fit(trainset)
+
+
+
+Avaliação do Modelo:
+Faça previsões e avalie o desempenho do modelo:
+
+
+predictions = algo.test(testset)
+
+
+print(“RMSE:”, accuracy.rmse(predictions))
+
+
+print(“MAE:”, accuracy.mae(predictions))
+
+
+
+Geração de Recomendações:
+Gere as top 5 recomendações para um usuário específico:
+
+
+user_id = 1
+
+
+user_items = df[df[‘user_id’] == user_id][‘item_id’]
+
+
+all_items = set(df[‘item_id’].unique())
+
+
+items_to_predict = list(all_items - set(user_items))
+
+
+
+recommendations = []
+
+
+for item_id in items_to_predict:
+
+
+    score = algo.predict(user_id, item_id).est
+
+
+    recommendations.append((item_id, score))
+
+
+
+recommendations.sort(key=lambda x: x[1], reverse=True)
+
+
+
+top_5 = recommendations[:5]
+
+
+print(f"Top 5 recomendações para o usuário {user_id}:“)
+
+
+for item, score in top_5:
+
+
+    print(f"Item {item} com pontuação {score:.2f}”)
+
+
+
+
+
+
+Resultado Esperado
+
+
+Preparação do Ambiente: o ambiente deve estar configurado com as bibliotecas necessárias instaladas.
+Importação das Bibliotecas: as bibliotecas pandas, surprise devem estar corretamente importadas.
+Criação e Estruturação dos Dados: o DataFrame deve ser criado com as colunas user_id, item_id e rating.
+Preparação dos Dados para o Modelo: o DataFrame deve ser carregado corretamente utilizando o Reader e Dataset da biblioteca Surprise.
+Divisão dos Dados: Os dados devem ser divididos em conjuntos de treino e teste usando o train_test_split.
+Construção e Treinamento do Modelo: o modelo SVD deve ser treinado com o conjunto de treino.
+Avaliação do Modelo: as métricas RMSE e MAE devem ser calculadas e apresentadas.
+Geração de Recomendações: as top 5 recomendações para o usuário especificado devem ser corretamente calculadas e apresentadas.
+
+
+Certifique-se de que todos os passos foram seguidos corretamente e que o código está funcionando conforme esperado.
 
 
 Atividade Prática 13 – Segmentação de Clientes: Aplicando K-Means, DBSCAN e Hierarchical Clustering
