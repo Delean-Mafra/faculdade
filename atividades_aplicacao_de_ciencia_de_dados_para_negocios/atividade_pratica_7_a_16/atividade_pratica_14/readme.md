@@ -1,5 +1,3 @@
----
-
 # Relatório da Atividade Prática  
 **Aplicação do Algoritmo Naive Bayes na Filtragem de Spam**
 
