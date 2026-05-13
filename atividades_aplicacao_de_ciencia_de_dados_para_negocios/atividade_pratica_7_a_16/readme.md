@@ -1406,3 +1406,165 @@ DBSCAN: identificação de clusters com base em densidade. O gráfico deve mostr
 Hierarchical Clustering: dendrograma mostrando a hierarquia de clusters. Deve permitir a visualização da fusão de clusters e ajudar na decisão sobre o número de clusters a serem utilizados.
 Esta atividade visa proporcionar uma compreensão prática das técnicas de clusterização e sua aplicação em segmentação de clientes, preparando os alunos para implementar essas técnicas em situações reais de negócios.
 
+
+
+
+
+Atividade Prática 15 – Análise de Textos com Tokenização e Count Vectorization
+
+
+
+Objetivos
+
+
+Compreender o processo de tokenização e suas diversas técnicas.
+Aplicar a técnica de Count Vectorization para análise de textos.
+Desenvolver habilidades práticas em Python utilizando bibliotecas de processamento de linguagem natural.
+
+
+Materiais, Métodos e Ferramentas
+
+
+Materiais: textos para análise (fornecidos em anexo).
+Métodos: tokenização de textos e vetorização utilizando Count Vectorization.
+Ferramentas: python, bibliotecas NLTK e Scikit-Learn.
+
+
+Atividade Prática
+
+
+Primeiramente, leia atentamente o texto a seguir:
+
+
+A tokenização é o processo de dividir um texto em unidades menores chamadas tokens. Essas unidades podem ser palavras, sub-palavras, caracteres ou frases. Count Vectorization é uma técnica para transformar documentos de texto em vetores numéricos baseados na frequência das palavras.
+
+
+
+Agora, vamos praticar!
+
+
+
+PASSO A PASSO DETALHADO DA ATIVIDADE:
+
+
+Preparação do Ambiente:
+Certifique-se de que você tem o Python instalado no seu computador. Instale as bibliotecas necessárias usando o seguinte comando:
+
+
+pip install nltk scikit-learn
+
+
+
+Importação das Bibliotecas:
+Abra um novo arquivo Python e importe as seguintes bibliotecas:
+
+
+import nltk
+
+
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+
+from sklearn.feature_extraction.text import CountVectorizer
+
+
+nltk.download(‘punkt’)
+
+
+
+Tokenização de Texto:
+Defina um texto para análise e aplique a tokenização de palavras e sentenças. Use o seguinte código como exemplo:
+
+
+texto = “Tokenização é um passo fundamental em processamento de linguagem natural. Ela é essencial para análise de sentimentos.”
+
+
+
+palavras_tokenizadas = word_tokenize(texto)
+
+
+sentenças_tokenizadas = sent_tokenize(texto)
+
+
+
+print(“Texto original:”, texto)
+
+
+print(“Palavras tokenizadas:”, palavras_tokenizadas)
+
+
+print(“Sentenças tokenizadas:”, sentenças_tokenizadas)
+
+
+
+Count Vectorization:
+Aplique Count Vectorization ao texto utilizando a biblioteca Scikit-Learn. Defina uma lista de documentos (textos) e transforme-os em vetores numéricos com base na frequência das palavras.
+
+
+documentos = [
+
+
+    “Tokenização é um passo fundamental em processamento de linguagem natural.”,
+
+
+    “Ela é essencial para análise de sentimentos e outros processos de dados.”
+
+
+]
+
+
+
+vectorizer = CountVectorizer()
+
+
+X = vectorizer.fit_transform(documentos)
+
+
+print(“Palavras do vocabulário:”, vectorizer.get_feature_names_out())
+
+
+print(“Representação vetorial dos documentos:\n”, X.toarray())
+
+
+
+Análise dos Resultados:
+Observe os resultados da tokenização e da Count Vectorization. Responda às seguintes perguntas:
+
+▪          Quais são as palavras tokenizadas no texto?
+
+
+▪          Como a Count Vectorization representa os documentos numericamente?
+
+
+▪          O que você pode inferir sobre a frequência das palavras nos documentos?
+
+
+Aplicação Prática:
+Aplique a tokenização e Count Vectorization a um conjunto de dados de feedbacks de clientes fornecidos. Realize uma análise simples para identificar as palavras mais frequentes e como elas podem indicar sentimentos predominantes.
+
+
+
+
+
+Resultado Esperado
+
+
+Tokenização de Palavras e Sentenças:
+As palavras e sentenças tokenizadas devem estar corretamente listadas.
+
+As palavras tokenizadas devem ser uma lista de strings.
+
+As sentenças tokenizadas devem ser uma lista de frases.
+
+
+Count Vectorization:
+As palavras do vocabulário devem incluir as palavras presentes nos documentos.
+
+A representação vetorial deve mostrar a frequência das palavras em cada documento.
+
+Análise dos Resultados:
+As respostas devem refletir a correta interpretação da frequência das palavras.
+
+A análise deve demonstrar compreensão da relação entre palavras e suas representações numéricas.
+
+Esta atividade ajudará a aplicar na prática conceitos de tokenização e Count Vectorization, promovendo uma compreensão mais profunda das técnicas de processamento de linguagem natural e suas aplicações em negócios.
