@@ -12,7 +12,6 @@ from mysql.connector import errorcode
 MYSQL_CONFIG = {
     'host': 'localhost',
     'user': 'root',
-    'password': 'root',
     'database': 'DB_EMPRESA'
 }
 
@@ -55,13 +54,14 @@ def update_settings_file():
 def test_mysql_connection():
     """Testa a conexão com o MySQL usando as novas credenciais"""
     print(f"\nTestando conexão com MySQL ({MYSQL_CONFIG['host']}, usuário: {MYSQL_CONFIG['user']})...")
+    mysql_password = os.getenv('MYSQL_PASSWORD', '')
     
     try:
         # Tenta conectar sem especificar o banco de dados
         conn = mysql.connector.connect(
             host=MYSQL_CONFIG['host'],
             user=MYSQL_CONFIG['user'],
-            password=MYSQL_CONFIG['password']
+            password=mysql_password
         )
         
         print("✅ Conexão com MySQL estabelecida com sucesso!")
