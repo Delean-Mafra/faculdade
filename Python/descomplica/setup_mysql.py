@@ -124,7 +124,7 @@ def update_settings_file():
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '{MYSQL_CONFIG['database']}',
         'USER': '{MYSQL_CONFIG['user']}',
-        'PASSWORD': '{MYSQL_CONFIG['password']}',
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', ''),
         'HOST': '{MYSQL_CONFIG['host']}',
         'PORT': '3306',
         'OPTIONS': {{

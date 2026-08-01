@@ -16,6 +16,8 @@ MYSQL_CONFIG = {
     'database': 'DB_EMPRESA'
 }
 
+PASSWORD_SETTING_EXPR = "os.getenv('MYSQL_PASSWORD', '')"
+
 def update_settings_file():
     """Atualiza o arquivo settings.py com as novas credenciais do MySQL"""
     settings_path = os.path.join('descomplica', 'settings.py')
@@ -29,14 +31,14 @@ def update_settings_file():
             # Substitui a senha antiga pela nova
             content = content.replace(
                 "'PASSWORD': 'Brasil101@'", 
-                f"'PASSWORD': '{MYSQL_CONFIG['password']}'"
+                f"'PASSWORD': {PASSWORD_SETTING_EXPR}"
             )
             
             # Se a senha Brasil101@ não for encontrada, tenta substituir qualquer senha
             if "'PASSWORD': 'Brasil101@'" not in content:
                 import re
                 pattern = r"'PASSWORD':\s*'[^']*'"
-                content = re.sub(pattern, f"'PASSWORD': '{MYSQL_CONFIG['password']}'", content)
+                content = re.sub(pattern, f"'PASSWORD': {PASSWORD_SETTING_EXPR}", content)
             
             with open(settings_path, 'w', encoding='utf-8') as file:
                 file.write(content)

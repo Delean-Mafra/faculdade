@@ -27,7 +27,7 @@ def create_superuser(username, email, password):
         
         print(f"\nAgora você pode fazer login em http://127.0.0.1:8000/admin/ com:")
         print(f"Usuário: {username}")
-        print(f"Senha: {password}")
+        print("Senha: [oculta]")
         return True
     
     except IntegrityError:

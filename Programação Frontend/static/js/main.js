@@ -31,7 +31,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageSelectors = document.querySelectorAll('.page-selector');
     pageSelectors.forEach(selector => {
         selector.addEventListener('change', function() {
-            window.location.href = this.value;
+            const selectedPath = (this.value || '').trim();
+            if (!selectedPath) {
+                return;
+            }
+
+            try {
+                const targetUrl = new URL(selectedPath, window.location.origin);
+                if (targetUrl.origin === window.location.origin && ['http:', 'https:'].includes(targetUrl.protocol)) {
+                    window.location.href = `${targetUrl.pathname}${targetUrl.search}${targetUrl.hash}`;
+                }
+            } catch (error) {
+                console.warn('URL de paginação inválida ignorada.', error);
+            }
         });
     });
     

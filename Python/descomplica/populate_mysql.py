@@ -57,7 +57,7 @@ def generate_authors(n=10):
                 birth_date=birth_date
             )
             authors_created += 1
-            print(f"  ✓ Autor criado: {name} ({birth_date})")
+            print(f"  ✓ Autor criado: {name}")
         except Exception as e:
             print(f"  ❌ Erro ao criar autor {name}: {str(e)}")
     

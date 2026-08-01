@@ -210,7 +210,7 @@ def populate_database():
                 name=name,
                 birth_date=birth_date
             )
-            print(f"  ✓ Autor criado: {name} ({birth_date})")
+            print(f"  ✓ Autor criado: {name}")
         
         # Gera livros
         num_books = 30
