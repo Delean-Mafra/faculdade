@@ -4,7 +4,7 @@ Relatório Técnico-Estratégico: Ecossistema de Data Warehouse e Análise de Pl
 
 O Data Warehouse (DW) consolidou-se como a espinha dorsal da tomada de decisão estratégica nas organizações modernas. Sob a ótica de arquitetura, a transição de bancos de dados operacionais (OLTP) para sistemas analíticos (OLAP) não é apenas uma escolha técnica, mas um imperativo para organizações que buscam maturidade em Big Data e Business Intelligence. Enquanto os sistemas transacionais focam na execução imediata e integridade de registros individuais, o DW é projetado para o processamento complexo e a análise de volumes massivos de informações, permitindo que o dado bruto seja refinado em um ativo estratégico de alto valor.
 
-Definimos o Data Warehouse como um sistema centralizado de armazenamento que integra e gerencia informações provenientes de fontes heterogêneas — sejam elas bancos SQL estruturados, planilhas ou dados semiestruturados. Sua arquitetura permite a consolidação de "inputs" variados em um repositório único, garantindo uma visão holística e consistente que suporta a visualização e a compreensão aprofundada dos cenários de negócio.
+Definimos o Data Warehouse como um sistema centralizado de armazenamento que integra e gerencia informações provenientes de fontes heterogêneas, sejam elas bancos SQL estruturados, planilhas ou dados semiestruturados. Sua arquitetura permite a consolidação de "inputs" variados em um repositório único, garantindo uma visão holística e consistente que suporta a visualização e a compreensão aprofundada dos cenários de negócio.
 
 A evolução cronológica do DW reflete a adaptação necessária para lidar com o aumento da complexidade e da latência exigida pelo mercado:
 
@@ -36,7 +36,7 @@ Estratégia sem execução é alucinação; portanto, para que esses benefícios
 
 3. A Mecânica da Inteligência: Processos, Ambientes e Papéis
 
-O Data Warehouse deve ser encarado como um ecossistema vivo, operando sob o rigor do processo de ETL (Extração, Transformação e Carregamento). Os dados fluem de fontes heterogêneas ("inputs") para um ambiente de homologação — uma réplica controlada da produção onde são validados e testados. Somente após essa validação é que os dados são carregados no DW. Do ponto de vista técnico, a eficiência nesse carregamento exige o domínio de práticas como "bulk inserts" (inserções em lote) para grandes volumes, em vez de iterações linha a linha, garantindo a integridade e a velocidade do sistema.
+O Data Warehouse deve ser encarado como um ecossistema vivo, operando sob o rigor do processo de ETL (Extração, Transformação e Carregamento). Os dados fluem de fontes heterogêneas ("inputs") para um ambiente de homologação, uma réplica controlada da produção onde são validados e testados. Somente após essa validação é que os dados são carregados no DW. Do ponto de vista técnico, a eficiência nesse carregamento exige o domínio de práticas como "bulk inserts" (inserções em lote) para grandes volumes, em vez de iterações linha a linha, garantindo a integridade e a velocidade do sistema.
 
 Para sustentar essa arquitetura, três pilares profissionais devem atuar em sinergia:
 
