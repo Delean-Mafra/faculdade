@@ -31,7 +31,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const pageSelectors = document.querySelectorAll('.page-selector');
     pageSelectors.forEach(selector => {
         selector.addEventListener('change', function() {
-            window.location.href = this.value;
+            try {
+                const url = new URL(this.value, window.location.origin);
+                if (url.protocol === 'http:' || url.protocol === 'https:') {
+                    window.location.href = url.href;
+                }
+            } catch (e) {
+                console.error("URL inválida.");
+            }
         });
     });
     
