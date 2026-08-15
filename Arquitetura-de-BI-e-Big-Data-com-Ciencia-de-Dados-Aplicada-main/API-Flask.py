@@ -30,8 +30,8 @@ def post_data():
             cur.close()
 
             return jsonify({'sucesso': True}), 200
-        except (ValueError, psycopg2.DatabaseError) as e:
-            return jsonify({'erro': 'Requisição Inválida', 'mensagem': str(e)}), 400
+        except (ValueError, psycopg2.DatabaseError):
+            return jsonify({'erro': 'Requisição Inválida', 'mensagem': 'Ocorreu um erro interno ao processar a requisição.'}), 400
     else:
         return jsonify({'erro': 'Dados Ausentes', 'mensagem': 'Temperatura e Umidade precisam ser solicitadas'}), 400
 
@@ -54,4 +54,4 @@ def latest_sensor_data():
 create_dashboard(app) 
 
 if __name__ == '__main__':
-    app.run(host='localhost', port=5000, debug=True)
+    app.run(host='localhost', port=5000, debug=False)
