@@ -57,9 +57,9 @@ def generate_authors(n=10):
                 birth_date=birth_date
             )
             authors_created += 1
-            print(f"  ✓ Autor criado: {name} ({birth_date})")
+            print("  ✓ Autor criado com sucesso")
         except Exception as e:
-            print(f"  ❌ Erro ao criar autor {name}: {str(e)}")
+            print(f"  ❌ Erro ao criar autor: {str(e)}")
     
     return authors_created
 
@@ -125,9 +125,9 @@ def generate_books(n=30):
                 genre=genre
             )
             books_created += 1
-            print(f"  ✓ Livro criado: {title} ({isbn})")
+            print(f"  ✓ Livro criado: {isbn}")
         except Exception as e:
-            print(f"  ❌ Erro ao criar livro {title}: {str(e)}")
+            print(f"  ❌ Erro ao criar livro: {str(e)}")
     
     return books_created
 
