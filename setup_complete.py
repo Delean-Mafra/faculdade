@@ -210,7 +210,7 @@ def populate_database():
                 name=name,
                 birth_date=birth_date
             )
-            print(f"  ✓ Autor criado: {name} ({birth_date})")
+            print("  ✓ Autor criado com sucesso")
         
         # Gera livros
         num_books = 30
@@ -248,7 +248,7 @@ def populate_database():
                 page_count=page_count,
                 genre=genre
             )
-            print(f"  ✓ Livro criado: {title} ({isbn})")
+            print("  ✓ Livro criado com sucesso")
         
         print(f"\n✅ Dados fictícios criados com sucesso!")
         print(f"  - {num_authors} autores")
@@ -287,7 +287,7 @@ def main():
     print("\nAcesse a aplicação em: http://127.0.0.1:8000/")
     print("\nAcesse o painel administrativo em: http://127.0.0.1:8000/admin/")
     print("  Usuário: admin")
-    print("  Senha: 123456Ab")
+    print("  Senha: *** [Ocultada por segurança]")
 
 if __name__ == "__main__":
     main()
