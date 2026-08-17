@@ -249,7 +249,7 @@ def populate_database():
                 name=name,
                 birth_date=birth_date
             )
-            print(f"  ✓ Autor criado: {name} ({birth_date})")
+            print(f"  ✓ Autor criado com sucesso (ID: {author.id})")
         
         # Criar livros
         num_books = 30
@@ -293,7 +293,7 @@ def populate_database():
                 page_count=page_count,
                 genre=genre
             )
-            print(f"  ✓ Livro criado: {title} ({isbn})")
+            print(f"  ✓ Livro criado com sucesso (ID: {book.id})")
         
         print_success(f"Banco de dados populado com {num_authors} autores e {num_books} livros")
         return True
@@ -321,7 +321,7 @@ def create_superuser():
         # Cria um superusuário admin
         print("Criando superusuário 'admin'...")
         User.objects.create_superuser('admin', 'admin@example.com', '123456Ab')
-        print_success("Superusuário 'admin' criado com senha '123456Ab'")
+        print_success("Superusuário 'admin' criado com sucesso")
         return True
         
     except Exception as e:
@@ -354,7 +354,7 @@ def main():
     print(f"\n{Colors.BOLD}Acesse a aplicação em:{Colors.ENDC} http://127.0.0.1:8000/")
     print(f"\n{Colors.BOLD}Acesse o painel administrativo em:{Colors.ENDC} http://127.0.0.1:8000/admin/")
     print("  Usuário: admin")
-    print("  Senha: 123456Ab")
+    print("  Senha configurada no script")
 
 if __name__ == "__main__":
     main()
