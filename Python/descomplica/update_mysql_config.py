@@ -24,20 +24,24 @@ def update_settings_file():
         with open(settings_path, 'r', encoding='utf-8') as file:
             content = file.read()
         
+        # Garante que o os está importado para podermos injetar os.environ no settings.py
+        if "import os" not in content:
+            content = "import os\n" + content
+            
         # Procura e substitui as credenciais do banco de dados
         if "'PASSWORD':" in content:
-            # Substitui a senha antiga pela nova
+            # Substitui a senha antiga pela chamada à variável de ambiente, evitando texto claro no arquivo
             if "'PASSWORD': 'Brasil101@'" in content:
-                content = content.replace("'PASSWORD': 'Brasil101@'", f"'PASSWORD': '{MYSQL_CONFIG['password']}'")
+                content = content.replace("'PASSWORD': 'Brasil101@'", "'PASSWORD': os.environ.get('MYSQL_PASSWORD', '')")
             else:
-                # Se a senha Brasil101@ não for encontrada, tenta substituir qualquer senha
+                # Se a senha padrão não for encontrada, tenta substituir qualquer senha
                 pattern = r"'PASSWORD':\s*'[^']*'"
-                content = re.sub(pattern, f"'PASSWORD': '{MYSQL_CONFIG['password']}'", content)
+                content = re.sub(pattern, r"'PASSWORD': os.environ.get('MYSQL_PASSWORD', '')", content)
         
         with open(settings_path, 'w', encoding='utf-8') as file:
             file.write(content)
             
-        print("✅ Credenciais do MySQL atualizadas no settings.py")
+        print("✅ Credenciais do MySQL atualizadas no settings.py de forma segura")
         return True
     except Exception as e:
         print(f"❌ Erro ao atualizar settings.py: {e}")
