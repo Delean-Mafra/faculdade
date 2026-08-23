@@ -39,7 +39,7 @@ if __name__ == "__main__":
         author = add_tolkien()
         print("\n=== Resumo ===")
         print(f"Nome: {author.name}")
-        print(f"Data de nascimento: {author.birth_date}")
+        print("Data de nascimento: [DADO SENSÍVEL OCULTADO]") 
         print(f"ID: {author.id}")
         print("\nVocê pode agora adicionar livros para este autor através do formulário: http://127.0.0.1:8000/books/book/new/")
     except Exception as e:
