@@ -10,12 +10,12 @@ import time
 import mysql.connector
 from mysql.connector import errorcode
 
-# Configurações do MySQL
+# Configurações do MySQL (usando variáveis de ambiente para evitar credenciais em texto claro)
 MYSQL_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'root',
-    'database': 'DB_EMPRESA'
+    'host': os.environ.get('MYSQL_HOST', 'localhost'),
+    'user': os.environ.get('MYSQL_USER', 'root'),
+    'password': os.environ.get('MYSQL_PASSWORD', ''),
+    'database': os.environ.get('MYSQL_DATABASE', 'DB_EMPRESA')
 }
 
 def check_mysql():
@@ -45,7 +45,7 @@ def check_mysql():
 def check_mysqlclient():
     """Verifica se o módulo mysqlclient está instalado (necessário para Django)"""
     try:
-        
+        import MySQLdb
         print("✓ mysqlclient já está instalado")
         return True
     except ImportError:
@@ -119,20 +119,24 @@ def update_settings_file():
     }
 }"""
     
-    mysql_config = f"""DATABASES = {{
-    'default': {{
+    # Substituição que insere leitura de variáveis de ambiente diretamente no arquivo de configuração final,
+    # evitando gravar as senhas em texto puro.
+    mysql_config = """import os
+
+DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{MYSQL_CONFIG['database']}',
-        'USER': '{MYSQL_CONFIG['user']}',
-        'PASSWORD': '{MYSQL_CONFIG['password']}',
-        'HOST': '{MYSQL_CONFIG['host']}',
+        'NAME': os.environ.get('MYSQL_DATABASE', 'DB_EMPRESA'),
+        'USER': os.environ.get('MYSQL_USER', 'root'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
+        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
         'PORT': '3306',
-        'OPTIONS': {{
+        'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
             'charset': 'utf8mb4',
-        }},
-    }}
-}}"""
+        },
+    }
+}"""
     
     if sqlite_config in content:
         content = content.replace(sqlite_config, mysql_config)
@@ -168,6 +172,9 @@ def migrate_database():
 
 def main():
     print("\n=== Configurando MySQL para o projeto Django ===\n")
+    
+    if not MYSQL_CONFIG['password']:
+        print("⚠️ Aviso: A variável de ambiente MYSQL_PASSWORD não está definida. O script pode falhar ao conectar no banco.")
     
     # Verifica e instala dependências
     if not check_mysql() or not check_mysqlclient():
