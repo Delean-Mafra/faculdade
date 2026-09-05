@@ -1,0 +1,103 @@
+{
+  "title": "E-Commerce Big Data Monitoring",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Total de Transacoes Geradas",
+      "targets": [
+        {
+          "expr": "ecommerce_transacoes_geradas_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Buscas Distribuidas Realizadas",
+      "targets": [
+        {
+          "expr": "ecommerce_buscas_realizadas_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Taxa de Geracao de Transacoes",
+      "targets": [
+        {
+          "expr": "rate(ecommerce_transacoes_geradas_total[1m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Transacoes Processadas pelo Spark",
+      "targets": [
+        {
+          "expr": "ecommerce_transacoes_processadas_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 16
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Recomendacoes Geradas",
+      "targets": [
+        {
+          "expr": "ecommerce_recomendacoes_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 16
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Erros no Pipeline Spark",
+      "targets": [
+        {
+          "expr": "ecommerce_spark_erros_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 16
+      }
+    }
+  ],
+  "schemaVersion": 38,
+  "refresh": "5s"
+}
