@@ -24,7 +24,13 @@ def iniciar_stream():
     start_http_server(config.PROMETHEUS_PORT_PRODUCER)
     print(f"Servidor Prometheus do producer na porta {config.PROMETHEUS_PORT_PRODUCER}")
 
-    producer = Producer({"bootstrap.servers": config.KAFKA_BROKER})
+    producer = Producer(
+        {
+            "bootstrap.servers": config.KAFKA_BROKER,
+            "acks": "all",
+            "enable.idempotence": True,
+        }
+    )
     print("Gerando transacoes em tempo real. Pressione Ctrl+C para parar.")
 
     try:

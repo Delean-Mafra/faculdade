@@ -1,6 +1,6 @@
 import os
 import json
-from collections import Counter, defaultdict
+from collections import defaultdict
 from pathlib import Path
 
 from pyspark.sql import SparkSession
@@ -118,7 +118,7 @@ def processar_streaming():
 
     spark = (
         SparkSession.builder.appName("EcommerceRealTimeAnalytics")
-        .master("local[*]")
+        .master(config.SPARK_MASTER)
         .getOrCreate()
     )
     spark.sparkContext.setLogLevel("WARN")

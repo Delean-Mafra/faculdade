@@ -21,6 +21,10 @@ def aguardar_elasticsearch(tentativas=30):
 
 def criar_indice():
     mapping = {
+        "settings": {
+            "number_of_shards": 3,
+            "number_of_replicas": 1,
+        },
         "mappings": {
             "properties": {
                 "id": {"type": "integer"},
@@ -42,7 +46,7 @@ def criar_indice():
     if es.indices.exists(index=config.ES_INDEX_PRODUTOS):
         es.indices.delete(index=config.ES_INDEX_PRODUTOS)
     es.indices.create(index=config.ES_INDEX_PRODUTOS, body=mapping)
-    print(f"Indice '{config.ES_INDEX_PRODUTOS}' criado com sucesso.")
+    print(f"Indice '{config.ES_INDEX_PRODUTOS}' criado com 3 shards e 1 replica.")
 
 
 def gerar_produtos(qtd=1000):
