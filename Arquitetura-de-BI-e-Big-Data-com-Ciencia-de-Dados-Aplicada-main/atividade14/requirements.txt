@@ -1,0 +1,5 @@
+elasticsearch==8.10.0
+confluent-kafka==2.3.0
+pyspark==3.5.0
+prometheus-client==0.17.1
+Faker==19.6.0
