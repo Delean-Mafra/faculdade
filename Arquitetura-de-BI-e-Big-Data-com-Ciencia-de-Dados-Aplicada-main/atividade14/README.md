@@ -1,58 +1,181 @@
-## 1. Introdução
+# Atividade Pratica 14 - Distribuida e Bancos de Dados em Big Data
 
-Este projeto desenvolve uma solução de dados para um cenário de e-commerce, lidando com o gerenciamento e a análise de grandes volumes de produtos, preços, avaliações e transações. O objetivo é demonstrar, na prática, a integração de bancos NoSQL, busca distribuída, processamento em tempo real, sistemas de recomendação e monitoramento. 
+## Objetivo
 
-Todo o desenvolvimento teve como base os conceitos vistos em aula, com destaque para o uso do Elasticsearch como motor de busca e análise, além dos princípios de processamento distribuído. Como vimos, a busca distribuída otimiza a recuperação de informações na rede, enquanto a divisão dos dados em *shards* garante escalabilidade e a replicação assegura a tolerância a falhas.
+Implementar um cenario de Big Data para e-commerce com banco NoSQL, busca distribuida, processamento de eventos em tempo real, recomendacoes personalizadas, monitoramento e demonstracao de disponibilidade por replicacao.
 
-## 2. Visão Geral da Solução
+## Arquitetura implementada
 
-A principal lição desta atividade é que uma arquitetura de Big Data não se faz com uma única tecnologia; cada componente tem um papel muito bem definido no fluxo de dados.
+```text
+Gerador Python
+   -> Kafka com 3 brokers
+   -> Spark master + workers
+   -> estado analitico em data/recomendacoes
+   -> motor de recomendacao
+   -> Elasticsearch com 3 nos
+   -> produtos recomendados
+   -> Prometheus/Grafana
+```
 
-No projeto, adotamos o Elasticsearch como banco orientado a documentos e motor de busca do catálogo. Os produtos ficam salvos em documentos JSON (contendo nome, categoria, preço e avaliações), organizados em índices que permitem buscas complexas através da *Query DSL*.
+Componentes:
 
-Para lidar com o fluxo de transações em tempo real, usamos o Apache Kafka. Ele atua como mensageria, recebendo eventos continuamente e eliminando a dependência de arquivos estáticos. Na ponta do consumo, o Apache Spark Structured Streaming lê esses eventos do Kafka sem interrupções, permitindo análises dinâmicas em janelas de tempo — um contraste claro com o processamento tradicional em *batch*.
+- **Elasticsearch:** catalogo NoSQL orientado a documentos com 3 nos, 3 shards e 1 replica para o indice de produtos.
+- **Kafka:** cluster com 3 brokers, fator de replicacao 3 e `min.insync.replicas=2`.
+- **Spark:** master e 2 workers no Docker Compose. O script tambem pode rodar em modo local para facilitar testes.
+- **Recomendacao:** baseada em historico e coocorrencia produzidos pelo Spark a partir das transacoes reais do Kafka.
+- **Prometheus/Grafana:** metricas e dashboard para geracao, processamento, buscas, recomendacoes e erros.
 
-A camada de recomendação, por sua vez, cruza o histórico de compras para sugerir itens relevantes ao perfil de cada cliente. Após calcular as recomendações, o sistema consulta o Elasticsearch para exibir os produtos reais (com preço e detalhes) ao consumidor, e não apenas seus códigos de identificação.
+## Observacao sobre ambiente local
 
-Por fim, toda a operação é acompanhada por uma stack de observabilidade: o Prometheus coleta as métricas dos componentes, e o Grafana exibe as informações em dashboards interativos.
+O projeto agora inclui uma demonstracao distribuida real via Docker Compose: Elasticsearch com multiplos nos, Kafka com multiplos brokers e Spark com master/workers.
 
-## 3. Desenvolvimento
+Ainda assim, por estar tudo em uma unica maquina, a disponibilidade e limitada pelo host fisico. Em producao, esses nos ficariam em maquinas ou zonas diferentes, com volumes persistentes, politicas de reinicio, orquestracao e observabilidade mais robusta.
 
-### 3.1 Arquiteturas NoSQL
-O passo inicial foi analisar os modelos NoSQL (documentos, chave-valor e colunares) e como eles se encaixariam no e-commerce. Bancos de documentos são excelentes para o catálogo devido à flexibilidade estrutural. O modelo chave-valor seria o ideal para acessos rápidos, como gerenciar carrinhos de compra, enquanto os colunares brilham em análises massivas. Na prática, o Elasticsearch assumiu a posição central, deixando os demais como alternativas arquiteturais teóricas.
+## Como a recomendacao funciona
 
-### 3.2 Busca Distribuída
-Em seguida, indexamos o catálogo no Elasticsearch. A aplicação consegue buscar produtos usando consultas textuais e filtros. Embora a infraestrutura local do projeto seja simplificada, ela ilustra perfeitamente o fluxo de busca. Em um ambiente de produção real, aplicaríamos a fundo os conceitos de aula: índices divididos em *shards* e distribuídos por vários nós, com replicação ativa para garantir alta disponibilidade.
+O arquivo `src/3_spark_streaming.py` consome transacoes reais do Kafka. A cada micro-batch, ele atualiza:
 
-### 3.3 Processamento em Tempo Real
-Aqui, criamos um fluxo contínuo onde um produtor gera transações e as envia ao Kafka. O Spark Structured Streaming captura esses dados instantaneamente e executa agregações, calculando o volume de vendas e identificando os produtos mais populares dentro de janelas de tempo específicas. Isso simula fielmente o desafio de processar informações à medida que nascem.
+- `data/recomendacoes/cliente_produtos.json`: produtos comprados por cliente.
+- `data/recomendacoes/coocorrencia.json`: produtos que aparecem no historico do mesmo cliente.
+- `data/recomendacoes/top_produtos.json`: volume total vendido por produto.
 
-### 3.4 Recomendações Personalizadas
-Nesta etapa, unimos a análise de dados ao catálogo. O motor de recomendação avalia o histórico de compras e as relações de coocorrência para sugerir itens com alta chance de conversão. O diferencial arquitetural é o cruzamento direto desses IDs com o Elasticsearch, entregando ao usuário uma vitrine completa e atualizada.
+O arquivo `src/4_busca_recomendacao.py` le esse estado processado pelo Spark, calcula os produtos relacionados ao historico real do cliente e consulta o Elasticsearch para obter ID, nome, categoria, preco e media das avaliacoes.
 
-### 3.5 Monitoramento e Alta Disponibilidade
-Para fechar a estrutura, o Prometheus foi configurado para capturar métricas da aplicação (transações geradas, buscas, recomendações e tempos de resposta), que são visualizadas no Grafana. Em relação à alta disponibilidade, o projeto roda localmente de forma enxuta (*single-node*). Essa limitação está registrada na documentação, deixando claro que um cenário de produção exigiria um cluster com múltiplos nós e réplicas.
+## Como executar
 
-## 4. Fluxo Geral da Arquitetura
+### 1. Subir a infraestrutura distribuida
 
-O caminho percorrido pelos dados pode ser resumido da seguinte forma:
-**Geração de transações** → **Kafka** → **Spark Structured Streaming** (análise) → **Motor de recomendação** → **Elasticsearch** (recuperação de dados) → **Retorno para o usuário** → **Monitoramento (Prometheus/Grafana)**.
-Esse pipeline ilustra de forma clara a sinergia entre as ferramentas em um ecossistema Big Data.
+```bash
+docker compose up -d
+```
 
-## 5. Resultados e Aprendizado
+Servicos principais:
 
-A atividade deixou evidente que lidar com grandes volumes de dados vai muito além do armazenamento. A escolha da tecnologia precisa equilibrar a velocidade da consulta, o processamento contínuo e a escalabilidade.
+- Elasticsearch: `http://localhost:9200`
+- Kafka brokers externos: `localhost:9092,localhost:9093,localhost:9094`
+- Spark master UI: `http://localhost:8080`
+- Prometheus: `http://localhost:9090`
+- Grafana: `http://localhost:3000`
 
-O Elasticsearch provou ser a ferramenta certa para o catálogo graças à indexação ágil e à flexibilidade da *Query DSL*. O Kafka e o Spark foram essenciais para tirar o projeto do modelo estático e trazê-lo para o tempo real. Já o sistema de recomendação mostrou como dados analíticos geram valor direto para o negócio, tudo monitorado de perto pela dupla Prometheus e Grafana.
+### 2. Instalar dependencias Python no host
 
-Também ficou clara a diferença entre um laboratório acadêmico e o mundo real. Um ambiente de produção exige infraestrutura robusta, múltiplos nós e armazenamento persistente. Aqui, a prioridade foi validar a arquitetura e o papel de cada tecnologia, documentando com transparência as limitações locais.
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-## 6. Conclusão
+No Linux/macOS:
 
-A solução desenvolvida cumpre o objetivo de entregar uma arquitetura integrada de dados para e-commerce, passando por NoSQL, busca distribuída, streaming, recomendações e observabilidade.
+```bash
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-O principal aprendizado é que o Big Data funciona como um quebra-cabeça de componentes complementares. É preciso adequar o armazenamento ao tipo de dado, usar índices eficientes para buscas, processar eventos no ritmo em que acontecem e converter tudo isso em funcionalidades úteis. O domínio de conceitos como *sharding* e replicação é justamente o que permite transformar um protótipo local em uma arquitetura pronta para ganhar escala no mercado.
+### 3. Indexar o catalogo no Elasticsearch
 
-## 7. Referências
+```bash
+python src/1_setup_elasticsearch.py
+```
 
-**AULA 14.** Busca Distribuída e Bancos de Dados em Big Data (Material didático da disciplina). Conteúdo abordado: busca distribuída, Elasticsearch, indexação, Query DSL, *sharding*, replicação, modelos NoSQL e estudo de caso.
+O indice e criado com 3 shards e 1 replica, permitindo distribuicao e copia dos dados entre os nos Elasticsearch.
+
+### 4. Iniciar o Spark Streaming no cluster Docker
+
+Execute o job a partir do container `spark-master`, usando os enderecos internos da rede Docker:
+
+```bash
+docker compose exec spark-master bash -lc "pip install prometheus-client && SPARK_MASTER=spark://spark-master:7077 KAFKA_BROKER=kafka1:29092,kafka2:29092,kafka3:29092 ES_HOST=http://es01:9200 spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 /app/src/3_spark_streaming.py"
+```
+
+Esse processo deve ficar ativo. Ele consome o Kafka continuamente, imprime agregacoes no console e grava os arquivos em `data/recomendacoes`.
+
+Modo alternativo para teste local, sem usar os workers Docker:
+
+```bash
+python src/3_spark_streaming.py
+```
+
+### 5. Gerar transacoes reais no Kafka
+
+Em outro terminal:
+
+```bash
+python src/2_gerador_eventos_kafka.py
+```
+
+O producer usa os tres brokers configurados em `config.py` e confirma mensagens com `acks=all`.
+
+### 6. Executar buscas e recomendacoes
+
+Em outro terminal:
+
+```bash
+python src/4_busca_recomendacao.py
+```
+
+Sem argumento, o script escolhe um cliente que ja tenha historico processado pelo Spark. Para consultar um cliente especifico:
+
+```bash
+python src/4_busca_recomendacao.py 42
+```
+
+## Monitoramento
+
+Metricas principais:
+
+- `ecommerce_transacoes_geradas_total`
+- `ecommerce_transacoes_processadas_total`
+- `ecommerce_buscas_realizadas_total`
+- `ecommerce_recomendacoes_total`
+- `ecommerce_spark_erros_total`
+- `ecommerce_api_erros_total`
+- `ecommerce_tempo_busca_segundos`
+- `ecommerce_spark_tempo_batch_segundos`
+
+O Prometheus coleta:
+
+- Producer Python na porta `8001`.
+- API/recomendacao na porta `8002`.
+- Spark streaming na porta `8003`.
+
+O Grafana provisiona automaticamente o dashboard `E-Commerce Big Data Monitoring`.
+
+## Auditoria tecnica por requisito
+
+| Requisito | Implementacao | Atendido? |
+| :--- | :--- | :--- |
+| Banco de dados NoSQL | Elasticsearch armazena produtos, categorias, precos, avaliacoes e media de notas. | Sim |
+| Arquiteturas NoSQL | README explica uso de documentos e contextualiza alternativas como chave-valor/colunar para producao. | Sim |
+| Busca distribuida | Elasticsearch roda com 3 nos; indice criado com 3 shards e 1 replica. | Sim |
+| Busca por preco/categoria/texto | `src/4_busca_recomendacao.py` usa `multi_match`, `range` e `term`. | Sim |
+| Apache Spark/Flink | Spark Structured Streaming implementado. | Sim |
+| Pipeline em tempo real | Kafka recebe eventos continuamente e Spark consome via `readStream`. | Sim |
+| Processamento distribuido | Docker Compose inclui Spark master e 2 workers; README mostra execucao via `spark-submit` no cluster. | Sim |
+| Recomendacoes personalizadas | Baseadas em historico/coocorrencia produzidos pelo Spark a partir de transacoes reais. | Sim |
+| Integracao com catalogo | Recomendacao consulta Elasticsearch para enriquecer os produtos recomendados. | Sim |
+| Prometheus | Producer, Spark e API expoem metricas. | Sim |
+| Grafana | Dashboard provisionado. | Sim |
+| Alta disponibilidade | Kafka tem 3 brokers e replicacao 3; Elasticsearch tem 3 nos e replica. | Sim, em demonstracao local |
+
+## Auditoria por etapa do enunciado
+
+| Etapa | O que foi implementado | Arquivos | Status | Limitacao |
+| :--- | :--- | :--- | :--- | :--- |
+| 1. Arquiteturas NoSQL | Elasticsearch distribuido como banco de documentos; alternativas NoSQL discutidas. | `docker-compose.yml`, `src/1_setup_elasticsearch.py`, `README.md` | Sim | Cluster roda em uma unica maquina local. |
+| 2. Busca distribuida | Busca em Elasticsearch com 3 nos, shards e replica. | `docker-compose.yml`, `src/1_setup_elasticsearch.py`, `src/4_busca_recomendacao.py` | Sim | Demonstracao local, nao multi-host. |
+| 3. Pipeline de analise em tempo real | Gerador envia transacoes ao Kafka; Spark consome continuamente e atualiza agregacoes/historico. | `src/2_gerador_eventos_kafka.py`, `src/3_spark_streaming.py` | Sim | Workers Docker compartilham o mesmo host fisico. |
+| 4. Integracao com e-commerce | Motor de recomendacao usa dados processados pelo Spark e busca metadados no Elasticsearch. | `src/3_spark_streaming.py`, `src/4_busca_recomendacao.py` | Sim | Persistencia analitica simples em JSON local. |
+| 5. Monitoramento e alta disponibilidade | Prometheus/Grafana monitoram; Kafka e Elasticsearch possuem replicacao no Compose. | `docker-compose.yml`, `prometheus/prometheus.yml`, `grafana/dashboards/ecommerce_dashboard.json` | Sim, em demonstracao local | HA real de producao exigiria hosts/zonas diferentes e volumes persistentes. |
+
+## Fluxo validado logicamente
+
+1. Um evento de compra e criado em `src/2_gerador_eventos_kafka.py`.
+2. O evento e enviado ao topico Kafka `ecommerce_transacoes` no cluster de 3 brokers.
+3. `src/3_spark_streaming.py` consome o topico com Spark Structured Streaming.
+4. O Spark calcula agregacoes de vendas e atualiza historico/coocorrencia.
+5. Os resultados ficam disponiveis em `data/recomendacoes`.
+6. `src/4_busca_recomendacao.py` identifica produtos relacionados ao historico real do cliente.
+7. O Elasticsearch fornece os dados completos dos produtos recomendados a partir do catalogo replicado.
+8. Prometheus coleta metricas do producer, Spark e API.
+9. Grafana apresenta essas metricas no dashboard provisionado.
